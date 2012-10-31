@@ -1,0 +1,5 @@
+name:  asn1lib
+description:  A sample application
+
+dependencies:
+  unittest: { sdk: unittest }
