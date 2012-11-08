@@ -16,7 +16,7 @@ class ASN1Integer extends ASN1Object {
   }
 
   encode() {
-    tag = INTEGER_TYPE; // integer tag
+    _tag = INTEGER_TYPE; // integer tag
     var t = encodeIntValue(this.intValue);
     
     valueByteLength  = t.length;

@@ -21,13 +21,12 @@ class ASN1Sequence extends ASN1Object {
     _encodedBytes = b;
     // todo. Should we encode now, or be lazy?
     super._initFromBytes();
-    print("ASN1Sequence valbytes=${hex(valueBytes())}");
+    //print("ASN1Sequence valbytes=${hex(valueBytes())}");
     decodeSeq();
   }
   
-  ASN1Sequence() {
-    
-    this.tag = SEQUENCE_TYPE; 
+  ASN1Sequence([int intTag = SEQUENCE_TYPE]) {
+    _tag = intTag; 
   }
   
   add(ASN1Object o) {

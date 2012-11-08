@@ -6,7 +6,7 @@ class ASN1OctetString extends ASN1Object {
   String stringValue;
 
   ASN1OctetString(this.stringValue) {
-    tag = OCTET_STRING_TYPE;
+    _tag = OCTET_STRING_TYPE;
   }
 
   ASN1OctetString.fromBytes(Uint8List bytes) {

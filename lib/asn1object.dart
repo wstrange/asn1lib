@@ -28,6 +28,11 @@ class ASN1Object {
   
   int _totalEncodedByteLength = 0;
   
+  /**
+   * The total length of this object in bytes.
+   * We need this if we are parsing a stream of bytes to know when the
+   * next object starts in the stream.
+   */
   get totalEncodedByteLength => _totalEncodedByteLength;
   
   ASN1Object() {
@@ -42,7 +47,7 @@ class ASN1Object {
    * Determines the length and where the value bytes start
    */
   _initFromBytes() {
-    tag = _encodedBytes[0];
+    _tag = _encodedBytes[0];
     ASN1Length l = ASN1Length.decodeLength(_encodedBytes);
     valueByteLength = l.length;
     valueStartPosition = l.valueStartPosition;  
@@ -50,8 +55,11 @@ class ASN1Object {
   }
 
   /** The BER tag representing this object */
-  int tag;
+  int _tag;
 
+  int get tag => _tag;
+  set tag(int v) => _tag = v;
+  
   /**
    * Length of the encoded value in bytes. This does not include
    * the tag or the size of length field.

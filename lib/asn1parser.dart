@@ -17,7 +17,7 @@ class ASN1Parser {
     int tag = _bytes[_position];
   
     
-    print("parser tag = ${hex(tag)} bytes=${hex(_bytes)}");
+    //print("parser tag = ${hex(tag)} bytes=${hex(_bytes)}");
     // ASN1 Primitives have high bits 8/7 set to 0
     
     bool isPrimitive =  (0xC0 & tag) == 0; 
@@ -33,7 +33,6 @@ class ASN1Parser {
       obj =  _doPrimitive(tag,subBytes);
     else
     if( isApplication ) {
-      print("Application tag !!");
       // sequence subtype
       if( (tag & SEQUENCE_TYPE) != 0) 
         obj = new ASN1Sequence.fromBytes(subBytes);
@@ -52,7 +51,7 @@ class ASN1Parser {
   }
   
   ASN1Object _doPrimitive(int tag,Uint8List b) {
-    print("Primitive tag=${hex(tag)}");
+    //print("Primitive tag=${hex(tag)}");
     switch(tag ) {
     
       case SEQUENCE_TYPE: // sequence 
@@ -65,8 +64,13 @@ class ASN1Parser {
       case ENUMERATED_TYPE:
         return new ASN1Integer.fromBytes(b);
         
+      case SET_TYPE: 
+        return new ASN1Set.fromBytes(b);
+        
         
       case BOOLEAN_TYPE:  // boolean  
+        return new ASN1Boolean.fromBytes(b);
+        
       default: 
         throw "not done";
     }    
