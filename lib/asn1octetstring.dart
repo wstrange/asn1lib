@@ -9,6 +9,11 @@ class ASN1OctetString extends ASN1Object {
     _tag = OCTET_STRING_TYPE;
   }
 
+  ASN1OctetString.withTag(int tag,this.stringValue) {
+    _tag = tag;
+  }
+  
+  
   ASN1OctetString.fromBytes(Uint8List bytes) {
     _encodedBytes = bytes;
     _initFromBytes();

@@ -8,7 +8,7 @@ part of asn1lib;
  *  A value can be supplied representing the ASN1 Type for the object (Integer, String, etc.). The object can then be encoded
  *  to its BER byte stream representation. 
  *  
- *  Conversely, the onbject can be initialized from an incoming BER byte array. This byte stream can then be decoded to its correspoding 
+ *  Conversely, the object can be initialized from an incoming BER byte array. This byte stream can then be decoded to its correspoding 
  *  ASN1 type.
  *  
  *  
@@ -25,6 +25,12 @@ class ASN1Object {
    *
    */
   Uint8List _encodedBytes;
+  Uint8List get encodedBytes => _encodedBytes;
+  /**
+   * The setter is needed rarely - usually when dealing with CHOICE encoding
+   * where the encoded object is supplied
+   */
+  set encodedBytes(Uint8List b) => _encodedBytes = b;
   
   int _totalEncodedByteLength = 0;
   
@@ -37,6 +43,23 @@ class ASN1Object {
   
   ASN1Object() {
   }
+  
+  /**
+   * Create an object that encapsulates a set of value bytes
+   * This is used in LDAP (for example) to encode a CHOICE type
+   * The supplied valBytes is the encoded value of the choice element
+   * 
+   * todo: rename this
+   * 
+   */
+  ASN1Object.fromTag(this._tag,Uint8List valBytes) {
+    valueByteLength = valBytes.length;
+    encode();
+    // copy in the valBytes into the encoded byte array
+    _encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
+    
+  }
+  
   
   ASN1Object.fromBytes(this._encodedBytes) {
     _initFromBytes();
@@ -69,12 +92,6 @@ class ASN1Object {
    * The index where the value bytes start. This is the position after the tag + length bytes
    */
   int valueStartPosition = 2;
-
-  int totalEncodedLength () {
-  }
-  
-  Uint8List get encodedBytes => _encodedBytes;
-  
   
   /**
    * This will encode the tag and the length bytes - which is all we can do right now
