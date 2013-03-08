@@ -48,7 +48,7 @@ class ASN1Util {
     b.add("]");
     return b.toString();
   }
-  
+
   String hex(dynamic x) {
     if( x is List)
       return listToString(x);

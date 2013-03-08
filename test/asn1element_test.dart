@@ -43,21 +43,21 @@ main() {
       expect( x, decoded);
     }
   });
-  
-  
+
+
   test('Length Encoding and Decoding', () {
     Uint8List x = ASN1Length.encodeLength(127);
     expect(x, equals([127]));
-   
-    
+
+
     x = ASN1Length.encodeLength(128);
     expect(x, equals([0x81, 128]));
-    
-   
+
+
     x = ASN1Length.encodeLength(1024);
     expect( x, equals([0x82, 0x04,0x00]));
-    
-    
+
+
   });
 
   test('Octet String encoding', () {
@@ -65,16 +65,16 @@ main() {
 
     var os = new ASN1OctetString(s);
     os.encode();
-    
+
     var os2 = new ASN1OctetString.fromBytes(os.encodedBytes);
-    
-    
-   
+
+
+
     expect( s, equals(os2.stringValue));
 
   });
-  
-  
+
+
   test('Sequence Test1', () {
     var s1 = new ASN1OctetString("Hello");
     var s2 = new ASN1OctetString("World");
@@ -83,35 +83,35 @@ main() {
     s.add(s2);
     s.encode();
     print("Encoded Seq ${s.encodedBytes}");
-    
+
     var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);
     var t1 = seq2.elements[0] as ASN1OctetString;
     var t2 = seq2.elements[1] as ASN1OctetString;
     //print( "${seq2}");
-    
+
     expect( t1.stringValue, equals("Hello"));
     expect( t2.stringValue, equals("World"));
-  
+
   });
-  
+
   test('Null Test', () {
-    
+
     var t = new ASN1Null();
-    
+
     expect(t.encodedBytes, equals([0x05,0x00]));
-    
+
   });
-  
+
   test("Boolean ", () {
     var f = ASN1Boolean.ASN1FalseBoolean;
     var t = ASN1Boolean.ASN1TrueBoolean;
-    
+
     var fa = [BOOLEAN_TYPE, 0x01, 0x00];
     var ta = [BOOLEAN_TYPE, 0x01, 0xff];
-    
+
     expect(f.encodedBytes, equals(fa));
     expect(t.encodedBytes, equals(ta));
-    
+
     // todo: find an easy way to convert List<int> to Uint8List
     // OR should all these methods take a List<int> instead??
     //var f2 = ASN1Boolean.fromBytes(fa);

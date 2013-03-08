@@ -10,7 +10,7 @@ class ASN1Length {
   int length;
   int valueStartPosition;
   ASN1Length(this.length,this.valueStartPosition);
-  
+
 
   /**
    * Encode a BER length - into 1 to 5 bytes as appropriate
@@ -19,11 +19,11 @@ class ASN1Length {
    * contains 0x80 + the number of following bytes used to represent the length
    * The length is encoded by the *fewest* number of bytes possible - treated
    * as an unsigned binary value.
-   * 
-   * This is a static method that has no side effect on an object. The 
+   *
+   * This is a static method that has no side effect on an object. The
    * returned bytes can be copied into an encoded represenation of an object.
    */
-  
+
   static Uint8List encodeLength(int length) {
    Uint8List e;
     if( length <= 127 ) {
@@ -36,10 +36,10 @@ class ASN1Length {
       var y = new Uint8List.view(x.asByteArray(0, 1));
       // skip null bytes
       int num = 3;
-      while( y[num]  == 0) 
+      while( y[num]  == 0)
         --num;
       e = new Uint8List(num+2);
-      e[0] = 0x80 + num+1;    
+      e[0] = 0x80 + num+1;
       for(int i=1; i < e.length; ++i)
         e[i] = y[num--];
     }
@@ -48,12 +48,12 @@ class ASN1Length {
 
 
   /**
-   * Decode the length from the encoded bytes representing this object. 
+   * Decode the length from the encoded bytes representing this object.
    * This method has no side effect on an object
-   * Returns the Pair (length,valueStartPosition). 
+   * Returns the Pair (length,valueStartPosition).
    * The first byte is the tag
    * THe length starts at the second byte.
-   * 
+   *
    */
   static ASN1Length decodeLength(Uint8List encodedBytes) {
     int valueStartPosition = 2; //default
@@ -70,8 +70,8 @@ class ASN1Length {
       }
     }
 /*
- * 
- *  we cant do this check here!! the parser might not pass the entire object - because it does not 
+ *
+ *  we cant do this check here!! the parser might not pass the entire object - because it does not
  *  yet know hte length
     if ((encodedBytes.length - valueStartPosition) != length)
     {
@@ -81,6 +81,6 @@ class ASN1Length {
     return new ASN1Length(length,valueStartPosition);
   }
 
-  
-  
+
+
 }

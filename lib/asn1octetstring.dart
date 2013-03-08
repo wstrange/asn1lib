@@ -12,24 +12,24 @@ class ASN1OctetString extends ASN1Object {
   ASN1OctetString.withTag(int tag,this.stringValue) {
     _tag = tag;
   }
-  
-  
+
+
   ASN1OctetString.fromBytes(Uint8List bytes) {
     _encodedBytes = bytes;
     _initFromBytes();
-   
+
     stringValue = decodeOctetString( valueBytes() );
   }
-  
+
 
   encode() {
-    var valBytes = stringValue.charCodes;
+    var valBytes = stringValue.codeUnits;
     valueByteLength  = valBytes.length;
     super.encode();
     this.encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
   }
 
- 
+
 
   static String decodeOctetString(Uint8List bytes) => new String.fromCharCodes(bytes);
 

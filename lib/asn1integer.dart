@@ -18,9 +18,9 @@ class ASN1Integer extends ASN1Object {
   encode() {
     _tag = INTEGER_TYPE; // integer tag
     var t = encodeIntValue(this.intValue);
-    
+
     valueByteLength  = t.length;
-    super.encode(); 
+    super.encode();
     this.encodedBytes.setRange(valueStartPosition, valueByteLength, t);
   }
 
@@ -88,15 +88,15 @@ class ASN1Integer extends ASN1Object {
    * Given an ASN1 encoded integer return the
    * integer value of the byte stream.
    * Uses the same tricks as [encodeIntValue]
-   * 
-   * The optional offset argument is where the encoded integer starts in the 
+   *
+   * The optional offset argument is where the encoded integer starts in the
    * byte array. TODO: Do we need the offset feature??
-   * 
-   * Note that the byte array length is expected to be exact (no extra padding 
+   *
+   * Note that the byte array length is expected to be exact (no extra padding
    * on the end of the array).
    */
 
-  static int decodeInteger(Uint8List bytes, [int offset =0]) {
+  static int decodeInteger(Uint8List bytes, {int offset: 0}) {
     var pad = (bytes[offset] & 0x80) == 0 ? 0 : 0xFF;
     var t = new Int64List(1);
     // create an 8 byte "view" into the above 64 bit integer

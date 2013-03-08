@@ -2,4 +2,4 @@ name:  asn1lib
 description:  An ASN1 parser library for Dart. This encodes AS1 Objects to BER and decodes BER bytes to ASN1
 
 dependencies:
-  unittest: { sdk: unittest }
+  unittest: any
