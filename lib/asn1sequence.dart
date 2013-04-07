@@ -21,7 +21,7 @@ class ASN1Sequence extends ASN1Object {
     _encodedBytes = b;
     // todo. Should we encode now, or be lazy?
     super._initFromBytes();
-    //print("ASN1Sequence valbytes=${hex(valueBytes())}");
+    print("ASN1Sequence valbytes=${hex(valueBytes())}");
     decodeSeq();
   }
 
@@ -73,10 +73,10 @@ class ASN1Sequence extends ASN1Object {
   String toString() {
    var b = new StringBuffer("Seq[");
    elements.forEach( (e) {
-     b.add(e.toString());
-     b.add(" ");
+     b.write(e.toString());
+     b.write(" ");
    });
-   b.add("]");
+   b.write("]");
    return b.toString();
   }
 

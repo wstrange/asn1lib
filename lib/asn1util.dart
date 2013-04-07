@@ -9,16 +9,16 @@ String listToHexString(List<int> list) {
   list.forEach( (v) {
     if( v != null) {
       if( doComma ) {
-        b.add(", ");
+        b.write(", ");
       } else {
         doComma = true;
       }
       //b.add("0x");
-      b.add((v <= 0xf ? "0" : ""));
-      b.add( v.toRadixString(16));
+      b.write((v <= 0xf ? "0" : ""));
+      b.write( v.toRadixString(16));
     }
   });
-  b.add("]");
+  b.write("]");
   return b.toString();
 }
 
@@ -37,15 +37,15 @@ class ASN1Util {
     bool doComma = false;
     list.forEach( (v) {
       if( doComma ) {
-        b.add(", ");
+        b.write(", ");
       } else {
         doComma = true;
       }
-      b.add("0x")..
-        add( v.toRadixString(16));
+      b.write("0x")..
+        write( v.toRadixString(16));
 
     });
-    b.add("]");
+    b.write("]");
     return b.toString();
   }
 

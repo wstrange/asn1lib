@@ -47,7 +47,8 @@ class ASN1Integer extends ASN1Object {
    var t = new Int64List(1);
    t[0] = intValue;
    // x is a byte view into the long representation
-   var x = new Uint8List.view(t.asByteArray(0,1));
+   //var x = new Uint8List.view(t.asByteArray(0,1));
+   var x = new Uint8List.view(t.buffer);
 
    // now we have an array of 8 bytes in little endian order
    // we need to return the smallest representation
@@ -100,7 +101,8 @@ class ASN1Integer extends ASN1Object {
     var pad = (bytes[offset] & 0x80) == 0 ? 0 : 0xFF;
     var t = new Int64List(1);
     // create an 8 byte "view" into the above 64 bit integer
-    var x = new Uint8List.view(t.asByteArray(0, 1));
+
+    var x = new Uint8List.view(t.buffer);
 
 
     int j = 0;

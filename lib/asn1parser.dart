@@ -3,13 +3,13 @@ part of asn1lib;
 
 class ASN1Parser {
 
+  // stream of bytes to parse. This might be a view into a longer stream
   Uint8List _bytes;
 
   ASN1Parser(this._bytes);
 
   // current position in the byte array
   int _position = 0;
-  //int _currentTagPosition = 0;
 
   bool hasNext() { return  _position < _bytes.length; }
 
@@ -26,7 +26,8 @@ class ASN1Parser {
 
     int l =  _bytes.length - _position;
 
-    var subBytes = new Uint8List.view(_bytes.asByteArray(), _position,l );
+    var subBytes = new Uint8List.view(_bytes.buffer, _position + _bytes.offsetInBytes, l);
+    //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
     ASN1Object obj = null;
     if( isPrimitive )

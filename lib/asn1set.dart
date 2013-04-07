@@ -74,10 +74,10 @@ class ASN1Set extends ASN1Object {
   String toString() {
    var b = new StringBuffer("Set[");
    elements.forEach( (e) {
-     b.add(e.toString());
-     b.add(" ");
+     b.write(e.toString());
+     b.write(" ");
    });
-   b.add("]");
+   b.write("]");
    return b.toString();
   }
 

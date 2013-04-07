@@ -124,7 +124,8 @@ class ASN1Object {
    * This returns a view into the total bytes
    */
   Uint8List valueBytes() {
-    return new Uint8List.view( encodedBytes.asByteArray(valueStartPosition, valueByteLength));
+    return new Uint8List.view( _encodedBytes.buffer,
+        valueStartPosition + _encodedBytes.offsetInBytes, valueByteLength);
   }
 
   toHexString() => ASN1Util.listToString(encodedBytes);

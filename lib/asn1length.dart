@@ -33,7 +33,7 @@ class ASN1Length {
     else {
       var x = new Uint32List(1);
       x[0] = length;
-      var y = new Uint8List.view(x.asByteArray(0, 1));
+      var y = new Uint8List.view(x.buffer);
       // skip null bytes
       int num = 3;
       while( y[num]  == 0)

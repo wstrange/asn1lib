@@ -5,7 +5,7 @@ library asn1test;
 import 'package:unittest/unittest.dart';
 import 'package:asn1lib/asn1lib.dart';
 
-import 'dart:scalarlist';
+import 'dart:typeddata';
 import 'dart:math';
 
 main() {
@@ -68,8 +68,6 @@ main() {
 
     var os2 = new ASN1OctetString.fromBytes(os.encodedBytes);
 
-
-
     expect( s, equals(os2.stringValue));
 
   });
@@ -87,7 +85,7 @@ main() {
     var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);
     var t1 = seq2.elements[0] as ASN1OctetString;
     var t2 = seq2.elements[1] as ASN1OctetString;
-    //print( "${seq2}");
+
 
     expect( t1.stringValue, equals("Hello"));
     expect( t2.stringValue, equals("World"));
@@ -95,11 +93,8 @@ main() {
   });
 
   test('Null Test', () {
-
     var t = new ASN1Null();
-
     expect(t.encodedBytes, equals([0x05,0x00]));
-
   });
 
   test("Boolean ", () {
