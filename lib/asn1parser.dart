@@ -54,7 +54,6 @@ class ASN1Parser {
   ASN1Object _doPrimitive(int tag,Uint8List b) {
     //print("Primitive tag=${hex(tag)}");
     switch(tag ) {
-
       case SEQUENCE_TYPE: // sequence
         return new ASN1Sequence.fromBytes(b);
 
@@ -67,7 +66,6 @@ class ASN1Parser {
 
       case SET_TYPE:
         return new ASN1Set.fromBytes(b);
-
 
       case BOOLEAN_TYPE:  // boolean
         return new ASN1Boolean.fromBytes(b);

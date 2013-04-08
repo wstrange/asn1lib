@@ -92,6 +92,14 @@ main() {
 
   });
 
+  test('Create sequence test2',(){
+    // create sequence with a known tag
+    // 96 - LDAP BIND request
+    var s = new ASN1Sequence(96);
+    expect(s.tag, equals(96));
+
+  });
+
   test('Null Test', () {
     var t = new ASN1Null();
     expect(t.encodedBytes, equals([0x05,0x00]));

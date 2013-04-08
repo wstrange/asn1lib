@@ -25,7 +25,7 @@ class ASN1Sequence extends ASN1Object {
     decodeSeq();
   }
 
-  ASN1Sequence({int intTag: SEQUENCE_TYPE}) {
+  ASN1Sequence([int intTag = SEQUENCE_TYPE]) {
     _tag = intTag;
   }
 
