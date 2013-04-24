@@ -64,11 +64,9 @@ main() {
     var s = "Hello";
 
     var os = new ASN1OctetString(s);
-    os.encode();
-
     var os2 = new ASN1OctetString.fromBytes(os.encodedBytes);
 
-    expect( s, equals(os2.stringValue));
+    expect( os2.stringValue, equals(s));
 
   });
 
@@ -80,7 +78,7 @@ main() {
     s.add(s1);
     s.add(s2);
     s.encode();
-    print("Encoded Seq ${s.encodedBytes}");
+    //print("Encoded Seq ${s.encodedBytes}");
 
     var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);
     var t1 = seq2.elements[0] as ASN1OctetString;
@@ -93,11 +91,10 @@ main() {
   });
 
   test('Create sequence test2',(){
-    // create sequence with a known tag
-    // 96 - LDAP BIND request
-    var s = new ASN1Sequence(96);
+    // create a sequence with a non default tag
+    // Example - 96 - LDAP BIND request
+    var s = new ASN1Sequence(tag:96);
     expect(s.tag, equals(96));
-
   });
 
   test('Null Test', () {
@@ -114,12 +111,6 @@ main() {
 
     expect(f.encodedBytes, equals(fa));
     expect(t.encodedBytes, equals(ta));
-
-    // todo: find an easy way to convert List<int> to Uint8List
-    // OR should all these methods take a List<int> instead??
-    //var f2 = ASN1Boolean.fromBytes(fa);
-    //expect(f2.booleanValue, equals(false));
-
   });
 
 }

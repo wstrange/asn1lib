@@ -42,7 +42,7 @@ class ASN1Set extends ASN1Object {
    var i = valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;
-     encodedBytes.setRange(i, b.length, b);
+     encodedBytes.setRange(i, i + b.length, b);
      i += b.length;
    });
   }

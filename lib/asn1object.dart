@@ -103,8 +103,12 @@ class ASN1Object {
   int valueStartPosition = 2;
 
   /**
-   * This will encode the tag and the length bytes - which is all we can do right now
-   * Subclasses may call super on this method - but they MUST set valueByteLength before
+   *
+   * Encode the object to its BER byte value. The encoded bytes are available
+   * in [encodedBytes]
+   *
+   * This will encode the tag and the length bytes only - which is all we can do right now
+   * Subclasses may call super() on this method - but they MUST set valueByteLength before
    * calling this. We use that to know how big to make the encoded object array. Subclasses are
    * responsible for encoding their value representations.
    */
@@ -113,7 +117,7 @@ class ASN1Object {
       Uint8List lenEnc= ASN1Length.encodeLength(valueByteLength);
       _encodedBytes = new Uint8List( 1 + lenEnc.length + valueByteLength);
       _encodedBytes[0] = tag;
-      _encodedBytes.setRange(1,lenEnc.length , lenEnc, 0);
+      _encodedBytes.setRange(1, 1 + lenEnc.length , lenEnc, 0);
       valueStartPosition = 1 + lenEnc.length;
     }
     return _encodedBytes;
@@ -126,6 +130,14 @@ class ASN1Object {
   Uint8List valueBytes() {
     return new Uint8List.view( _encodedBytes.buffer,
         valueStartPosition + _encodedBytes.offsetInBytes, valueByteLength);
+  }
+
+  //abstract List<int> _getValueBytes();
+
+  // Subclasses can call this to set the value byte encoding
+  void _setValueBytes(List<int> valBytes) {
+    this.encodedBytes.setRange(valueStartPosition,
+        valueStartPosition + valBytes.length, valBytes);
   }
 
   toHexString() => ASN1Util.listToString(encodedBytes);

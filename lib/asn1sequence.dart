@@ -21,12 +21,13 @@ class ASN1Sequence extends ASN1Object {
     _encodedBytes = b;
     // todo. Should we encode now, or be lazy?
     super._initFromBytes();
-    print("ASN1Sequence valbytes=${hex(valueBytes())}");
+    //print("ASN1Sequence valbytes=${hex(valueBytes())}");
     decodeSeq();
   }
 
-  ASN1Sequence([int intTag = SEQUENCE_TYPE]) {
-    _tag = intTag;
+  /// Create a new empty ASN1 Sequence. Optionally override the tag
+  ASN1Sequence({int tag:SEQUENCE_TYPE}) {
+    _tag = tag;
   }
 
   add(ASN1Object o) {
@@ -40,7 +41,7 @@ class ASN1Sequence extends ASN1Object {
    var i = valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;
-     encodedBytes.setRange(i, b.length, b);
+     encodedBytes.setRange(i, i+ b.length, b);
      i += b.length;
    });
   }

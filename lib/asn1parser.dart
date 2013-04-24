@@ -1,6 +1,7 @@
 part of asn1lib;
 
 
+/// Parses ASN1 BER Encoded bytes to create ASN1 Objects
 class ASN1Parser {
 
   // stream of bytes to parse. This might be a view into a longer stream

@@ -21,7 +21,8 @@ class ASN1Integer extends ASN1Object {
 
     valueByteLength  = t.length;
     super.encode();
-    this.encodedBytes.setRange(valueStartPosition, valueByteLength, t);
+    this.encodedBytes.setRange(valueStartPosition,
+        valueStartPosition + valueByteLength, t);
   }
 
 
