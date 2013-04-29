@@ -5,7 +5,7 @@ library asn1test;
 import 'package:unittest/unittest.dart';
 import 'package:asn1lib/asn1lib.dart';
 
-import 'dart:typeddata';
+import 'dart:typed_data';
 import 'dart:math';
 
 main() {
@@ -62,12 +62,9 @@ main() {
 
   test('Octet String encoding', () {
     var s = "Hello";
-
     var os = new ASN1OctetString(s);
     var os2 = new ASN1OctetString.fromBytes(os.encodedBytes);
-
     expect( os2.stringValue, equals(s));
-
   });
 
 
@@ -77,7 +74,7 @@ main() {
     var s = new ASN1Sequence();
     s.add(s1);
     s.add(s2);
-    s.encode();
+    //s.encode();
     //print("Encoded Seq ${s.encodedBytes}");
 
     var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);

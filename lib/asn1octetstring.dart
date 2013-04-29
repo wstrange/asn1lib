@@ -9,9 +9,8 @@ class ASN1OctetString extends ASN1Object {
 
   /// Create an [ASN1OctetString] initialized with String value.
   /// optionally override the tag
-  ASN1OctetString(this.stringValue, {int tag: OCTET_STRING_TYPE}) {
-    _tag = tag;
-    encode();
+  ASN1OctetString(this.stringValue, {int tag: OCTET_STRING_TYPE}):super(tag:tag) {
+    encodeHeader();
   }
 
   /// Create an [ASN1OctetString] from an encoded list of bytes
@@ -22,10 +21,10 @@ class ASN1OctetString extends ASN1Object {
   }
 
 
-  encode() {
+  encodeHeader() {
     var valBytes = stringValue.codeUnits;
     valueByteLength  = valBytes.length;
-    super.encode();
+    super.encodeHeader();
     this.encodedBytes.setRange(valueStartPosition,
         valueStartPosition + valBytes.length, valBytes);
   }

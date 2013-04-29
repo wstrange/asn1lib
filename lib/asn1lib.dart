@@ -1,6 +1,6 @@
 library asn1lib;
 
-import 'dart:typeddata';
+import 'dart:typed_data';
 import 'dart:math';
 
 

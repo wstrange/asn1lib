@@ -27,8 +27,8 @@ class ASN1Set extends ASN1Object {
     _decodeSet();
   }
 
-  ASN1Set({int intTag: SET_TYPE}) {
-    _tag = intTag;
+  ASN1Set({int tag: SET_TYPE}):super(tag) {
+
   }
 
   add(ASN1Object o) {
@@ -36,9 +36,9 @@ class ASN1Set extends ASN1Object {
   }
 
 
-  encode() {
+  encodeHeader() {
    valueByteLength = childLength();
-   super.encode();
+   super.encodeHeader();
    var i = valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;

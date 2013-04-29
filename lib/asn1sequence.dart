@@ -7,12 +7,11 @@ class ASN1Sequence extends ASN1Object {
 
 
   /**
-   * Create a sequence fromt the bytes
-   * Note that bytes could be longer than the actual sequence - in which case
-   * we would ignore any remaining bytes
+   * Create a sequence fromt the byte array [b]
+   * Note that bytes array b could be longer than the actual encoded sequence - in which case
+   * we ignore any remaining bytes
    */
   ASN1Sequence.fromBytes(Uint8List b) {
-    //this.tag = SEQUENCE_TYPE;
     this.tag = b[0];
     // todo; Check if b[0] is a valid sequence type???
     if( (tag & 0x30) == 0 )
@@ -26,8 +25,7 @@ class ASN1Sequence extends ASN1Object {
   }
 
   /// Create a new empty ASN1 Sequence. Optionally override the tag
-  ASN1Sequence({int tag:SEQUENCE_TYPE}) {
-    _tag = tag;
+  ASN1Sequence({int tag:SEQUENCE_TYPE}):super(tag:tag){
   }
 
   add(ASN1Object o) {
@@ -35,9 +33,9 @@ class ASN1Sequence extends ASN1Object {
   }
 
 
-  encode() {
+  encodeHeader() {
    valueByteLength = childLength();
-   super.encode();
+   super.encodeHeader();
    var i = valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;

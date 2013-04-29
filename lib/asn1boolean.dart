@@ -13,7 +13,7 @@ class ASN1Boolean  extends ASN1Object {
   bool get booleanValue => _boolValue;
 
   ASN1Boolean(this._boolValue) {
-    encode();
+    encodeHeader();
   }
 
 
@@ -24,7 +24,7 @@ class ASN1Boolean  extends ASN1Object {
     _boolValue = (b == BOOLEAN_TRUE_VALUE);
   }
 
-  encode() {
+  encodeHeader() {
     _encodedBytes = new Uint8List(3);
     _encodedBytes[0] = BOOLEAN_TYPE;
     _encodedBytes[1] = 0x01;

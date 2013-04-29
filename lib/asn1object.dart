@@ -5,17 +5,21 @@ part of asn1lib;
  * Holds the encoded  and decoded representation of an ASN1 object
  * Object are allocated in two ways:
  *
- *  A value can be supplied representing the ASN1 Type for the object (Integer, String, etc.). The object can then be encoded
- *  to its BER byte stream representation by calling [encode]
+ *  A value can be supplied representing the ASN1 Type for the object (Integer, String, etc.).
+ *  The encoded bytes can be read by calling [encodedBytes].
  *
- *  Conversely, the object can be initialized from an incoming BER byte array. This byte stream can then be decoded to its correspoding
+ *  Conversely, the object can be initialized from an incoming BER byte array
+ *  Using  [new ASN1Object.fromBytes()]. This byte stream can then be decoded to its correspoding
  *  ASN1 type.
  *
  *
  */
 class ASN1Object {
+  /** The BER tag representing this object */
+  int tag;
 
-  /**
+
+  /*
    *  The ASN1 encoded bytes.
    *  If we are decoding a byte stream sent by another process (LDAP, for example), the
    *  decoder will parse the incoming bytes and set this array.
@@ -25,38 +29,39 @@ class ASN1Object {
    *
    */
   Uint8List _encodedBytes;
-  Uint8List get encodedBytes => _encodedBytes;
+
+  /// Get the encoded byte representation for this object. This can trigger
+  /// calling the [encode] method if the object has not yet been encoded
+  Uint8List get encodedBytes {
+    if( _encodedBytes == null)
+      encodeHeader();
+    return _encodedBytes;
+  }
   /**
-   * The setter is needed rarely - usually when dealing with CHOICE encoding
-   * where the encoded object is supplied.
+   * The setter is rarely needed- usually when dealing with CHOICE encoding
+   * where the encoded object is supplied for us.
    *
    * todo: refactor this. Should probably create a CHOICE object
    */
   set encodedBytes(Uint8List b) => _encodedBytes = b;
 
 
-  /**
-   * The total length of this object in bytes.
-   * We need this if we are parsing a stream of bytes to know when the
-   * next object starts in the stream.
-   *
-   */
-  int get totalEncodedByteLength => valueStartPosition + valueByteLength;
 
-  ASN1Object() {
+  // Create an ASN1Object. Optionally set the tag
+  ASN1Object({int tag:0}) {
+    this.tag = tag;
   }
 
   /**
-   * Create an object that encapsulates a set of value bytes
+   * Create an object that encapsulates a set of value bytes that are already
+   * encoded.
    * This is used in LDAP (for example) to encode a CHOICE type
    * The supplied valBytes is the encoded value of the choice element
    *
-   * todo: refactor this - its ugly
-   *
    */
-  ASN1Object.fromTag(this._tag,Uint8List valBytes) {
+  ASN1Object.preEncoded(this.tag,Uint8List valBytes) {
     valueByteLength = valBytes.length;
-    encode();
+    encodeHeader();
     _encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
   }
 
@@ -79,40 +84,48 @@ class ASN1Object {
    * Determines the length and where the value bytes start
    */
   _initFromBytes() {
-    _tag = _encodedBytes[0];
+    tag = _encodedBytes[0];
     ASN1Length l = ASN1Length.decodeLength(_encodedBytes);
     valueByteLength = l.length;
     valueStartPosition = l.valueStartPosition;
   }
 
-  /** The BER tag representing this object */
-  int _tag;
+  /**
+   * The total length of this object in bytes - including its value
+   * bytes and the encoded tag and length bytes.
+   *
+   * We need this if we are parsing a stream of bytes to know when the
+   * next object starts in the stream.
+   *
+   */
+  int get totalEncodedByteLength => valueStartPosition + valueByteLength;
 
-  int get tag => _tag;
-  set tag(int v) => _tag = v;
+
 
   /**
-   * Length of the encoded value in bytes. This does not include
-   * the tag or the size of length field.
+   * Length of the encoded value bytes. This does not include the length of
+   * the tag or length fields. See [totalEncodedByteLength].
    */
   int valueByteLength;
+
   /**
    * The index where the value bytes start. This is the position after the tag + length bytes.
-   * defaults to 2 - but encoding may change this value.
+   * defaults to 2 - but encoding may change this value if more bytes are needed
+   * to encode the length field.
    */
   int valueStartPosition = 2;
 
   /**
    *
-   * Encode the object to its BER byte value. The encoded bytes are available
+   * Encode the objects tag and length fields to BER. The encoded bytes are available
    * in [encodedBytes]
    *
-   * This will encode the tag and the length bytes only - which is all we can do right now
-   * Subclasses may call super() on this method - but they MUST set valueByteLength before
-   * calling this. We use that to know how big to make the encoded object array. Subclasses are
-   * responsible for encoding their value representations.
+   * This will encode *only* the tag and the length bytes- which is all we can do right now
+   * Subclasses may call this method - but they MUST set [valueByteLength] before
+   * calling this. We need this know how big to make the encoded object array. Subclasses are
+   * responsible for encoding their value representations using [encode]
    */
-  Uint8List encode() {
+  Uint8List encodeHeader() {
     if( _encodedBytes == null ) {
       Uint8List lenEnc= ASN1Length.encodeLength(valueByteLength);
       _encodedBytes = new Uint8List( 1 + lenEnc.length + valueByteLength);
@@ -123,18 +136,24 @@ class ASN1Object {
     return _encodedBytes;
   }
 
+  /// Trigger encoding of the object. After calling this the
+  /// encoded bytes will be availabled in [encodedBytes]
+  /// subclasses should override this.
+  /// Most of the time you will not have to call encode(). todo. make private?
+  Uint8List encode() => encodeHeader();
+
   /**
    * Return just the value bytes.
-   * This returns a view into the total bytes
+   * This returns a view into the byte buffer
    */
   Uint8List valueBytes() {
     return new Uint8List.view( _encodedBytes.buffer,
         valueStartPosition + _encodedBytes.offsetInBytes, valueByteLength);
   }
 
-  //abstract List<int> _getValueBytes();
 
-  // Subclasses can call this to set the value byte encoding
+
+  // Subclasses can call this to set the value bytes
   void _setValueBytes(List<int> valBytes) {
     this.encodedBytes.setRange(valueStartPosition,
         valueStartPosition + valBytes.length, valBytes);
