@@ -34,7 +34,7 @@ class ASN1Object {
   /// calling the [encode] method if the object has not yet been encoded
   Uint8List get encodedBytes {
     if( _encodedBytes == null)
-      encodeHeader();
+      encode();
     return _encodedBytes;
   }
   /**
@@ -43,7 +43,7 @@ class ASN1Object {
    *
    * todo: refactor this. Should probably create a CHOICE object
    */
-  set encodedBytes(Uint8List b) => _encodedBytes = b;
+  //set encodedBytes(Uint8List b) => _encodedBytes = b;
 
 
 
@@ -61,7 +61,7 @@ class ASN1Object {
    */
   ASN1Object.preEncoded(this.tag,Uint8List valBytes) {
     valueByteLength = valBytes.length;
-    encodeHeader();
+    _encodeHeader();
     _encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
   }
 
@@ -125,7 +125,7 @@ class ASN1Object {
    * calling this. We need this know how big to make the encoded object array. Subclasses are
    * responsible for encoding their value representations using [encode]
    */
-  Uint8List encodeHeader() {
+  Uint8List _encodeHeader() {
     if( _encodedBytes == null ) {
       Uint8List lenEnc= ASN1Length.encodeLength(valueByteLength);
       _encodedBytes = new Uint8List( 1 + lenEnc.length + valueByteLength);
@@ -140,7 +140,7 @@ class ASN1Object {
   /// encoded bytes will be availabled in [encodedBytes]
   /// subclasses should override this.
   /// Most of the time you will not have to call encode(). todo. make private?
-  Uint8List encode() => encodeHeader();
+  Uint8List encode() => _encodeHeader();
 
   /**
    * Return just the value bytes.

@@ -7,6 +7,7 @@ class ASN1Parser {
   // stream of bytes to parse. This might be a view into a longer stream
   Uint8List _bytes;
 
+  /// Create a new parser for the stream of [_bytes]
   ASN1Parser(this._bytes);
 
   // current position in the byte array
@@ -15,7 +16,7 @@ class ASN1Parser {
   bool hasNext() { return  _position < _bytes.length; }
 
   ASN1Object nextObject() {
-    int tag = _bytes[_position];
+    int tag = _bytes[_position]; // get curren tag in stream
 
 
     //print("parser tag = ${hex(tag)} bytes=${hex(_bytes)}");
@@ -27,10 +28,12 @@ class ASN1Parser {
 
     int l =  _bytes.length - _position;
 
+    // create a view into the larger stream that includes the remaining un-parsed bytes
     var subBytes = new Uint8List.view(_bytes.buffer, _position + _bytes.offsetInBytes, l);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
     ASN1Object obj = null;
+
     if( isPrimitive )
       obj =  _doPrimitive(tag,subBytes);
     else
@@ -39,7 +42,7 @@ class ASN1Parser {
       if( (tag & SEQUENCE_TYPE) != 0)
         obj = new ASN1Sequence.fromBytes(subBytes);
       else
-        throw "Not done yet!!!";
+        throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
     else {
        print("Other type...");
@@ -72,7 +75,7 @@ class ASN1Parser {
         return new ASN1Boolean.fromBytes(b);
 
       default:
-        throw "not done";
+        throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
   }
 }

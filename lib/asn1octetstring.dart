@@ -10,7 +10,7 @@ class ASN1OctetString extends ASN1Object {
   /// Create an [ASN1OctetString] initialized with String value.
   /// optionally override the tag
   ASN1OctetString(this.stringValue, {int tag: OCTET_STRING_TYPE}):super(tag:tag) {
-    encodeHeader();
+
   }
 
   /// Create an [ASN1OctetString] from an encoded list of bytes
@@ -21,12 +21,14 @@ class ASN1OctetString extends ASN1Object {
   }
 
 
-  encodeHeader() {
+  Uint8List encode() {
     var valBytes = stringValue.codeUnits;
     valueByteLength  = valBytes.length;
-    super.encodeHeader();
-    this.encodedBytes.setRange(valueStartPosition,
-        valueStartPosition + valBytes.length, valBytes);
+    _encodeHeader();
+    _setValueBytes(valBytes);
+    //this.encodedBytes.setRange(valueStartPosition,
+      //  valueStartPosition + valBytes.length, valBytes);
+    return _encodedBytes;
   }
 
 

@@ -7,9 +7,18 @@ part of asn1lib;
  */
 
 class ASN1Length {
-  int length;
-  int valueStartPosition;
-  ASN1Length(this.length,this.valueStartPosition);
+
+  int _length;
+  /// the decoded length
+  int get length => _length;
+
+  int _valueStartPosition;
+  /// The decoded value start position. This is the offset in the
+  /// BER encoded array where the value bytes start
+  int get valueStartPosition => _valueStartPosition;
+
+
+  ASN1Length(this._length,this._valueStartPosition);
 
 
   /**
@@ -50,7 +59,7 @@ class ASN1Length {
   /**
    * Decode the length from the encoded bytes representing this object.
    * This method has no side effect on an object
-   * Returns the Pair (length,valueStartPosition).
+   * Returns the ASN1Length  (length,valueStartPosition).
    * The first byte is the tag
    * THe length starts at the second byte.
    *
@@ -69,11 +78,11 @@ class ASN1Length {
         length |= (encodedBytes[valueStartPosition++] & 0xFF);
       }
     }
-/*
- *
- *  we cant do this check here!! the parser might not pass the entire object - because it does not
- *  yet know hte length
-    if ((encodedBytes.length - valueStartPosition) != length)
+  /*
+   *
+   *  we cant do this check here!! the parser might not pass the entire object - because it does not
+   *  yet know the length
+      if ((encodedBytes.length - valueStartPosition) != length)
     {
       throw new ASN1Exception("Length Encoding Error");
     }

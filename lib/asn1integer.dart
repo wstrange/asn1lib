@@ -5,8 +5,8 @@ class ASN1Integer extends ASN1Object {
 
   int intValue;
 
-  ASN1Integer(this.intValue) {
-    this.encodeHeader();
+  ASN1Integer(this.intValue):super(tag:INTEGER_TYPE) {
+
   }
 
   ASN1Integer.fromBytes(Uint8List bytes) {
@@ -15,14 +15,13 @@ class ASN1Integer extends ASN1Object {
     intValue = decodeInteger(this.valueBytes());
   }
 
-  encodeHeader() {
-    tag = INTEGER_TYPE; // integer tag
+  Uint8List encode() {
     var t = encodeIntValue(this.intValue);
 
     valueByteLength  = t.length;
-    super.encodeHeader();
-    this.encodedBytes.setRange(valueStartPosition,
-        valueStartPosition + valueByteLength, t);
+    super._encodeHeader();
+    _setValueBytes(t);
+    return _encodedBytes;
   }
 
 

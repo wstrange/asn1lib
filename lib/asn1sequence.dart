@@ -1,6 +1,9 @@
 
 part of asn1lib;
 
+/// Represents a ASN1 BER encoded sequence
+/// A sequence is a container for other ASN1 objects
+/// Objects are serialized sequentially to the stream
 class ASN1Sequence extends ASN1Object {
 
   List<ASN1Object> elements = new List();
@@ -18,43 +21,46 @@ class ASN1Sequence extends ASN1Object {
       throw new ASN1Exception("The tag ${tag} does not look like a sequence type");
 
     _encodedBytes = b;
-    // todo. Should we encode now, or be lazy?
     super._initFromBytes();
     //print("ASN1Sequence valbytes=${hex(valueBytes())}");
-    decodeSeq();
+    _decodeSeq();
   }
 
-  /// Create a new empty ASN1 Sequence. Optionally override the tag
+  /// Create a new empty ASN1 Sequence. Optionally override the default tag
   ASN1Sequence({int tag:SEQUENCE_TYPE}):super(tag:tag){
   }
 
+  /// Add an [ASN1Object] to the sequence. Objects will be
+  // serialized to BER in the order they were added
   add(ASN1Object o) {
     elements.add(o);
   }
 
 
-  encodeHeader() {
-   valueByteLength = childLength();
-   super.encodeHeader();
+
+  Uint8List encode() {
+   valueByteLength = _childLength();
+   super._encodeHeader();
    var i = valueStartPosition;
+   // encode each element
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;
      encodedBytes.setRange(i, i+ b.length, b);
      i += b.length;
    });
+   return _encodedBytes;
   }
 
-  int childLength() {
+  // Calculate encoded length of all children
+  int _childLength() {
     int l = 0;
     elements.forEach( (obj) {
-      obj.encode();
-      l += obj.encodedBytes.length;
+      l += obj.encode().length;
     });
     return l;
   }
 
-  decodeSeq() {
-
+  _decodeSeq() {
     /*
       var l = ASN1Length.decodeLength(encodedBytes);
       this.valueStartPosition = l.valueStartPosition;
@@ -62,7 +68,6 @@ class ASN1Sequence extends ASN1Object {
       // now we know our value - but we need to scan for further embedded elements...
        */
       var parser = new ASN1Parser(valueBytes());
-
 
       while( parser.hasNext() ) {
         elements.add(parser.nextObject());

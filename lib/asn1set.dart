@@ -31,20 +31,23 @@ class ASN1Set extends ASN1Object {
 
   }
 
+  /// Add an element to the set
   add(ASN1Object o) {
     elements.add(o);
   }
 
 
-  encodeHeader() {
+  Uint8List encode() {
+   super.encode();
    valueByteLength = childLength();
-   super.encodeHeader();
+   super._encodeHeader();
    var i = valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;
      encodedBytes.setRange(i, i + b.length, b);
      i += b.length;
    });
+   return _encodedBytes;
   }
 
   // todo: Merge with Sequence code
