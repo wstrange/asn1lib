@@ -27,8 +27,7 @@ class ASN1Sequence extends ASN1Object {
   }
 
   /// Create a new empty ASN1 Sequence. Optionally override the default tag
-  ASN1Sequence({int tag:SEQUENCE_TYPE}):super(tag:tag){
-  }
+  ASN1Sequence({int tag:SEQUENCE_TYPE}):super(tag:tag);
 
   /// Add an [ASN1Object] to the sequence. Objects will be
   // serialized to BER in the order they were added

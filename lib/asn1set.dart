@@ -27,9 +27,7 @@ class ASN1Set extends ASN1Object {
     _decodeSet();
   }
 
-  ASN1Set({int tag: SET_TYPE}):super(tag) {
-
-  }
+  ASN1Set({int tag: SET_TYPE}):super(tag:tag) ;
 
   /// Add an element to the set
   add(ASN1Object o) {
