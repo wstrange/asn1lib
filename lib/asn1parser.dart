@@ -15,16 +15,17 @@ class ASN1Parser {
 
   bool hasNext() { return  _position < _bytes.length; }
 
+  /**
+   * Return the next ASN1Object in the stream
+   */
   ASN1Object nextObject() {
     int tag = _bytes[_position]; // get curren tag in stream
-
 
     //print("parser tag = ${hex(tag)} bytes=${hex(_bytes)}");
     // ASN1 Primitives have high bits 8/7 set to 0
 
     bool isPrimitive =  (0xC0 & tag) == 0;
     bool isApplication = (0x40 & tag) != 0;
-
 
     int l =  _bytes.length - _position;
 

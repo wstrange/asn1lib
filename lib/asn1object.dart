@@ -37,14 +37,6 @@ class ASN1Object {
       encode();
     return _encodedBytes;
   }
-  /**
-   * The setter is rarely needed- usually when dealing with CHOICE encoding
-   * where the encoded object is supplied for us.
-   *
-   * todo: refactor this. Should probably create a CHOICE object
-   */
-  //set encodedBytes(Uint8List b) => _encodedBytes = b;
-
 
 
   // Create an ASN1Object. Optionally set the tag

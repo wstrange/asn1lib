@@ -49,15 +49,11 @@ main() {
     Uint8List x = ASN1Length.encodeLength(127);
     expect(x, equals([127]));
 
-
     x = ASN1Length.encodeLength(128);
     expect(x, equals([0x81, 128]));
 
-
     x = ASN1Length.encodeLength(1024);
     expect( x, equals([0x82, 0x04,0x00]));
-
-
   });
 
   test('Octet String encoding', () {
@@ -74,13 +70,10 @@ main() {
     var s = new ASN1Sequence();
     s.add(s1);
     s.add(s2);
-    //s.encode();
-    //print("Encoded Seq ${s.encodedBytes}");
 
     var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);
     var t1 = seq2.elements[0] as ASN1OctetString;
     var t2 = seq2.elements[1] as ASN1OctetString;
-
 
     expect( t1.stringValue, equals("Hello"));
     expect( t2.stringValue, equals("World"));
@@ -108,6 +101,24 @@ main() {
 
     expect(f.encodedBytes, equals(fa));
     expect(t.encodedBytes, equals(ta));
+  });
+
+  // show sample ussage
+  test("Sample for README", () {
+
+    var s = new ASN1Sequence();
+    s.add( new ASN1Integer(23));
+    s.add( new ASN1OctetString('This is a test'));
+    s.add( new ASN1Boolean(true));
+
+    // GET the BER Stream
+    var bytes = s.encodedBytes;
+
+    // decode
+    var p = new ASN1Parser(bytes);
+    var s2 = p.nextObject();
+    // s2 is a sequence...
+
   });
 
 }
