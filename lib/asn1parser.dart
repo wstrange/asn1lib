@@ -79,7 +79,7 @@ class ASN1Parser {
               return new ASN1ObjectIdentifier.fromBytes(b); 
               
       case NULL_TYPE:  // boolean
-                    return new ASN1Null();
+                    return new ASN1Null.fromBytes(b); 
         
         
 

@@ -1,7 +1,6 @@
 library asn1lib;
 
 import 'dart:typed_data';
-import 'dart:math';
 import "package:bignum/bignum.dart";
 
 
