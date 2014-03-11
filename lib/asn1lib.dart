@@ -2,6 +2,7 @@ library asn1lib;
 
 import 'dart:typed_data';
 import 'dart:math';
+import "package:bignum/bignum.dart";
 
 
 part 'asn1integer.dart';
@@ -18,3 +19,5 @@ part 'asn1constants.dart';
 part 'asn1null.dart';
 part 'asn1boolean.dart';
 part 'asn1set.dart';
+
+part 'asn1objectidentifier.dart';
