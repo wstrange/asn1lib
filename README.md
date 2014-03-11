@@ -30,3 +30,4 @@ Add ASN1ObjectIdentifier class
 Add OBJECT_IDENTIFIER in asn1constants.dart
 Modify ASN1Parser._doPrimitive to take OBJECT_IDENTIFIER and NULL_TYPE into account
 Modify ASN1Integer to support BigInteger
+Modify asn1element_test.dart to test BigInteger case
