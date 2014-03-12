@@ -74,7 +74,16 @@ class ASN1Parser {
 
       case BOOLEAN_TYPE:  // boolean
         return new ASN1Boolean.fromBytes(b);
-
+        
+      case OBJECT_IDENTIFIER:  // boolean
+              return new ASN1ObjectIdentifier.fromBytes(b); 
+              
+      case BIT_STRING_TYPE:  // boolean
+              return new ASN1BitString.fromBytes(b); 
+               
+      case NULL_TYPE:  // boolean
+                    return new ASN1Null.fromBytes(b); 
+         
       default:
         throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
