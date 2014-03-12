@@ -6,4 +6,5 @@ homepage: https://github.com/wstrange/asn1lib
 dependencies:
   bignum: any
 dev_dependencies:
+  crypto: any
   unittest: any
