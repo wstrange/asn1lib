@@ -134,6 +134,7 @@ main() {
   
   test("rsa private key", () {
     //openssl genrsa -out rsa_private_key.pem
+    //PKCS#1 format
     File rsa_private_key_file = new File("./resource/rsa_private_key.pem");
     String pem = rsa_private_key_file.readAsStringSync();
     List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
@@ -168,5 +169,38 @@ main() {
     expect((seq.elements[8] as ASN1Integer).intValue , equals(new BigInteger ([0x00,0x92,0xe8,0x95,0xc1,0xa9,0xb7,0xb7,0x05,0xfb,0x69,0x4b,0xba,0x2d,0x52,0xcb,0x99,0x01,0xd4,0x62,0x8d,0xb7,0x94,0xeb,0x43,0x86,0x1b,0x08,0x6c,0x55,0x7d,0x29,0x13])));
  
   });
+  
+  test("rsa public key", () {
+    //openssl genrsa -out rsa_private_key.pem
+    //openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+    //PKCS#8 format
+      File rsa_private_key_file = new File("./resource/rsa_public_key.pem");
+      String pem = rsa_private_key_file.readAsStringSync();
+      List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
+      String key = lines.sublist(1, lines.length-2).join("");
+      var key_bytes = new Uint8List.fromList(CryptoUtils.base64StringToBytes(key));
+      
+      var p = new ASN1Parser(key_bytes);    
+      expect(p.hasNext() , equals(true));
+      var asn1object = p.nextObject();
+      expect(asn1object is ASN1Sequence , equals(true));
+      
+      ASN1Sequence seq = asn1object;
+      expect(seq.elements[1] is ASN1BitString , equals(true));
+      ASN1BitString os = seq.elements[1]; //always ASN1BitString ?
+      expect(os.valueBytes()[0] , equals(0));//always zero ? 
+      var bytes = os.valueBytes().sublist(1); //remove unused bits count 
+      p = new ASN1Parser(bytes);
+      expect(p.hasNext() , equals(true));
+      asn1object = p.nextObject();
+      expect(asn1object is ASN1Sequence , equals(true));
+      seq = asn1object;
+      expect(seq.elements.length , equals(2));
+      
+      //modulus
+      expect((seq.elements[0] as ASN1Integer).intValue , equals(new BigInteger ([0x00,0xd8,0x3c,0x3c,0xac,0xb3,0xb7,0x67,0xa1,0x02,0x0f,0x94,0x7c,0xa2,0x01,0x20,0x10,0xba,0x49,0x4d,0x86,0xbd,0xa1,0xef,0xd4,0x37,0x35,0x7b,0x91,0xd5,0xc1,0xe6,0x1b,0x12,0x38,0x4c,0xd3,0xc0,0x1f,0x62,0x83,0x12,0xa5,0xef,0x15,0xcf,0x00,0x3f,0x62,0xc4,0xf6,0xb8,0x35,0xbb,0xb3,0xea,0x99,0x40,0x9f,0x87,0xe5,0x83,0xfa,0x69,0x91])));
+      //publicExponent
+      expect((seq.elements[1] as ASN1Integer).intValue , equals(65537));
+    });
 
 }

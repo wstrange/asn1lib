@@ -20,3 +20,4 @@ part 'asn1boolean.dart';
 part 'asn1set.dart';
 
 part 'asn1objectidentifier.dart';
+part 'asn1bitstring.dart';

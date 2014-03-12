@@ -40,3 +40,20 @@ Modify ASN1Integer to support BigInteger
 Modify asn1element_test.dart to test BigInteger case, and rsa private key test
 
 Add test/resource folder to store rsa key for testing
+
+
+Changes to support RSA public key : PEM file
+
+Add ASN1BitString class : not sure how to handle bitstring when unused bits is not zero
+
+Add BIT_STRING_TYPE in asn1constants.dart
+
+Modify ASN1Parser._doPrimitive to take BIT_STRING_TYPE into account
+
+Modify asn1element_test.dart to test rsa public key 
+
+
+
+
+
+
