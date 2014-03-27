@@ -5,7 +5,6 @@ part of asn1lib;
  * Class to encode /decode ASN1 length bytes.
  * Also used to return the pair (length, valueStartPosition)
  */
-
 class ASN1Length {
 
   int _length;
@@ -30,9 +29,8 @@ class ASN1Length {
    * as an unsigned binary value.
    *
    * This is a static method that has no side effect on an object. The
-   * returned bytes can be copied into an encoded represenation of an object.
+   * returned bytes can be copied into an encoded representation of an object.
    */
-
   static Uint8List encodeLength(int length) {
    Uint8List e;
     if( length <= 127 ) {
@@ -45,7 +43,7 @@ class ASN1Length {
       var y = new Uint8List.view(x.buffer);
       // skip null bytes
       int num = 3;
-      while( y[num]  == 0)
+      while( y[num] == 0 )
         --num;
       e = new Uint8List(num+2);
       e[0] = 0x80 + num+1;
@@ -59,7 +57,7 @@ class ASN1Length {
   /**
    * Decode the length from the encoded bytes representing this object.
    * This method has no side effect on an object
-   * Returns the ASN1Length  (length,valueStartPosition).
+   * Returns the [ASN1Length]  (length,valueStartPosition).
    * The first byte is the tag
    * THe length starts at the second byte.
    *
