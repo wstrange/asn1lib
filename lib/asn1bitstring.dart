@@ -22,8 +22,8 @@ class ASN1BitString extends ASN1Object {
     stringValue = valueBytes().sublist(1);
   }
 
-
-  Uint8List encode() {
+  @override
+  Uint8List _encode() {
     var valBytes = [unusedbits];
     valBytes.addAll(stringValue);
     valueByteLength  = valBytes.length;
@@ -38,6 +38,7 @@ class ASN1BitString extends ASN1Object {
 
   static String decodeOctetString(Uint8List bytes) => new String.fromCharCodes(bytes);
 
+  @override
   String toString() => "BitString(${stringValue})";
 
 }

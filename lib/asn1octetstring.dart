@@ -21,7 +21,8 @@ class ASN1OctetString extends ASN1Object {
   }
 
 
-  Uint8List encode() {
+  @override
+  Uint8List _encode() {
     var valBytes = stringValue.codeUnits;
     valueByteLength  = valBytes.length;
     _encodeHeader();
@@ -35,6 +36,7 @@ class ASN1OctetString extends ASN1Object {
 
   static String decodeOctetString(Uint8List bytes) => new String.fromCharCodes(bytes);
 
+  @override
   String toString() => "OctetString(${stringValue})";
 
 }

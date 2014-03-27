@@ -13,7 +13,8 @@ class ASN1Integer extends ASN1Object {
     intValue = decodeInteger(this.valueBytes());
   }
 
-  Uint8List encode() {
+  @override
+  Uint8List _encode() {
     var t = encodeIntValue(this.intValue);
     valueByteLength  = t.length;
     super._encodeHeader();
