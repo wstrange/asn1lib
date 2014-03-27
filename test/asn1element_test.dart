@@ -74,6 +74,16 @@ main() {
     expect( os2.stringValue, equals(s));
   });
 
+  test('Octet get octets', () {
+    List<int> octets = [1,2,3,4,5,123,254,0,33];
+    var os1 = new ASN1OctetString(new String.fromCharCodes(octets));
+    var os1d = new ASN1OctetString.fromBytes(os1.encodedBytes);
+    var os2 = new ASN1OctetString(octets);
+    var os2d = new ASN1OctetString.fromBytes(os2.encodedBytes);
+    expect(os1d.octets, equals(octets));
+    expect(os2d.octets, equals(octets));
+  });
+
 
   test('Sequence Test1', () {
     var s1 = new ASN1OctetString("Hello");
