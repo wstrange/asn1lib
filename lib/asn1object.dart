@@ -34,7 +34,7 @@ class ASN1Object {
   /// calling the [encode] method if the object has not yet been encoded
   Uint8List get encodedBytes {
     if( _encodedBytes == null)
-      encode();
+      _encode();
     return _encodedBytes;
   }
 
@@ -129,10 +129,10 @@ class ASN1Object {
   }
 
   /// Trigger encoding of the object. After calling this the
-  /// encoded bytes will be availabled in [encodedBytes]
+  /// encoded bytes will be available in [encodedBytes]
   /// subclasses should override this.
-  /// Most of the time you will not have to call encode(). todo. make private?
-  Uint8List encode() => _encodeHeader();
+  /// Most of the time you will not have to call encode().
+  Uint8List _encode() => _encodeHeader();
 
   /**
    * Return just the value bytes.
@@ -153,7 +153,7 @@ class ASN1Object {
 
   toHexString() => ASN1Util.listToString(encodedBytes);
 
-
+  @override
   String toString() => "ASN1Object(tag=${tag.toRadixString(16)})";
 }
 

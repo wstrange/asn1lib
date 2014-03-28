@@ -34,9 +34,9 @@ class ASN1Set extends ASN1Object {
     elements.add(o);
   }
 
-
-  Uint8List encode() {
-   super.encode();
+  @override
+  Uint8List _encode() {
+   super._encode();
    valueByteLength = childLength();
    super._encodeHeader();
    var i = valueStartPosition;
@@ -52,7 +52,7 @@ class ASN1Set extends ASN1Object {
   int childLength() {
     int l = 0;
     elements.forEach( (obj) {
-      obj.encode();
+      obj._encode();
       l += obj.encodedBytes.length;
     });
     return l;
@@ -72,6 +72,7 @@ class ASN1Set extends ASN1Object {
       }
   }
 
+  @override
   String toString() {
    var b = new StringBuffer("Set[");
    elements.forEach( (e) {

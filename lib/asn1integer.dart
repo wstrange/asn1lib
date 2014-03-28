@@ -13,7 +13,8 @@ class ASN1Integer extends ASN1Object {
     intValue = decodeInteger(this.valueBytes());
   }
 
-  Uint8List encode() {
+  @override
+  Uint8List _encode() {
     var t = encodeIntValue(this.intValue);
     valueByteLength  = t.length;
     super._encodeHeader();
@@ -100,7 +101,7 @@ class ASN1Integer extends ASN1Object {
 
   static dynamic decodeInteger(Uint8List bytes, {int offset: 0}) {
     
-    if (bytes.length > 8) return  new BigInteger(bytes);
+    if (bytes.length - offset > 8) return new BigInteger(bytes.sublist(offset));
     var pad = (bytes[offset] & 0x80) == 0 ? 0 : 0xFF;
     var t = new Int64List(1);
     // create an 8 byte "view" into the above 64 bit integer

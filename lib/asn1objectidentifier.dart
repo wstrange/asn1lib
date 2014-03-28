@@ -11,8 +11,9 @@ class ASN1ObjectIdentifier  extends ASN1Object  {
       _encodedBytes = bytes;
       _initFromBytes();
   }
-  
-  Uint8List encode() {
+
+  @override
+  Uint8List _encode() {
       valueByteLength  = oi.length;
       super._encodeHeader();
       _setValueBytes(oi);
