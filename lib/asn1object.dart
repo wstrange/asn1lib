@@ -130,8 +130,7 @@ class ASN1Object {
 
   /// Trigger encoding of the object. After calling this the
   /// encoded bytes will be available in [encodedBytes]
-  /// subclasses should override this.
-  /// Most of the time you will not have to call encode().
+  /// subclasses will need to override this.
   Uint8List _encode() => _encodeHeader();
 
   /**

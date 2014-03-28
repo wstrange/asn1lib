@@ -1,9 +1,6 @@
 
 part of asn1lib;
 
-
-// todo: fix this? Do these need to be in a class ....
-
 // tag bytes for various ASN1 BER objects
 
 const int BOOLEAN_TYPE = 0x01;
