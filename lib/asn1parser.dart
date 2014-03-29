@@ -46,7 +46,6 @@ class ASN1Parser {
         throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
     else {
-       print("Other type...");
       // create a vanilla object
        obj = new ASN1Object.fromBytes(subBytes);
     }
