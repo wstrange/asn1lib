@@ -13,6 +13,17 @@ class ASN1Integer extends ASN1Object {
     intValue = decodeInteger(this.valueBytes());
   }
 
+  BigInteger get valueAsBigInteger {
+    if(intValue is BigInteger) return intValue;
+    if(isEncoded) return new BigInteger(valueBytes());
+    return new BigInteger(intValue);
+  }
+
+  BigInteger get valueAsPositiveBigInteger {
+    if(!isEncoded) _encode();
+    return new BigInteger.fromBytes(1, valueBytes());
+  }
+
   @override
   Uint8List _encode() {
     var t = encodeIntValue(this.intValue);
