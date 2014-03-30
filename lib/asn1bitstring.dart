@@ -10,9 +10,7 @@ class ASN1BitString extends ASN1Object {
 
   /// Create an [ASN1BitString] initialized with String value.
   /// optionally override the tag
-  ASN1BitString(this.stringValue, {int tag: BIT_STRING_TYPE}):super(tag:tag) {
-    unusedbits = 0;
-  }
+  ASN1BitString(this.stringValue, {this.unusedbits: 0, int tag: BIT_STRING_TYPE}):super(tag:tag);
 
   /// Create an [ASN1OctetString] from an encoded list of bytes
   ASN1BitString.fromBytes(Uint8List bytes) {
