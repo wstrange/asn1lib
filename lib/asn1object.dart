@@ -38,6 +38,9 @@ class ASN1Object {
     return _encodedBytes;
   }
 
+  /// Check if the encoding is ready.
+  bool get isEncoded => _encodedBytes != null;
+
 
   // Create an ASN1Object. Optionally set the tag
   ASN1Object({int tag:0}) {
