@@ -2,12 +2,6 @@ library asn1test.der;
 
 import 'package:unittest/unittest.dart';
 import 'package:asn1lib/asn1lib.dart';
-import "package:bignum/bignum.dart";
-import "package:crypto/crypto.dart";
-
-import 'dart:typed_data';
-import 'dart:math';
-import 'dart:io';
 
 
 void main() {
