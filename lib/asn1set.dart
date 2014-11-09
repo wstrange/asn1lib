@@ -36,8 +36,9 @@ class ASN1Set extends ASN1Object {
 
   @override
   Uint8List _encode() {
-   super._encode();
-   valueByteLength = childLength();
+   valueByteLength = _childLength();
+   //super._encode();
+
    super._encodeHeader();
    var i = valueStartPosition;
    elements.forEach( (obj) {
@@ -49,7 +50,7 @@ class ASN1Set extends ASN1Object {
   }
 
   // todo: Merge with Sequence code
-  int childLength() {
+  int _childLength() {
     int l = 0;
     elements.forEach( (obj) {
       obj._encode();
