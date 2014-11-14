@@ -27,8 +27,6 @@ class ASN1BitString extends ASN1Object {
     valueByteLength  = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
-    //this.encodedBytes.setRange(valueStartPosition,
-      //  valueStartPosition + valBytes.length, valBytes);
     return _encodedBytes;
   }
 

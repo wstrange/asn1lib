@@ -3,17 +3,19 @@ part of asn1lib;
 
 /**
  * Class to encode /decode ASN1 length bytes.
- * Also used to return the pair (length, valueStartPosition)
+ * Also tells us the total length of an object and where the value bytes start in the object (valueStartPosition).
+ *
+ *
  */
 class ASN1Length {
 
   int _length;
-  /// the decoded length
+  /// the decoded length in bytes of an object
   int get length => _length;
 
   int _valueStartPosition;
   /// The decoded value start position. This is the offset in the
-  /// BER encoded array where the value bytes start
+  /// BER encoded array where the value bytes start (i.e. after any header)
   int get valueStartPosition => _valueStartPosition;
 
 
@@ -79,7 +81,7 @@ class ASN1Length {
   /*
    *
    *  we cant do this check here!! the parser might not pass the entire object - because it does not
-   *  yet know the length
+   *  yet know the total length
       if ((encodedBytes.length - valueStartPosition) != length)
     {
       throw new ASN1Exception("Length Encoding Error");
