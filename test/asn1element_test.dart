@@ -162,7 +162,7 @@ main() {
   test("rsa private key", () {
     //openssl genrsa -out rsa_private_key.pem
     //PKCS#1 format
-    File rsa_private_key_file = new File("./resource/rsa_private_key.pem");
+    File rsa_private_key_file = new File("./test/resource/rsa_private_key.pem");
     String pem = rsa_private_key_file.readAsStringSync();
     List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
     String key = lines.sublist(1, lines.length-2).join("");
@@ -201,7 +201,7 @@ main() {
     //openssl genrsa -out rsa_private_key.pem
     //openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
     //PKCS#8 format
-      File rsa_private_key_file = new File("./resource/rsa_public_key.pem");
+      File rsa_private_key_file = new File("./test/resource/rsa_public_key.pem");
       String pem = rsa_private_key_file.readAsStringSync();
       List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
       String key = lines.sublist(1, lines.length-2).join("");

@@ -156,7 +156,8 @@ class ASN1Object {
   toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
-  String toString() => "ASN1Object(tag=${tag.toRadixString(16)})";
+  String toString() =>
+   "ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${valueByteLength}) startpos=$valueStartPosition bytes=${toHexString()}";
 }
 
 

@@ -5,6 +5,8 @@ part of asn1lib;
  */
 class ASN1Enumerated extends ASN1Integer {
 
-  ASN1Enumerated(int i) : super(i);
+  ASN1Enumerated(int i) : super( i) {
+    this.tag = ENUMERATED_TYPE;
+  }
 
 }
