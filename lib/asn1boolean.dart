@@ -28,7 +28,7 @@ class ASN1Boolean extends ASN1Object {
   Uint8List _encode() {
     super._encodeHeader();
     super._setValueBytes([ _boolValue == true ? BOOLEAN_TRUE_VALUE : BOOLEAN_FALSE_VALUE ]);
-    return encodedBytes;
+    return _encodedBytes;
   }
 
 }
