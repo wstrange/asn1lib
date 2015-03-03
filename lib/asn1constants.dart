@@ -4,9 +4,6 @@ part of asn1lib;
 // tag bytes for various ASN1 BER objects
 
 
-
-// todo: Use enums??
-
 const int BOOLEAN_TYPE = 0x01;
 const int INTEGER_TYPE = 0x02;
 const int BIT_STRING_TYPE = 0x03;

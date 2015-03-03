@@ -17,7 +17,7 @@ class ASN1Set extends ASN1Object {
    */
   ASN1Set.fromBytes(Uint8List b) {
     //this.tag = SEQUENCE_TYPE;
-    this.tag = b[0];
+    this._tag = b[0];
     // todo; Check if b[0] is a valid sequence type???
     if( (tag & 0x30) == 0 )
       throw new ASN1Exception("The tag ${tag} does not look like a set type");

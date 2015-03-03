@@ -12,7 +12,8 @@ class ASN1Boolean extends ASN1Object {
 
   bool get booleanValue => _boolValue;
 
-  ASN1Boolean(this._boolValue):super(tag:BOOLEAN_TYPE) {
+  // ASN1Boolean(this._boolValue,{tag: BOOLEAN_TYPE}):super(tag:BOOLEAN_TYPE) {
+  ASN1Boolean(this._boolValue,{tag: BOOLEAN_TYPE}):super(tag:tag) {
     valueByteLength = 1;
   }
 

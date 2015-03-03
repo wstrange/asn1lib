@@ -16,7 +16,8 @@ class ASN1Util {
     return b.toString();
   }
 
-  String hex(dynamic x) {
+  /// print an objects hex value. Object is a list or an integer
+  static String obj2HexString(dynamic x) {
     if( x is List)
       return listToString(x);
     else

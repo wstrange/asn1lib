@@ -15,7 +15,7 @@ class ASN1Sequence extends ASN1Object {
    * we ignore any remaining bytes
    */
   ASN1Sequence.fromBytes(Uint8List b) {
-    this.tag = b[0];
+    this._tag = b[0];
     // todo; Check if b[0] is a valid sequence type???
     if( (tag & 0x30) == 0 )
       throw new ASN1Exception("The tag ${tag} does not look like a sequence type");

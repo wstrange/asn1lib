@@ -1,12 +1,14 @@
 name: asn1lib
-version: 0.3.5
-author: Warren Strange <warren.strange@gmail.com>
+version: 0.4.0
+authors:
+- Warren Strange <warren.strange@gmail.com>
+- Steven Roose <stevenroose@gmail.com>
 description: An ASN1 parser library for Dart. Encodes / decodes from ASN1 Objects to BER bytes
 homepage: https://github.com/wstrange/asn1lib
 environment:
  sdk: '>=1.0.0'
 dependencies:
-  bignum: '>=0.0.5'
+  bignum: '>=0.0.5 <1.0.0'
 dev_dependencies:
   crypto: any
   unittest: any

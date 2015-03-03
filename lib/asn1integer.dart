@@ -5,7 +5,7 @@ class ASN1Integer extends ASN1Object {
 
   var intValue;
 
-  ASN1Integer(this.intValue):super(tag:INTEGER_TYPE);
+  ASN1Integer(this.intValue,{tag:INTEGER_TYPE}):super(tag:tag);
 
   ASN1Integer.fromBytes(Uint8List bytes) {
     _encodedBytes = bytes;

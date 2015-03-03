@@ -16,7 +16,8 @@ part of asn1lib;
  */
 class ASN1Object {
   /** The BER tag representing this object */
-  int tag;
+  int _tag;
+  int get tag => _tag;
 
 
   /*
@@ -44,7 +45,7 @@ class ASN1Object {
 
   // Create an ASN1Object. Optionally set the tag
   ASN1Object({int tag:0}) {
-    this.tag = tag;
+    this._tag = tag;
   }
 
   /**
@@ -54,7 +55,8 @@ class ASN1Object {
    * The supplied valBytes is the encoded value of the choice element
    *
    */
-  ASN1Object.preEncoded(this.tag,Uint8List valBytes) {
+  ASN1Object.preEncoded(int tag,Uint8List valBytes) {
+    _tag = tag;
     valueByteLength = valBytes.length;
     _encodeHeader();
     _encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
@@ -79,7 +81,7 @@ class ASN1Object {
    * Determines the length and where the value bytes start
    */
   _initFromBytes() {
-    tag = _encodedBytes[0];
+    _tag = _encodedBytes[0];
     ASN1Length l = ASN1Length.decodeLength(_encodedBytes);
     valueByteLength = l.length;
     valueStartPosition = l.valueStartPosition;
