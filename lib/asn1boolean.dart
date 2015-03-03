@@ -14,12 +14,12 @@ class ASN1Boolean extends ASN1Object {
 
   // ASN1Boolean(this._boolValue,{tag: BOOLEAN_TYPE}):super(tag:BOOLEAN_TYPE) {
   ASN1Boolean(this._boolValue,{tag: BOOLEAN_TYPE}):super(tag:tag) {
-    valueByteLength = 1;
+    _valueByteLength = 1;
   }
 
 
   ASN1Boolean.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    var b = bytes[valueStartPosition];
+    var b = bytes[_valueStartPosition];
     _boolValue = (b == BOOLEAN_TRUE_VALUE);
   }
 

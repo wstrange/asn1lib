@@ -22,7 +22,7 @@ class ASN1BitString extends ASN1Object {
   Uint8List _encode() {
     var valBytes = [unusedbits];
     valBytes.addAll(stringValue);
-    valueByteLength  = valBytes.length;
+    _valueByteLength  = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
     return _encodedBytes;

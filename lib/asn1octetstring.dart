@@ -32,7 +32,7 @@ class ASN1OctetString extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    valueByteLength  = octets.length;
+    _valueByteLength  = octets.length;
     _encodeHeader();
     _setValueBytes(octets);
     //this.encodedBytes.setRange(valueStartPosition,
