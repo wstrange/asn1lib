@@ -18,9 +18,7 @@ class ASN1Boolean extends ASN1Object {
   }
 
 
-  ASN1Boolean.fromBytes(Uint8List bytes) {
-    _encodedBytes = bytes;
-    _initFromBytes();
+  ASN1Boolean.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     var b = bytes[valueStartPosition];
     _boolValue = (b == BOOLEAN_TRUE_VALUE);
   }

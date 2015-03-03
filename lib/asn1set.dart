@@ -15,15 +15,10 @@ class ASN1Set extends ASN1Object {
    * Note that bytes could be longer than the actual sequence - in which case
    * we would ignore any remaining bytes
    */
-  ASN1Set.fromBytes(Uint8List b) {
-    //this.tag = SEQUENCE_TYPE;
-    this._tag = b[0];
-    // todo; Check if b[0] is a valid sequence type???
+  ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+    // todo; Check if tag is a valid sequence type???
     if( (tag & 0x30) == 0 )
       throw new ASN1Exception("The tag ${tag} does not look like a set type");
-
-    _encodedBytes = b;
-    super._initFromBytes();
     _decodeSet();
   }
 

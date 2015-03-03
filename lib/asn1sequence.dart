@@ -14,14 +14,10 @@ class ASN1Sequence extends ASN1Object {
    * Note that bytes array b could be longer than the actual encoded sequence - in which case
    * we ignore any remaining bytes
    */
-  ASN1Sequence.fromBytes(Uint8List b) {
-    this._tag = b[0];
-    // todo; Check if b[0] is a valid sequence type???
+  ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+    // todo; Check if tag is a valid sequence type???
     if( (tag & 0x30) == 0 )
       throw new ASN1Exception("The tag ${tag} does not look like a sequence type");
-
-    _encodedBytes = b;
-    super._initFromBytes();
     //print("ASN1Sequence valbytes=${hex(valueBytes())}");
     _decodeSeq();
   }
