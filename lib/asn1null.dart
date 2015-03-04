@@ -11,9 +11,6 @@ class ASN1Null extends ASN1Object {
   ASN1Null():super(tag:NULL_TYPE);
   
   
-  ASN1Null.fromBytes(Uint8List bytes) {
-        _encodedBytes = bytes;
-        _initFromBytes();
-    }
+  ASN1Null.fromBytes(Uint8List bytes) : super.fromBytes(bytes);
 
 }

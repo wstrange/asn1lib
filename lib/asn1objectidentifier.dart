@@ -7,10 +7,7 @@ class ASN1ObjectIdentifier  extends ASN1Object  {
   
   ASN1ObjectIdentifier(this.oi,{tag:OBJECT_IDENTIFIER}):super(tag:tag);
 
-  ASN1ObjectIdentifier.fromBytes(Uint8List bytes) {
-      _encodedBytes = bytes;
-      _initFromBytes();
-  }
+  ASN1ObjectIdentifier.fromBytes(Uint8List bytes) : super.fromBytes(bytes);
 
   @override
   Uint8List _encode() {

@@ -22,9 +22,7 @@ class ASN1OctetString extends ASN1Object {
   }
 
   /// Create an [ASN1OctetString] from an encoded list of bytes
-  ASN1OctetString.fromBytes(Uint8List bytes) {
-    _encodedBytes = bytes;
-    _initFromBytes();
+  ASN1OctetString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     octets = valueBytes();
   }
 
