@@ -54,9 +54,9 @@ class ASN1Object {
    *
    */
   ASN1Object.preEncoded(int tag, Uint8List valBytes) : _tag = tag {
-    valueByteLength = valBytes.length;
+    _valueByteLength = valBytes.length;
     _encodeHeader();
-    _encodedBytes.setRange(valueStartPosition, valBytes.length, valBytes);
+    _encodedBytes.setRange(_valueStartPosition, valBytes.length, valBytes);
   }
 
   /**
@@ -79,8 +79,8 @@ class ASN1Object {
    */
   void _initFromBytes() {
     ASN1Length l = ASN1Length.decodeLength(_encodedBytes);
-    valueByteLength = l.length;
-    valueStartPosition = l.valueStartPosition;
+    _valueByteLength = l.length;
+    _valueStartPosition = l.valueStartPosition;
   }
 
   /**
@@ -91,7 +91,7 @@ class ASN1Object {
    * next object starts in the stream.
    *
    */
-  int get totalEncodedByteLength => valueStartPosition + valueByteLength;
+  int get totalEncodedByteLength => _valueStartPosition + _valueByteLength;
 
 
 
@@ -99,14 +99,14 @@ class ASN1Object {
    * Length of the encoded value bytes. This does not include the length of
    * the tag or length fields. See [totalEncodedByteLength].
    */
-  int valueByteLength;
+  int _valueByteLength;
 
   /**
    * The index where the value bytes start. This is the position after the tag + length bytes.
    * defaults to 2 - but encoding may change this value if more bytes are needed
    * to encode the length field.
    */
-  int valueStartPosition = 2;
+  int _valueStartPosition = 2;
 
   /**
    *
@@ -120,11 +120,11 @@ class ASN1Object {
    */
   Uint8List _encodeHeader() {
     if( _encodedBytes == null ) {
-      Uint8List lenEnc= ASN1Length.encodeLength(valueByteLength);
-      _encodedBytes = new Uint8List( 1 + lenEnc.length + valueByteLength);
+      Uint8List lenEnc= ASN1Length.encodeLength(_valueByteLength);
+      _encodedBytes = new Uint8List( 1 + lenEnc.length + _valueByteLength);
       _encodedBytes[0] = tag;
       _encodedBytes.setRange(1, 1 + lenEnc.length , lenEnc, 0);
-      valueStartPosition = 1 + lenEnc.length;
+      _valueStartPosition = 1 + lenEnc.length;
     }
     return _encodedBytes;
   }
@@ -140,22 +140,22 @@ class ASN1Object {
    */
   Uint8List valueBytes() {
     return new Uint8List.view( _encodedBytes.buffer,
-        valueStartPosition + _encodedBytes.offsetInBytes, valueByteLength);
+        _valueStartPosition + _encodedBytes.offsetInBytes, _valueByteLength);
   }
 
 
 
   // Subclasses can call this to set the value bytes
   void _setValueBytes(List<int> valBytes) {
-    this.encodedBytes.setRange(valueStartPosition,
-        valueStartPosition + valBytes.length, valBytes);
+    this.encodedBytes.setRange(_valueStartPosition,
+        _valueStartPosition + valBytes.length, valBytes);
   }
 
   toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
   String toString() =>
-   "ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${valueByteLength}) startpos=$valueStartPosition bytes=${toHexString()}";
+   "ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}";
 }
 
 

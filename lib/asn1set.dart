@@ -31,11 +31,11 @@ class ASN1Set extends ASN1Object {
 
   @override
   Uint8List _encode() {
-   valueByteLength = _childLength();
+   _valueByteLength = _childLength();
    //super._encode();
 
    super._encodeHeader();
-   var i = valueStartPosition;
+   var i = _valueStartPosition;
    elements.forEach( (obj) {
      var  b = obj.encodedBytes;
      encodedBytes.setRange(i, i + b.length, b);
