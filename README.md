@@ -23,6 +23,11 @@ var s2 = p.nextObject();
 // s2 is a sequence...
 ```
 
+
+# Changes 
+
+Added PrintableString and UTC Time elements
+
 Changes to support RSA Private key : PEM file
 
 Add import "package:bignum/bignum.dart"; in asn1lib.dart
@@ -40,7 +45,6 @@ Modify ASN1Integer to support BigInteger
 Modify asn1element_test.dart to test BigInteger case, and rsa private key test
 
 Add test/resource folder to store rsa key for testing
-
 
 Changes to support RSA public key : PEM file
 
