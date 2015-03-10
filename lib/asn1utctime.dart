@@ -16,16 +16,13 @@ class ASN1UtcTime extends ASN1Object {
 
   /// Create an [ASN1UtcTime] from an encoded list of bytes
   ASN1UtcTime.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    // The first byte is the tag (23) and the second is the length
-    if (bytes[0] != UTC_TIME_TYPE)
-      throw new ASN1Exception("First byte should be $UTC_TIME_TYPE");
 
     // The DateTime.parse() function wants:
     // * Either T or space as separator between date and time.
     // * Full year with 4 digits (the UtcTime in ASN.1 has only two digits for year).
     // so we need to add that in order for DateTime to parse the Utc value
-    var length = bytes[1];
-    var stringValue = new String.fromCharCodes(bytes.sublist(2, length + 2));
+    var octets = valueBytes();
+    var stringValue = ASCII.decode(octets);
     var y2 = int.parse(stringValue.substring(0, 2));
     if (y2 > 75)
       stringValue = "19" + stringValue;
