@@ -258,12 +258,40 @@ main() {
     ASN1Sequence seq = asn1object;
 
     expect(seq.elements[0] is ASN1Sequence , equals(true));
-    seq = seq.elements[0];
-    expect(seq.elements[6] is ASN1Sequence , equals(true));
-    seq = seq.elements[6];
+    var element0 = seq.elements[0];
 
-    expect(seq.elements[1] is ASN1BitString , equals(true));
-    ASN1BitString os = seq.elements[1]; //always ASN1BitString ?
+    var element0_3 = element0.elements[3];
+    expect(element0_3 is ASN1Sequence, equals(true));
+    var element0_3_0 = element0_3.elements[0];
+    expect(element0_3_0 is ASN1Set, equals(true));
+    var element0_3_0_0 = element0_3_0.elements.first;
+    expect(element0_3_0_0 is ASN1Sequence, equals(true));
+    var element0_3_0_0_1 = element0_3_0_0.elements[1];
+    expect(element0_3_0_0_1 is ASN1PrintableString, equals(true));
+    expect((element0_3_0_0_1 as ASN1PrintableString).stringValue, equals("DevRoot"));
+
+    var element0_4 = element0.elements[4];
+    expect(element0_4 is ASN1Sequence, equals(true));
+    expect(element0_4.elements[0] is ASN1UtcTime, equals(true));
+    expect((element0_4.elements[0] as ASN1UtcTime).dateTimeValue, equals(DateTime.parse("2010-01-20 22:00:00.000Z")));
+    expect(element0_4.elements[1] is ASN1UtcTime, equals(true));
+    expect((element0_4.elements[1] as ASN1UtcTime).dateTimeValue, equals(DateTime.parse("2020-01-20 22:00:00.000Z")));
+
+    var element0_5 = element0.elements[5];
+    expect(element0_5 is ASN1Sequence, equals(true));
+    var element0_5_0 = element0_5.elements[0];
+    expect(element0_5_0 is ASN1Set, equals(true));
+    var element0_5_0_0 = element0_5_0.elements.first;
+    expect(element0_5_0_0 is ASN1Sequence, equals(true));
+    var element0_5_0_0_1 = element0_5_0_0.elements[1];
+    expect(element0_5_0_0_1 is ASN1PrintableString, equals(true));
+    expect((element0_5_0_0_1 as ASN1PrintableString).stringValue, equals("idsrv3test"));
+
+    expect(element0.elements[6] is ASN1Sequence , equals(true));
+    var element0_6 = element0.elements[6];
+
+    expect(element0_6.elements[1] is ASN1BitString , equals(true));
+    ASN1BitString os = element0_6.elements[1]; //always ASN1BitString ?
 
     expect(os.valueBytes()[0] , equals(0));//always zero ?
     var bytes = os.valueBytes().sublist(1); //remove unused bits count

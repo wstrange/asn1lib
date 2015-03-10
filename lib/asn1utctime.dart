@@ -9,30 +9,23 @@ class ASN1UtcTime extends ASN1Object {
 
   // The decoded date value
   DateTime dateTimeValue;
-  List<int> unusedbytes;
 
   /// Create an [ASN1UtcTime] initialized with DateTime value.
   /// optionally override the tag
-  ASN1UtcTime(this.dateTimeValue, {int tag: PRINTABLE_STRING_TYPE}):super(tag:tag);
+  ASN1UtcTime(this.dateTimeValue, {int tag: UTC_TIME_TYPE}):super(tag:tag);
 
   /// Create an [ASN1UtcTime] from an encoded list of bytes
   ASN1UtcTime.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    // The first byte is the tag (23) and the second is CR (13)
-    unusedbytes = bytes.sublist(0, 2);
-
-    // TODO: Check if the main parse loop should really send us the full buffer
-    // When there is a sequence of two UtcTime values we get both
-    // in the incoming buffer when called to parsed only the first one
-    // so check that we termintate parsing when we hit another tag/CR sequence (23, 13)
-    var end = bytes.sublist(2).indexOf(13) + 2 - 1;
-    if (end <= 0)
-      end = bytes.length;
+    // The first byte is the tag (23) and the second is the length
+    if (bytes[0] != UTC_TIME_TYPE)
+      throw new ASN1Exception("First byte should be $UTC_TIME_TYPE");
 
     // The DateTime.parse() function wants:
     // * Either T or space as separator between date and time.
     // * Full year with 4 digits (the UtcTime in ASN.1 has only two digits for year).
     // so we need to add that in order for DateTime to parse the Utc value
-    var stringValue = new String.fromCharCodes(bytes.sublist(2, end));
+    var length = bytes[1];
+    var stringValue = new String.fromCharCodes(bytes.sublist(2, length + 2));
     var y2 = int.parse(stringValue.substring(0, 2));
     if (y2 > 75)
       stringValue = "19" + stringValue;
@@ -45,8 +38,6 @@ class ASN1UtcTime extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    // TODO: Untested code
-    var valBytes = new List.from(unusedbytes);
     var utc = dateTimeValue.toUtc();
     var year = utc.year.toString().substring(2).padLeft(2, "0");
     var month = utc.month.toString().padLeft(2, "0");
@@ -56,7 +47,8 @@ class ASN1UtcTime extends ASN1Object {
     var second = utc.second.toString().padLeft(2, "0");
     // Encode string to YYMMDDhhmm[ss]Z
     var utcString = "$year$month$day$hour$minute${second}Z";
-    valBytes.addAll(utcString.codeUnits);
+    var valBytes = new List<int>();
+    valBytes.addAll(ASCII.encode(utcString));
     _valueByteLength = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);

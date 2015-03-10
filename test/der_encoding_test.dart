@@ -40,5 +40,17 @@ void main() {
     // T61String "cl'es publiques"
     // should become 14 0f 63 6c c2 65 73 20 70 75 62 6c 69 71 75 65 73
 
+    test("printable-string", () {
+      var testString = "TheTestString";
+      var ps = new ASN1PrintableString(testString);
+      expect(ps.encodedBytes, equals([PRINTABLE_STRING_TYPE, testString.length, 0x54, 0x68, 0x65, 0x54, 0x65, 0x73, 0x74, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67]));
+    });
+
+    test("utc-time", () {
+      var testTime = new DateTime.utc(2006, 03, 09, 17, 18);
+      var ut = new ASN1UtcTime(testTime);
+      expect(ut.encodedBytes, equals([UTC_TIME_TYPE, 0x0d, 0x30, 0x36, 0x30, 0x33, 0x30, 0x39, 0x31, 0x37, 0x31, 0x38, 0x30, 0x30, 0x5a]));
+    });
+
   });
 }

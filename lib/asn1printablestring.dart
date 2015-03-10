@@ -1,4 +1,3 @@
-
 part of asn1lib;
 
 /// An ASN1 Printable String. This is an array of character codes.
@@ -8,7 +7,6 @@ class ASN1PrintableString extends ASN1Object {
 
   // The decoded string value
   String stringValue;
-  List<int> unusedbytes;
 
   /// Create an [ASN1PrintableString] initialized with String value.
   /// optionally override the tag
@@ -16,16 +14,18 @@ class ASN1PrintableString extends ASN1Object {
 
   /// Create an [ASN1PrintableString] from an encoded list of bytes
   ASN1PrintableString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    unusedbytes = bytes.sublist(0, 2);
+    if (bytes[0] != PRINTABLE_STRING_TYPE)
+      throw new ASN1Exception("First byte should be $PRINTABLE_STRING_TYPE");
+    if (bytes[1] != bytes.length - 2)
+      throw new ASN1Exception("Second byte should be ${bytes.length - 2}");
     stringValue = new String.fromCharCodes(bytes.sublist(2));
   }
 
   @override
   Uint8List _encode() {
-    // TODO: Untested code
-    var valBytes = new List.from(unusedbytes);
-    valBytes.addAll(stringValue.codeUnits);
-    _valueByteLength  = valBytes.length;
+    var valBytes = new List<int>();
+    valBytes.addAll(ASCII.encode(stringValue));
+    _valueByteLength = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
     return _encodedBytes;
