@@ -81,9 +81,15 @@ class ASN1Parser {
               return new ASN1BitString.fromBytes(b); 
                
       case NULL_TYPE:  // boolean
-                    return new ASN1Null.fromBytes(b); 
-         
-      default:
+                    return new ASN1Null.fromBytes(b);
+
+      case PRINTABLE_STRING_TYPE:
+        return new ASN1PrintableString.fromBytes(b);
+
+      case UTC_TIME_TYPE:
+        return new ASN1UtcTime.fromBytes(b);
+
+    default:
         throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
   }

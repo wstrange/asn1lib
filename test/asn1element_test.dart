@@ -230,4 +230,55 @@ main() {
       expect((seq.elements[1] as ASN1Integer).intValue , equals(65537));
     });
 
+  test("x509 public key certificate", () {
+
+    String pem =
+        "MIIDBTCCAfGgAwIBAgIQNQb+T2ncIrNA6cKvUA1GWTAJBgUrDgMCHQUAMBIxEDAOBgNVBAMT\n"
+        "B0RldlJvb3QwHhcNMTAwMTIwMjIwMDAwWhcNMjAwMTIwMjIwMDAwWjAVMRMwEQYDVQQDEwpp\n"
+        "ZHNydjN0ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqnTksBdxOiOlsmRN\n"
+        "d+mMS2M3o1IDpK4uAr0T4/YqO3zYHAGAWTwsq4ms+NWynqY5HaB4EThNxuq2GWC5JKpO1Yir\n"
+        "OrwS97B5x9LJyHXPsdJcSikEI9BxOkl6WLQ0UzPxHdYTLpR4/O+0ILAlXw8NU4+jB4AP8Sn9\n"
+        "YGYJ5w0fLw5YmWioXeWvocz1wHrZdJPxS8XnqHXwMUozVzQj+x6daOv5FmrHU1r9/bbp0a1G\n"
+        "Lv4BbTtSh4kMyz1hXylho0EvPg5p9YIKStbNAW9eNWvv5R8HN7PPei21AsUqxekK0oW9jnEd\n"
+        "HewckToX7x5zULWKwwZIksll0XnVczVgy7fCFwIDAQABo1wwWjATBgNVHSUEDDAKBggrBgEF\n"
+        "BQcDATBDBgNVHQEEPDA6gBDSFgDaV+Q2d2191r6A38tBoRQwEjEQMA4GA1UEAxMHRGV2Um9v\n"
+        "dIIQLFk7exPNg41NRNaeNu0I9jAJBgUrDgMCHQUAA4IBAQBUnMSZxY5xosMEW6Mz4WEAjNoN\n"
+        "v2QvqNmk23RMZGMgr516ROeWS5D3RlTNyU8FkstNCC4maDM3E0Bi4bbzW3AwrpbluqtcyMN3\n"
+        "Pivqdxx+zKWKiORJqqLIvN8CT1fVPxxXb/e9GOdaR8eXSmB0PgNUhM4IjgNkwBbvWC9F/lzv\n"
+        "wjlQgciR7d4GfXPYsE1vf8tmdQaY8/PtdAkExmbrb9MihdggSoGXlELrPA91Yce+fiRcKY3r\n"
+        "QlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnp\n"
+        "W0xGvQb3VHSTVVbeei0CfXoW6iz1\n";
+
+    var cert_bytes = new Uint8List.fromList(CryptoUtils.base64StringToBytes(pem));
+
+    var p = new ASN1Parser(cert_bytes);
+    expect(p.hasNext() , equals(true));
+    var asn1object = p.nextObject();
+    expect(asn1object is ASN1Sequence , equals(true));
+    ASN1Sequence seq = asn1object;
+
+    expect(seq.elements[0] is ASN1Sequence , equals(true));
+    seq = seq.elements[0];
+    expect(seq.elements[6] is ASN1Sequence , equals(true));
+    seq = seq.elements[6];
+
+    expect(seq.elements[1] is ASN1BitString , equals(true));
+    ASN1BitString os = seq.elements[1]; //always ASN1BitString ?
+
+    expect(os.valueBytes()[0] , equals(0));//always zero ?
+    var bytes = os.valueBytes().sublist(1); //remove unused bits count
+    p = new ASN1Parser(bytes);
+    expect(p.hasNext() , equals(true));
+    asn1object = p.nextObject();
+    expect(asn1object is ASN1Sequence , equals(true));
+    seq = asn1object;
+    expect(seq.elements.length , equals(2));
+
+    //modulus
+    BigInteger expectedModulos = new BigInteger(21518154084705346821274138762882407922380704212922210585843251781362809907270675925777565628062936818636913854980154942861118239830759902009001533075067878914941993916218504286518450568111160810759646573203377874470315017865982194621508952434846313326601022451790654534552713106625866324293583211173710664343249256163552449547128977997155833237720259198928785721740265119531438131641233778575574837591001136583435616772442565871706297666044427912910371785883437973412968680553651820978964644100864723176694453218133732558009376882289418835471454808121837066085343171141842204722779999397248471822012940201656724210199);
+    expect((seq.elements[0] as ASN1Integer).intValue , equals(expectedModulos));
+    //publicExponent
+    expect((seq.elements[1] as ASN1Integer).intValue , equals(65537));
+  });
+
 }
