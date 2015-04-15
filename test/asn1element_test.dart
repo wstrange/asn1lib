@@ -67,6 +67,22 @@ main() {
     expect( x, equals([0x82, 0x04,0x00]));
   });
 
+  // This tests for behaviour when not enough bytes are provided to decode
+  // the length. This could happen with some stream parsers that have not yet seen
+  // all the bytes of a message.
+  test('Length decoding when not enough bytes should throw RangeError',(){
+    var b = new Uint8List.fromList([0x0,0x82, 0x04]); // missing 0x00
+
+    try {
+      var x = ASN1Length.decodeLength(b);
+      fail("A RangeError is expected");
+    }
+    catch(e) {
+      expect(e, new isInstanceOf<RangeError>());
+    }
+
+  });
+
   test('Octet String encoding', () {
     var s = "Hello";
     var os = new ASN1OctetString(s);
