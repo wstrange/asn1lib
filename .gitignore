@@ -4,3 +4,4 @@ pubspec.lock
 tags
 test/data/output/
 extension/output/
+.idea
