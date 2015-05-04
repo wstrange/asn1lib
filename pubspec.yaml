@@ -12,4 +12,4 @@ dependencies:
   bignum: '>=0.0.5 <1.0.0'
 dev_dependencies:
   crypto: any
-  unittest: any
+  test: any

@@ -1,6 +1,6 @@
 library asn1test.der;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 
 
