@@ -26,6 +26,8 @@ var s2 = p.nextObject();
 
 # Changes 
 
+Remove obsolete crypto dependency in tests.
+
 Added PrintableString and UTC Time elements
 
 Changes to support RSA Private key : PEM file

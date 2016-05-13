@@ -5,8 +5,8 @@ library asn1test;
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 import "package:bignum/bignum.dart";
-import "package:crypto/crypto.dart";
 
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 import 'dart:io';
@@ -182,7 +182,7 @@ main() {
     String pem = rsa_private_key_file.readAsStringSync();
     List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
     String key = lines.sublist(1, lines.length-2).join("");
-    var key_bytes = new Uint8List.fromList(CryptoUtils.base64StringToBytes(key));
+    var key_bytes = new Uint8List.fromList(BASE64.decode(key));
 
     var p = new ASN1Parser(key_bytes);
     expect(p.hasNext() , equals(true));
@@ -221,7 +221,7 @@ main() {
       String pem = rsa_private_key_file.readAsStringSync();
       List lines  = pem.split("\n").map((line)=>line.trim()).skipWhile((String line)=>!line.startsWith("---")).toList();
       String key = lines.sublist(1, lines.length-2).join("");
-      var key_bytes = new Uint8List.fromList(CryptoUtils.base64StringToBytes(key));
+      var key_bytes = new Uint8List.fromList(BASE64.decode(key));
 
       var p = new ASN1Parser(key_bytes);
       expect(p.hasNext() , equals(true));
@@ -265,7 +265,8 @@ main() {
         "QlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnp\n"
         "W0xGvQb3VHSTVVbeei0CfXoW6iz1\n";
 
-    var cert_bytes = new Uint8List.fromList(CryptoUtils.base64StringToBytes(pem));
+    pem =  pem = pem.replaceAll("\n", "");
+    var cert_bytes = new Uint8List.fromList(BASE64.decode(pem));
 
     var p = new ASN1Parser(cert_bytes);
     expect(p.hasNext() , equals(true));
