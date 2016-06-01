@@ -7,6 +7,8 @@ class ASN1OctetString extends ASN1Object {
   // The decoded string value
   Uint8List octets;
 
+  Uint8List contentBytes() => octets;
+
   /// Create an [ASN1OctetString] initialized with a [String] or
   /// a [List<int>].
   /// optionally override the tag
