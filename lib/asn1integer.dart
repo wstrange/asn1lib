@@ -110,6 +110,9 @@ class ASN1Integer extends ASN1Object {
 
   static dynamic decodeInteger(Uint8List bytes, {int offset: 0}) {
 
+    return new BigInteger(bytes.sublist(offset));
+
+    /* Int64 ist not supported by dart2js
     if (bytes.length - offset > 8) return new BigInteger(bytes.sublist(offset));
     var pad = (bytes[offset] & 0x80) == 0 ? 0 : 0xFF;
     var t = new Int64List(1);
@@ -131,6 +134,7 @@ class ASN1Integer extends ASN1Object {
 
     // the 64 bit integer is now in t[0]
     return t[0];
+    */
   }
 
   String toString() => "ASNInteger($intValue)";
