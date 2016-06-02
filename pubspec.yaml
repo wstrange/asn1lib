@@ -12,3 +12,4 @@ dependencies:
   bignum: '>=0.0.5 <1.0.0'
 dev_dependencies:
   test: any
+  convert: '^1.1.1'
