@@ -74,7 +74,7 @@ class ASN1Integer extends ASN1Object {
     if (bytes.length - offset > 8) {
       return new BigInteger(bytes.sublist(offset));
     } else {
-      return new BigInteger(bytes.toList()).intValue();
+      return new BigInteger(bytes.sublist(offset)).intValue();
     }
   }
 
