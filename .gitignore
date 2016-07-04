@@ -6,3 +6,4 @@ test/data/output/
 extension/output/
 .idea
 .pub
+.packages
