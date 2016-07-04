@@ -143,6 +143,12 @@ class ASN1Object {
         _valueStartPosition + _encodedBytes.offsetInBytes, _valueByteLength);
   }
 
+  /**
+   * Returns the real content of a tag. This might be equal to valueBytes for some tags.
+   * some other tags like BitString include padding in their valueBytes.
+   * This method always returns the unpadded contentBytes.
+   */
+  Uint8List contentBytes() => valueBytes();
 
 
   // Subclasses can call this to set the value bytes
