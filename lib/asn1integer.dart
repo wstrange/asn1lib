@@ -1,4 +1,10 @@
 part of asn1lib;
+/**
+ * ASN1Integer encoding / decoding.
+ *
+ * Note that asn1 integers can be arbitrary precision.
+ * TODO: convert use of BigInteger to dart sdk BigInt class.
+ */
 
 class ASN1Integer extends ASN1Object {
   var intValue;

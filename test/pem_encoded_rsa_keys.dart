@@ -61,8 +61,8 @@ dZGeuvqtAXpkUfBXJed4Ehdd9Q==
 
    test('Test decode algorithm', () {
      var asn1Parser = new ASN1Parser(publicKeyDER);
-     var topLevelSeq = asn1Parser.nextObject();
-     var algorithmSequence = topLevelSeq.elements[0];
+     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
+     var algorithmSequence = topLevelSeq.elements[0] as ASN1Sequence;;
 
      expect(algorithmSequence
          .valueBytes()
@@ -77,17 +77,17 @@ dZGeuvqtAXpkUfBXJed4Ehdd9Q==
    test('Test decode public key', () {
 
      var asn1Parser = new ASN1Parser(publicKeyDER);
-     var topLevelSeq = asn1Parser.nextObject();
+     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
      var publicKeyBitString = topLevelSeq.elements[1];
 
      expect(publicKeyBitString.valueBytes().length, 271);
 
      asn1Parser = new ASN1Parser(publicKeyBitString.contentBytes());
-     var pkSeq = asn1Parser.nextObject();
+     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
      var expected = new BigInteger();
      expected.fromInt(65537);
-     expect(pkSeq.elements[1].valueAsBigInteger, expected);
+     expect((pkSeq.elements[1] as ASN1Integer).valueAsBigInteger, expected);
 
      //dump from openssl
      var expectedHex = """00 d5 6d b9 5c 08 fd
@@ -111,15 +111,16 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
      expectedHex = expectedHex.replaceAll('-', '');
      expectedHex = expectedHex.replaceAll('\n', '');
      expectedHex = expectedHex.replaceAll('\r', '');
-     expected = convert.hex.decode(expectedHex);
 
-     expect(pkSeq.elements[0].valueAsBigInteger, new BigInteger.fromBytes(0, expected));
+     var x = convert.hex.decode(expectedHex);
+
+     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger, new BigInteger.fromBytes(0, x));
    });
 
 
    test('Test decode private key', () {
      var asn1Parser = new ASN1Parser(privateKeyDER);
-     var topLevelSeq = asn1Parser.nextObject();
+     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
 
      var version = topLevelSeq.elements[0];
      expect(version.valueBytes().length, 1);
@@ -131,9 +132,9 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
      expect(privateKey.valueBytes().length, 1193);
 
      asn1Parser = new ASN1Parser(privateKey.contentBytes());
-     var pkSeq = asn1Parser.nextObject();
+     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
      version = pkSeq.elements[0];
-     var modulus = pkSeq.elements[1];
+     var modulus = pkSeq.elements[1] as ASN1Integer;
      var expectedModulus = decodeHex("""
 00:d5:6d:b9:5c:08:fd:1a:f0:af:49:8e:c9:cd:50:
 21:67:52:ff:92:e8:37:2c:c1:bc:33:62:d1:48:3a:
@@ -155,11 +156,11 @@ b5:96:6f:1b:9f:73:f0:9d:33:90:04:c8:62:a6:ba:
 3e:e3""");
       expect(modulus.valueAsBigInteger, new BigInteger.fromBytes(0, expectedModulus));
 
-     var publicExponent = pkSeq.elements[2];
+     var publicExponent = pkSeq.elements[2] as ASN1Integer;
      var expectedPublicExponent = decodeHex("""01:00:01""");
      expect(publicExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPublicExponent));
 
-     var privateExponent = pkSeq.elements[3];
+     var privateExponent = pkSeq.elements[3] as ASN1Integer;
      var expectedPrivateExponent = decodeHex("""
 00:a9:85:e0:c0:18:a7:a9:b9:59:11:8d:27:ff:3b:
 51:7c:f7:70:e6:e8:29:c3:14:12:ff:a1:d2:e7:92:
@@ -181,7 +182,7 @@ f0:0c:25:17:89:68:4a:ea:f3:ec:da:21:3f:4c:35:
 0e:71
 """);
      expect(privateExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPrivateExponent));
-     var p = pkSeq.elements[4];
+     var p = pkSeq.elements[4] as ASN1Integer;
      var expectedP = decodeHex("""
 00:ff:95:fe:c1:75:aa:2d:cd:5b:52:4d:10:d5:d4:
 79:cc:cc:f0:08:f7:86:80:cb:ed:ca:7f:d2:d6:6c:
@@ -194,7 +195,7 @@ ef:ff:b9:e4:1f:be:fb:6e:6e:3f:46:9c:6a:90:85:
 df:e2:d2:26:c0:26:b6:a9:6b
 """);
      expect(p.valueAsBigInteger, new BigInteger.fromBytes(0, expectedP));
-     var q = pkSeq.elements[5];
+     var q = pkSeq.elements[5] as ASN1Integer;
      var expectedQ = decodeHex("""
 00:d5:c6:3e:7b:e8:11:58:11:df:f6:fd:7b:8e:b8:
 c4:0b:f0:4d:a3:b4:7c:42:2e:6e:64:31:26:82:f1:
@@ -207,7 +208,7 @@ be:4e:6f:2c:8b:62:b5:a7:60:58:d7:51:eb:56:62:
 96:c1:e3:e4:a7:cf:d2:c6:69
 """);
      expect(q.valueAsBigInteger, new BigInteger.fromBytes(0, expectedQ));
-     var exp1 = pkSeq.elements[6];
+     var exp1 = pkSeq.elements[6] as ASN1Integer;
      var expectedExp1 = decodeHex("""
 00:99:c5:9e:fe:ba:52:67:38:34:87:71:c2:7d:44:
 56:fb:b7:19:7b:eb:a0:cb:00:e6:d2:7c:d1:57:1d:
@@ -220,7 +221,7 @@ de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 8b:4a:26:72:16:0d:b4:bc:7d
 """);
      expect(exp1.valueAsBigInteger, new BigInteger.fromBytes(0, expectedExp1));
-     var exp2 = pkSeq.elements[7];
+     var exp2 = pkSeq.elements[7] as ASN1Integer;
      var expectedExp2 = decodeHex("""
 69:e8:31:04:89:d0:2d:e5:8d:23:7c:29:3e:67:e3:
 18:57:10:df:cd:86:d1:f2:d6:d5:e4:53:c4:03:86:
@@ -233,7 +234,7 @@ de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 22:14:99:2f:5a:12:7e:21
 """);
      expect(exp2.valueAsBigInteger, new BigInteger.fromBytes(0, expectedExp2));
-     var co = pkSeq.elements[8];
+     var co = pkSeq.elements[8] as ASN1Integer;
      var expectedCo = decodeHex("""
 00:8e:fe:d6:6e:27:6e:4a:94:1b:fa:13:e0:d8:04:
 e1:8e:80:92:37:8a:8a:ac:4d:af:c5:24:de:ce:ef:
@@ -267,7 +268,7 @@ List<int> decodePEM(pem){
   //Dart base64 decoder does not support line breaks
   pem = pem.replaceAll('\n', '');
   pem = pem.replaceAll('\r', '');
-  return BASE64.decode(pem);
+  return base64.decode(pem);
 }
 
 List<int> decodeHex(String hex){

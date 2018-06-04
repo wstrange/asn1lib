@@ -3,10 +3,10 @@ part of asn1lib;
 
 class ASN1Null extends ASN1Object {
 
-  static final nullBytes = [NULL_TYPE, 0x00];
+  static final nullBytes = new Uint8List.fromList([NULL_TYPE, 0x00]);
 
   @override
-  List get encodedBytes => nullBytes;
+  Uint8List get encodedBytes => nullBytes;
   
   ASN1Null():super(tag:NULL_TYPE);
   

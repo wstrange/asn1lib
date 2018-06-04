@@ -22,7 +22,7 @@ class ASN1UtcTime extends ASN1Object {
     // * Full year with 4 digits (the UtcTime in ASN.1 has only two digits for year).
     // so we need to add that in order for DateTime to parse the Utc value
     var octets = valueBytes();
-    var stringValue = ASCII.decode(octets);
+    var stringValue = ascii.decode(octets);
     var y2 = int.parse(stringValue.substring(0, 2));
     if (y2 > 75)
       stringValue = "19" + stringValue;
@@ -45,7 +45,7 @@ class ASN1UtcTime extends ASN1Object {
     // Encode string to YYMMDDhhmm[ss]Z
     var utcString = "$year$month$day$hour$minute${second}Z";
     var valBytes = new List<int>();
-    valBytes.addAll(ASCII.encode(utcString));
+    valBytes.addAll(ascii.encode(utcString));
     _valueByteLength = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
