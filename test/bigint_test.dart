@@ -20,7 +20,7 @@ main() {
 
     for(int i=0; i < 100000; ++i) {
       var x = new BigInt.from(random.nextInt(max));
-      var bytes = ASN1Util.writeBigInt(x);
+      var bytes = ASN1Util.writeBigIntBytes(x);
       var y = ASN1Util.readBigIntBytes(bytes);
       expect(x, equals(y));
     }

@@ -41,7 +41,7 @@ class ASN1Util {
     return bytes2BigInt(bytes, 0, bytes.length);
   }
 
-  static Uint8List writeBigInt(BigInt number) {
+  static Uint8List writeBigIntBytes(BigInt number) {
     // Not handling negative numbers. Decide how you want to do that.
     int bytes = (number.bitLength + 7) >> 3;
     var b256 = new BigInt.from(256);
