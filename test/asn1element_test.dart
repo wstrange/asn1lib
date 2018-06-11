@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'dart:math';
 
 main() {
-  test('Test Encode integer', () {
+  test('Test integer encoding', () {
     // key = integer to encode, val = expected encoding bytes
     var m = new Map();
     m[0] = [0x0];
@@ -29,7 +29,7 @@ main() {
     // for fun try some random numbers
     var random = new Random();
     int sign = 1;
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
       var x = random.nextInt(10000000) * sign;
       sign = sign * -1;
       var encoded = ASN1Integer.encodeIntValue(x);
@@ -140,7 +140,6 @@ main() {
   // show sample ussage
   test("Sample for README", () {
     var s = new ASN1Sequence();
-    s.add(new ASN1Integer(23));
     s.add(new ASN1OctetString('This is a test'));
     s.add(new ASN1Boolean(true));
 

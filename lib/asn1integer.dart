@@ -3,36 +3,59 @@ part of asn1lib;
  * ASN1Integer encoding / decoding.
  *
  * Note that asn1 integers can be arbitrary precision.
- * TODO: convert use of BigInteger to dart sdk BigInt class.
  */
 
 class ASN1Integer extends ASN1Object {
-  var intValue;
+  BigInt _intValue;
 
-  ASN1Integer(this.intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
+  ASN1Integer(this._intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
 
   ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    intValue = decodeInteger(this.valueBytes());
+    _intValue = bytes2BigInt(this.valueBytes());
   }
 
-  BigInteger get valueAsBigInteger {
-    if (intValue is BigInteger) return intValue;
-    if (isEncoded) return new BigInteger(valueBytes());
-    return new BigInteger(intValue);
-  }
+  int get intValue => valueAsBigInteger.toInt();
 
-  BigInteger get valueAsPositiveBigInteger {
-    if (!isEncoded) _encode();
-    return new BigInteger.fromBytes(1, valueBytes());
-  }
+  BigInt get valueAsBigInteger => _intValue;
 
   @override
   Uint8List _encode() {
-    var t = encodeIntValue(this.intValue);
+    var t = encodeBigIntValue(this._intValue);
     _valueByteLength = t.length;
     super._encodeHeader();
     _setValueBytes(t);
     return _encodedBytes;
+  }
+
+  static Uint8List encodeIntValue(int x) =>
+      encodeBigIntValue(new BigInt.from(x));
+
+  static int decodeInteger(Uint8List bytes, {int off: 0}) =>
+      bytes2BigInt(bytes).toInt();
+
+  String toString() => "ASNInteger($intValue)";
+
+  static final _b256 = new BigInt.from(256);
+  static final _minusOne = new BigInt.from(-1);
+  static final _zeroList = new Uint8List.fromList([0]);
+
+  /**
+   * Given an ASN1 encoded integer return the
+   * integer value of the byte stream.
+   *
+   */
+
+  static BigInt bytes2BigInt(Uint8List bytes) {
+    var isNegative = (bytes[0] & 0x80) != 0;
+    var result = BigInt.zero;
+    for (int i = 0; i < bytes.length; ++i) {
+      result = result << 8;
+      var x = isNegative ? (bytes[i] ^ 0xff) : bytes[i];
+      result += new BigInt.from(x);
+    }
+    if (isNegative) return (result + BigInt.one) * _minusOne;
+
+    return result;
   }
 
   /**
@@ -41,48 +64,29 @@ class ASN1Integer extends ASN1Object {
    * with the *smallest" possible representation
    * in "Big" Endian format (MSB first on the wire.)
    *
-   * This method uses some dart vm tricks to
-   * encode integer values by playing around with the
-   * machine representation using ByteArray methods.
-   *
-   * This is limited to encoding longs (64 bit values)
-   * The basic technique is to stuff a 64 bit int
-   * into a ByteArray, and retrieve the byte values
-   * from that array.
-   *
-   * The dart VM is little endian - so we need to
-   * flip the order around.
    */
-  static Uint8List encodeIntValue(var intValue) {
-    var result;
-    if (intValue is BigInteger) {
-      result = new Uint8List.fromList(intValue.toByteArray());
-    } else {
-      var bn = new BigInteger(intValue);
-      result = new Uint8List.fromList(bn.toByteArray());
+
+  static Uint8List encodeBigIntValue(BigInt number) {
+    if (number.bitLength == 0) return _zeroList;
+
+    int bytes = ((number.bitLength + 7) >> 3) + 1;
+    var result = new Uint8List(bytes);
+    var neg = false;
+    if (number.isNegative) {
+      neg = true;
+      result[0] = 0xff;
     }
+
+    for (int i = 1, j = bytes - 1; i < bytes; i++, --j) {
+      result[j] = number.remainder(_b256).toInt();
+      number = number >> 8;
+    }
+    if (!neg) {
+      if (result[1] & 0x80 == 0) return result.sublist(1);
+    } else {
+      if (result[1] & 0x80 != 0) return result.sublist(1);
+    }
+
     return result;
   }
-
-  /**
-   * Given an ASN1 encoded integer return the
-   * integer value of the byte stream.
-   * Uses the same tricks as [encodeIntValue]
-   *
-   * The optional offset argument is where the encoded integer starts in the
-   * byte array. TODO: Do we need the offset feature??
-   *
-   * Note that the byte array length is expected to be exact (no extra padding
-   * on the end of the array).
-   */
-
-  static dynamic decodeInteger(Uint8List bytes, {int offset: 0}) {
-    if (bytes.length - offset > 8) {
-      return new BigInteger(bytes.sublist(offset));
-    } else {
-      return new BigInteger(bytes.sublist(offset)).intValue();
-    }
-  }
-
-  String toString() => "ASNInteger($intValue)";
 }
