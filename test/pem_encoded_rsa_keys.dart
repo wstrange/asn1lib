@@ -4,7 +4,6 @@ library asn1test;
 
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
-import "package:bignum/bignum.dart";
 import 'package:convert/convert.dart' as convert;
 
 import 'dart:convert';
