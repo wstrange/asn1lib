@@ -9,3 +9,7 @@
 
 * Updates for dart 2
 
+## 0.5.0 
+
+* Convert use of BigInteger to dart SDK BigInt
+
