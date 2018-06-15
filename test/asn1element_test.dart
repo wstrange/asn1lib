@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'dart:math';
 
 main() {
-  test('Test Encode integer', () {
+  test('Test integer encoding', () {
     // key = integer to encode, val = expected encoding bytes
     var m = new Map();
     m[0] = [0x0];
@@ -19,21 +19,21 @@ main() {
     m[-129] = [0xff, 0x7f];
 
     m.forEach((val, expected) {
-      var r = ASN1Integer.encodeIntValue(val);
+      var r = ASN1Integer.encodeInt(val);
       expect(r, equals(expected));
       // decode it back again. Should be the same as what we started with
-      var x = ASN1Integer.decodeInteger(r);
+      var x = ASN1Integer.decodeInt(r);
       expect(x, equals(val));
     });
 
     // for fun try some random numbers
     var random = new Random();
     int sign = 1;
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
       var x = random.nextInt(10000000) * sign;
       sign = sign * -1;
-      var encoded = ASN1Integer.encodeIntValue(x);
-      var decoded = ASN1Integer.decodeInteger(encoded);
+      var encoded = ASN1Integer.encodeInt(x);
+      var decoded = ASN1Integer.decodeInt(encoded);
       // we should get back what we started with
       expect(x, decoded);
     }
@@ -140,7 +140,6 @@ main() {
   // show sample ussage
   test("Sample for README", () {
     var s = new ASN1Sequence();
-    s.add(new ASN1Integer(23));
     s.add(new ASN1OctetString('This is a test'));
     s.add(new ASN1Boolean(true));
 

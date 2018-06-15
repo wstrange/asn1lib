@@ -2,7 +2,6 @@ library asn1lib;
 
 import 'dart:typed_data';
 import 'dart:convert';
-import "package:bignum/bignum.dart";
 
 
 part 'asn1integer.dart';

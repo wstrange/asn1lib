@@ -1,13 +1,8 @@
-
-library asn1test;
-
-
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
-import "package:bignum/bignum.dart";
 import 'package:convert/convert.dart' as convert;
-
 import 'dart:convert';
+
 
 main() {
 
@@ -85,8 +80,7 @@ dZGeuvqtAXpkUfBXJed4Ehdd9Q==
      asn1Parser = new ASN1Parser(publicKeyBitString.contentBytes());
      var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
-     var expected = new BigInteger();
-     expected.fromInt(65537);
+     var expected = new BigInt.from(65537);
      expect((pkSeq.elements[1] as ASN1Integer).valueAsBigInteger, expected);
 
      //dump from openssl
@@ -114,7 +108,8 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
 
      var x = convert.hex.decode(expectedHex);
 
-     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger, new BigInteger.fromBytes(0, x));
+     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger, ASN1Util.bytes2BigInt(x));
+
    });
 
 
@@ -154,11 +149,15 @@ a3:fe:21:cb:e5:7b:69:a4:c3:83:48:8a:31:78:f8:
 e7:fa:3e:c7:e6:40:44:b9:51:32:b8:77:7f:ed:f5:
 b5:96:6f:1b:9f:73:f0:9d:33:90:04:c8:62:a6:ba:
 3e:e3""");
-      expect(modulus.valueAsBigInteger, new BigInteger.fromBytes(0, expectedModulus));
+      //expect(modulus.valueAsBigInteger, new BigInteger.fromBytes(0, expectedModulus));
+     expect(modulus.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedModulus));
+
 
      var publicExponent = pkSeq.elements[2] as ASN1Integer;
      var expectedPublicExponent = decodeHex("""01:00:01""");
-     expect(publicExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPublicExponent));
+     //expect(publicExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPublicExponent));
+
+     expect(publicExponent.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedPublicExponent));
 
      var privateExponent = pkSeq.elements[3] as ASN1Integer;
      var expectedPrivateExponent = decodeHex("""
@@ -181,7 +180,9 @@ f0:0c:25:17:89:68:4a:ea:f3:ec:da:21:3f:4c:35:
 9c:41:f8:29:0b:bd:98:ae:bf:eb:0b:7c:91:86:57:
 0e:71
 """);
-     expect(privateExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPrivateExponent));
+     
+     expect(privateExponent.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedPrivateExponent));
+
      var p = pkSeq.elements[4] as ASN1Integer;
      var expectedP = decodeHex("""
 00:ff:95:fe:c1:75:aa:2d:cd:5b:52:4d:10:d5:d4:
@@ -194,7 +195,7 @@ ef:ff:b9:e4:1f:be:fb:6e:6e:3f:46:9c:6a:90:85:
 56:8e:fe:15:c4:78:2a:fb:1b:18:67:a5:0a:f0:ac:
 df:e2:d2:26:c0:26:b6:a9:6b
 """);
-     expect(p.valueAsBigInteger, new BigInteger.fromBytes(0, expectedP));
+     expect(p.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedP));
      var q = pkSeq.elements[5] as ASN1Integer;
      var expectedQ = decodeHex("""
 00:d5:c6:3e:7b:e8:11:58:11:df:f6:fd:7b:8e:b8:
@@ -207,7 +208,7 @@ be:4e:6f:2c:8b:62:b5:a7:60:58:d7:51:eb:56:62:
 96:2f:f3:c0:e5:a2:ca:a0:92:52:a1:86:db:4a:02:
 96:c1:e3:e4:a7:cf:d2:c6:69
 """);
-     expect(q.valueAsBigInteger, new BigInteger.fromBytes(0, expectedQ));
+     expect(q.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedQ));
      var exp1 = pkSeq.elements[6] as ASN1Integer;
      var expectedExp1 = decodeHex("""
 00:99:c5:9e:fe:ba:52:67:38:34:87:71:c2:7d:44:
@@ -220,7 +221,7 @@ de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 06:8d:05:a6:07:0c:dd:9f:32:90:1e:5b:98:17:71:
 8b:4a:26:72:16:0d:b4:bc:7d
 """);
-     expect(exp1.valueAsBigInteger, new BigInteger.fromBytes(0, expectedExp1));
+     expect(exp1.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedExp1));
      var exp2 = pkSeq.elements[7] as ASN1Integer;
      var expectedExp2 = decodeHex("""
 69:e8:31:04:89:d0:2d:e5:8d:23:7c:29:3e:67:e3:
@@ -233,7 +234,7 @@ de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 27:d2:86:fa:3d:50:4d:84:b0:53:3d:d0:5e:36:32:
 22:14:99:2f:5a:12:7e:21
 """);
-     expect(exp2.valueAsBigInteger, new BigInteger.fromBytes(0, expectedExp2));
+     expect(exp2.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedExp2));
      var co = pkSeq.elements[8] as ASN1Integer;
      var expectedCo = decodeHex("""
 00:8e:fe:d6:6e:27:6e:4a:94:1b:fa:13:e0:d8:04:
@@ -246,7 +247,7 @@ ed:4d:d5:a1:83:f9:d4:b3:e3:91:26:5c:4c:78:99:
 fd:4d:ff:9f:be:75:91:9e:ba:fa:ad:01:7a:64:51:
 f0:57:25:e7:78:12:17:5d:f5
 """);
-     expect(co.valueAsBigInteger, new BigInteger.fromBytes(0, expectedCo));
+     expect(co.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedCo));
    });
 }
 
