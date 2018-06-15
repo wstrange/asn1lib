@@ -24,4 +24,16 @@ class ASN1Util {
       return x.toRadixString(16);
   }
 
+  // convert a list of bytes to a BigInt
+  // bytes[0] has the most significant bits. The
+  // bytes format is NOT two's complement format
+  static BigInt bytes2BigInt(List<int> bytes) {
+    var x = BigInt.zero;
+    for(int i=0; i < bytes.length; ++i ) {
+      x = x << 8;
+      x += new BigInt.from(bytes[i]);
+    }
+    return x;
+  }
+
 }

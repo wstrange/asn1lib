@@ -11,7 +11,7 @@ class ASN1Integer extends ASN1Object {
   ASN1Integer(this._intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
 
   ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    _intValue = bytes2BigInt(this.valueBytes());
+    _intValue = decodeBigInt(this.valueBytes());
   }
 
   int get intValue => valueAsBigInteger.toInt();
@@ -20,18 +20,16 @@ class ASN1Integer extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    var t = encodeBigIntValue(this._intValue);
+    var t = encodeBigInt(this._intValue);
     _valueByteLength = t.length;
     super._encodeHeader();
     _setValueBytes(t);
     return _encodedBytes;
   }
 
-  static Uint8List encodeIntValue(int x) =>
-      encodeBigIntValue(new BigInt.from(x));
+  static Uint8List encodeInt(int x) => encodeBigInt(new BigInt.from(x));
 
-  static int decodeInteger(Uint8List bytes, {int off: 0}) =>
-      bytes2BigInt(bytes).toInt();
+  static int decodeInt(Uint8List bytes) => decodeBigInt(bytes).toInt();
 
   String toString() => "ASNInteger($intValue)";
 
@@ -45,7 +43,7 @@ class ASN1Integer extends ASN1Object {
    *
    */
 
-  static BigInt bytes2BigInt(Uint8List bytes) {
+  static BigInt decodeBigInt(Uint8List bytes) {
     var isNegative = (bytes[0] & 0x80) != 0;
     var result = BigInt.zero;
     for (int i = 0; i < bytes.length; ++i) {
@@ -66,7 +64,7 @@ class ASN1Integer extends ASN1Object {
    *
    */
 
-  static Uint8List encodeBigIntValue(BigInt number) {
+  static Uint8List encodeBigInt(BigInt number) {
     if (number.bitLength == 0) return _zeroList;
 
     int bytes = ((number.bitLength + 7) >> 3) + 1;

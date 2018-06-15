@@ -19,10 +19,10 @@ main() {
     m[-129] = [0xff, 0x7f];
 
     m.forEach((val, expected) {
-      var r = ASN1Integer.encodeIntValue(val);
+      var r = ASN1Integer.encodeInt(val);
       expect(r, equals(expected));
       // decode it back again. Should be the same as what we started with
-      var x = ASN1Integer.decodeInteger(r);
+      var x = ASN1Integer.decodeInt(r);
       expect(x, equals(val));
     });
 
@@ -32,8 +32,8 @@ main() {
     for (int i = 0; i < 100000; ++i) {
       var x = random.nextInt(10000000) * sign;
       sign = sign * -1;
-      var encoded = ASN1Integer.encodeIntValue(x);
-      var decoded = ASN1Integer.decodeInteger(encoded);
+      var encoded = ASN1Integer.encodeInt(x);
+      var decoded = ASN1Integer.decodeInt(encoded);
       // we should get back what we started with
       expect(x, decoded);
     }

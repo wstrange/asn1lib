@@ -32,7 +32,7 @@ class ASN1Object {
   Uint8List _encodedBytes;
 
   /// Get the encoded byte representation for this object. This can trigger
-  /// calling the [encode] method if the object has not yet been encoded
+  /// calling the [encodeBigInt] method if the object has not yet been encoded
   Uint8List get encodedBytes {
     if( _encodedBytes == null)
       _encode();
@@ -116,7 +116,7 @@ class ASN1Object {
    * This will encode *only* the tag and the length bytes- which is all we can do right now
    * Subclasses may call this method - but they MUST set [valueByteLength] before
    * calling this. We need this know how big to make the encoded object array. Subclasses are
-   * responsible for encoding their value representations using [encode]
+   * responsible for encoding their value representations using [encodeBigInt]
    */
   Uint8List _encodeHeader() {
     if( _encodedBytes == null ) {
