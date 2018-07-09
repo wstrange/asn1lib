@@ -137,6 +137,11 @@ main() {
     //expect(s.elements, everyElement(s2.elements));
   });
 
+  test("Create ASN1Integer from int", (){
+    var x = ASN1Integer.fromInt(47);
+    expect( x.intValue, equals(47));
+  });
+
   // show sample ussage
   test("Sample for README", () {
     var s = new ASN1Sequence();

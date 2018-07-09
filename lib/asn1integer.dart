@@ -2,7 +2,9 @@ part of asn1lib;
 /**
  * ASN1Integer encoding / decoding.
  *
- * Note that asn1 integers can be arbitrary precision.
+ * Note that asn1 integers can be arbitrary precision, so a BigInt is used
+ * to hold the int value. Convenience methods are provided to deal with
+ * int or BigInt
  */
 
 class ASN1Integer extends ASN1Object {
@@ -10,11 +12,15 @@ class ASN1Integer extends ASN1Object {
 
   ASN1Integer(this._intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
 
+  ASN1Integer.fromInt(int x)  {
+    _intValue = BigInt.from(x);
+  }
+
   ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     _intValue = decodeBigInt(this.valueBytes());
   }
 
-  int get intValue => valueAsBigInteger.toInt();
+  int get intValue => _intValue.toInt();
 
   BigInt get valueAsBigInteger => _intValue;
 
