@@ -12,7 +12,8 @@ class ASN1Integer extends ASN1Object {
 
   ASN1Integer(this._intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
 
-  ASN1Integer.fromInt(int x)  {
+  ASN1Integer.fromInt(int x,{tag: INTEGER_TYPE}): super(tag: tag)  {
+
     _intValue = BigInt.from(x);
     _encode();
   }

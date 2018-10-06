@@ -200,4 +200,12 @@ main() {
     testList(intTestValues);
     testList(longTestValues);
   });
+
+  test('fromInt vs BigInt.from', () {
+    var si = ASN1Integer.fromInt(1);
+    var sb = ASN1Integer(BigInt.from(1));
+
+    expect(si.encodedBytes, equals(sb.encodedBytes));
+  });
+
 }
