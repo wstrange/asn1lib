@@ -2,7 +2,9 @@ part of asn1lib;
 /**
  * ASN1Integer encoding / decoding.
  *
- * Note that asn1 integers can be arbitrary precision.
+ * Note that asn1 integers can be arbitrary precision, so a BigInt is used
+ * to hold the int value. Convenience methods are provided to deal with
+ * int or BigInt
  */
 
 class ASN1Integer extends ASN1Object {
@@ -10,11 +12,17 @@ class ASN1Integer extends ASN1Object {
 
   ASN1Integer(this._intValue, {tag: INTEGER_TYPE}) : super(tag: tag);
 
+  ASN1Integer.fromInt(int x,{tag: INTEGER_TYPE}): super(tag: tag)  {
+
+    _intValue = BigInt.from(x);
+    _encode();
+  }
+
   ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     _intValue = decodeBigInt(this.valueBytes());
   }
 
-  int get intValue => valueAsBigInteger.toInt();
+  int get intValue => _intValue.toInt();
 
   BigInt get valueAsBigInteger => _intValue;
 
@@ -35,7 +43,6 @@ class ASN1Integer extends ASN1Object {
 
   static final _b256 = new BigInt.from(256);
   static final _minusOne = new BigInt.from(-1);
-  static final _zeroList = new Uint8List.fromList([0]);
 
   /**
    * Given an ASN1 encoded integer return the
@@ -62,29 +69,77 @@ class ASN1Integer extends ASN1Object {
    * with the *smallest" possible representation
    * in "Big" Endian format (MSB first on the wire.)
    *
+   * The most significant bit is the sign bit (1 for negative,
+   * 0 postive).
+   * This may require padding the representation with an extra byte
+   * to get the correct sign bit
+   *
    */
 
+  static var _negOne = BigInt.from(-1);
+  static var _negOneArray = Uint8List.fromList([0xff]);
+  static final _zeroList = new Uint8List.fromList([0]);
+
+
   static Uint8List encodeBigInt(BigInt number) {
-    if (number.bitLength == 0) return _zeroList;
+    var orig = number;
 
-    int bytes = ((number.bitLength + 7) >> 3) + 1;
-    var result = new Uint8List(bytes);
-    var neg = false;
-    if (number.isNegative) {
-      neg = true;
-      result[0] = 0xff;
+    if (number.bitLength == 0) {
+      if( number == _negOne )
+        return _negOneArray;
+      else
+        return _zeroList;
     }
+    // we may need one extra byte for padding
+    var bytes = (number.bitLength / 8).ceil() +1;
+    var result = new Uint8List(bytes);
 
-    for (int i = 1, j = bytes - 1; i < bytes; i++, --j) {
-      result[j] = number.remainder(_b256).toInt();
+    number = number.abs();
+    for( int i= 0, j = bytes-1; i < (bytes); i++, --j) {
+      var x = number.remainder(_b256).toInt();
+      result[j] = x;
       number = number >> 8;
     }
-    if (!neg) {
-      if (result[1] & 0x80 == 0) return result.sublist(1);
-    } else {
-      if (result[1] & 0x80 != 0) return result.sublist(1);
-    }
 
+    if( orig.isNegative ) {
+      _twosComplement(result);
+      if( (result[1] & 0x80) == 0x80 ) // high order bit is a one - we don't need pad
+        return result.sublist(1);
+    }
+    else {
+      if( (result[1] & 0x80) != 0x80 )
+        return result.sublist(1); // hi order bit is a 0, we dont need pad
+    }
     return result;
   }
+
+  // calculate the twos complement by flipping each bit and adding 1
+  static void _twosComplement(Uint8List result) {
+    var carry = 1;
+    for(int j=result.length -1; j >= 0; --j) {
+      // flip the bits
+      result[j] ^= 0xFF;
+
+      if( result[j] == 255 && carry == 1) { // overflow
+        result[j] = 0;
+        carry = 1;
+      }
+      else {
+        result[j] += carry;
+        carry = 0;
+      }
+    }
+    result[0] = result[0] | 0x80;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is ASN1Integer &&
+              runtimeType == other.runtimeType &&
+              _intValue == other._intValue;
+
+  @override
+  int get hashCode => _intValue.hashCode;
+
 }

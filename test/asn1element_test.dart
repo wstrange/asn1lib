@@ -36,7 +36,16 @@ main() {
       var decoded = ASN1Integer.decodeInt(encoded);
       // we should get back what we started with
       expect(x, decoded);
+
+      // try via constructor
+      var int1 = ASN1Integer.fromInt(x);
+      var int2 = ASN1Integer.fromBytes(int1.encodedBytes);
+
+      // equality is broken..
+      expect(int1,equals(int2));
+      expect(int2.intValue,equals(x));
     }
+
   });
 
   test('Length Encoding and Decoding', () {
@@ -135,6 +144,11 @@ main() {
     // TODO: This fails. We need to review the notion of
     // equality for asn1 elements, sets, sequences etc.
     //expect(s.elements, everyElement(s2.elements));
+  });
+
+  test("Create ASN1Integer from int", (){
+    var x = ASN1Integer.fromInt(47);
+    expect( x.intValue, equals(47));
   });
 
   // show sample ussage
