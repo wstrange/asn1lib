@@ -18,7 +18,7 @@ main() {
         1,
         2,
       ]);
-      expect(a.oi, equals([0x12]));
+      expect(a.oi, equals([0x2a]));
     }
     // US (ANSI)
     {
@@ -27,19 +27,19 @@ main() {
         2,
         840,
       ]);
-      expect(a.oi, equals([0x12, 0x86, 0x48]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48]));
     }
     // RSA Data Security, Inc.
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponents([1, 2, 840, 113549]);
-      expect(a.oi, equals([0x12, 0x86, 0x48, 0x86, 0xf7, 0x0d]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d]));
     }
     // RSA Data Security, Inc. PKCS
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponents([1, 2, 840, 113549, 1]);
-      expect(a.oi, equals([0x12, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01]));
     }
     // directory services (X.500)
     {
@@ -47,7 +47,7 @@ main() {
         2,
         5,
       ]);
-      expect(a.oi, equals([0x25]));
+      expect(a.oi, equals([0x55]));
     }
     // directory services-algorithms
     {
@@ -56,43 +56,63 @@ main() {
         5,
         8,
       ]);
-      expect(a.oi, equals([0x25, 0x08]));
+      expect(a.oi, equals([0x55, 0x08]));
     }
   });
   test("fromComponentString", () {
     // ISO member bodies
     {
       ASN1ObjectIdentifier a = ASN1ObjectIdentifier.fromComponentString("1.2");
-      expect(a.oi, equals([0x12]));
+      expect(a.oi, equals([0x2a]));
     }
     // US (ANSI)
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponentString("1.2.840");
-      expect(a.oi, equals([0x12, 0x86, 0x48]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48]));
     }
     // RSA Data Security, Inc.
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponentString("1.2.840.113549");
-      expect(a.oi, equals([0x12, 0x86, 0x48, 0x86, 0xf7, 0x0d]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d]));
     }
     // RSA Data Security, Inc. PKCS
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponentString("1.2.840.113549.1");
-      expect(a.oi, equals([0x12, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01]));
+      expect(a.oi, equals([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01]));
     }
     // directory services (X.500)
     {
       ASN1ObjectIdentifier a = ASN1ObjectIdentifier.fromComponentString("2.5");
-      expect(a.oi, equals([0x25]));
+      expect(a.oi, equals([0x55]));
     }
     // directory services-algorithms
     {
       ASN1ObjectIdentifier a =
           ASN1ObjectIdentifier.fromComponentString("2.5.8");
-      expect(a.oi, equals([0x25, 0x08]));
+      expect(a.oi, equals([0x55, 0x08]));
     }
   });
+
+  test("fromName", () {
+    // test that registration works
+    ASN1ObjectIdentifier ou = ASN1ObjectIdentifier.fromComponentString("2.5.4.11");
+    ASN1ObjectIdentifier.registerObjectIdentiferName("Ou", ou);
+
+    // test lookup (noting case indepence)
+    {
+      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("ou");
+      expect(got.oi, equals(ou.oi));
+      expect(got.tag, equals(ou.tag));
+    }
+
+    // test name doesn't exist
+    {
+      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("doesNotExist");
+      expect(got, equals(null));
+    }
+  });
+
 }
