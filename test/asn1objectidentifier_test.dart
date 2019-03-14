@@ -137,5 +137,16 @@ main() {
     }
 
   });
+  test("registerFrequentNames", () {
+    ASN1ObjectIdentifier.registerFrequentNames();
 
+    ASN1ObjectIdentifier registeredAddress = ASN1ObjectIdentifier.fromComponentString("2.5.4.26");
+
+    {
+      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("registeredAddress");
+      expect(got.oi, equals(registeredAddress.oi));
+      expect(got.tag, equals(registeredAddress.tag));
+    }
+
+  });
 }
