@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.4
+
+Fixed #26
+
 ## 0.5.1 
 
 Add AS1Integer.fromInt factory method

@@ -119,6 +119,13 @@ main() {
     expect(t.encodedBytes, equals(expected));
   });
 
+  // test for #26
+  test('Null Sequence', (){
+    var seq = ASN1Sequence(tag: 96);
+    seq.add( ASN1Null());
+    expect(seq.encodedBytes, isNotNull);
+  });
+
   test("Boolean ", () {
     var f = ASN1Boolean.ASN1FalseBoolean;
     var t = ASN1Boolean.ASN1TrueBoolean;
