@@ -67,4 +67,10 @@ class ASN1ObjectIdentifier  extends ASN1Object  {
   static registerObjectIdentiferName(String name, ASN1ObjectIdentifier oid) {
       _names[name.toLowerCase()] = oid;
     }
+
+  static registerManyNames(Map<String,String> pairs) {
+      pairs.forEach((key, value) {
+        registerObjectIdentiferName(key, ASN1ObjectIdentifier.fromComponentString(value));
+      });
+    }
 }

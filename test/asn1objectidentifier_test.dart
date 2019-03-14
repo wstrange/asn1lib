@@ -115,4 +115,27 @@ main() {
     }
   });
 
+  test("registerManyNames", () {
+    ASN1ObjectIdentifier.registerManyNames({
+      "title": "2.5.4.12",
+      "givenName": "2.5.4.42",
+    });
+
+    ASN1ObjectIdentifier title = ASN1ObjectIdentifier.fromComponentString("2.5.4.12");
+    ASN1ObjectIdentifier givenName = ASN1ObjectIdentifier.fromComponentString("2.5.4.42");
+
+    {
+      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("TITLE");
+      expect(got.oi, equals(title.oi));
+      expect(got.tag, equals(title.tag));
+    }
+
+    {
+      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("GIVENNAME");
+      expect(got.oi, equals(givenName.oi));
+      expect(got.tag, equals(givenName.tag));
+    }
+
+  });
+
 }
