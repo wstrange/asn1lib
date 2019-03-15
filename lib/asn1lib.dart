@@ -22,4 +22,5 @@ part 'asn1set.dart';
 part 'asn1objectidentifier.dart';
 part 'asn1bitstring.dart';
 part 'asn1printablestring.dart';
+part 'asn1utf8string.dart';
 part 'asn1utctime.dart';

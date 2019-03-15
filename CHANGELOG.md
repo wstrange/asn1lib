@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.6
+
+Merged #28
+
+Add ASN1UTF8String
+
 ## 0.5.5
 
 Merged #27
