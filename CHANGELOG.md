@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.7
+
+Merged #29
+
+- Expand AS1NNull to accept tag
+- Associated test cases
+- Added David Janes as author
+
 ## 0.5.6
 
 Merged #28
