@@ -31,9 +31,6 @@ void main() {
       expect(os2.encodedBytes, equals([0x04, 0x08, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]));
     });
 
-    // IA5String "test1@rsa.com"
-    // should become 16 0d 74 65 73 74 31 40 72 73 61 2e 63 6f 6d
-
     // PrintableString "Test User 1"
     // should become 13 0b 54 65 73 74 20 55 73 65 72 20 31
 

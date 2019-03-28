@@ -64,6 +64,15 @@ class ASN1Parser {
       case OCTET_STRING_TYPE:
         return new ASN1OctetString.fromBytes(b);
 
+      case UTF8_STRING_TYPE:
+        return new ASN1UTF8String.fromBytes(b);
+
+      case IA5_STRING_TYPE:
+        return new ASN1IA5String.fromBytes(b);
+
+      case OCTET_STRING_TYPE:
+        return new ASN1OctetString.fromBytes(b);
+
       case INTEGER_TYPE:
       case ENUMERATED_TYPE:
         return new ASN1Integer.fromBytes(b);
@@ -71,17 +80,17 @@ class ASN1Parser {
       case SET_TYPE:
         return new ASN1Set.fromBytes(b);
 
-      case BOOLEAN_TYPE:  // boolean
+      case BOOLEAN_TYPE:
         return new ASN1Boolean.fromBytes(b);
         
-      case OBJECT_IDENTIFIER:  // boolean
-              return new ASN1ObjectIdentifier.fromBytes(b); 
+      case OBJECT_IDENTIFIER:
+        return new ASN1ObjectIdentifier.fromBytes(b); 
               
-      case BIT_STRING_TYPE:  // boolean
-              return new ASN1BitString.fromBytes(b); 
+      case BIT_STRING_TYPE:
+        return new ASN1BitString.fromBytes(b); 
                
-      case NULL_TYPE:  // boolean
-                    return new ASN1Null.fromBytes(b);
+      case NULL_TYPE:
+        return new ASN1Null.fromBytes(b);
 
       case PRINTABLE_STRING_TYPE:
         return new ASN1PrintableString.fromBytes(b);
