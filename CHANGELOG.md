@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.8
+
+Merged #30
+
+- Add IA5String
+- Add associated tests
+- Make sure parser handles IA5 and UT8 String
+- Add large test case with PEM certificate that includes IA5 and UTF8 Strings
+
 ## 0.5.7
 
 Merged #29
