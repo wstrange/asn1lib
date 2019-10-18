@@ -43,6 +43,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
     "dmd": "2.5.6.20",
     "md5WithRSAEncryption": "1.2.840.113549.1.1.4",
     "rsaEncryption": "1.2.840.113549.1.1.1",
+    "sha256WithRSAEncryption": "1.2.840.113549.1.1.11"
   };
 
   List<int> oi;

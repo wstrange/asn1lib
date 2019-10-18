@@ -1,9 +1,7 @@
 part of asn1lib;
 
-
 /// Parses ASN1 BER Encoded bytes to create ASN1 Objects
 class ASN1Parser {
-
   // stream of bytes to parse. This might be a view into a longer stream
   Uint8List _bytes;
 
@@ -13,7 +11,9 @@ class ASN1Parser {
   // current position in the byte array
   int _position = 0;
 
-  bool hasNext() { return  _position < _bytes.length; }
+  bool hasNext() {
+    return _position < _bytes.length;
+  }
 
   /**
    * Return the next ASN1Object in the stream
@@ -24,40 +24,44 @@ class ASN1Parser {
     //print("parser tag = ${hex(tag)} bytes=${hex(_bytes)}");
     // ASN1 Primitives have high bits 8/7 set to 0
 
-    bool isPrimitive =  (0xC0 & tag) == 0;
+    bool isPrimitive = (0xC0 & tag) == 0;
     bool isApplication = (0x40 & tag) != 0;
 
-    int l =  _bytes.length - _position;
+    //int l = _bytes.length - _position;
+    int l = 0;
+    if (_bytes.length >= _position + 1) {
+      l = _bytes[_position + 1] + 2;
+    } else {
+      l = _bytes.length - _position;
+    }
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
-    var subBytes = new Uint8List.view(_bytes.buffer, _position + _bytes.offsetInBytes, l);
+    var subBytes =
+        new Uint8List.view(_bytes.buffer, _position + _bytes.offsetInBytes, l);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
     ASN1Object obj = null;
 
-    if( isPrimitive )
-      obj =  _doPrimitive(tag,subBytes);
-    else
-    if( isApplication ) {
+    if (isPrimitive)
+      obj = _doPrimitive(tag, subBytes);
+    else if (isApplication) {
       // sequence subtype
-      if( (tag & SEQUENCE_TYPE) != 0)
+      if ((tag & SEQUENCE_TYPE) != 0)
         obj = new ASN1Sequence.fromBytes(subBytes);
       else
         throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
-    }
-    else {
+    } else {
       // create a vanilla object
-       obj = new ASN1Object.fromBytes(subBytes);
+      obj = new ASN1Object.fromBytes(subBytes);
     }
 
     _position = _position + obj.totalEncodedByteLength;
     return obj;
-
   }
 
-  ASN1Object _doPrimitive(int tag,Uint8List b) {
+  ASN1Object _doPrimitive(int tag, Uint8List b) {
     //print("Primitive tag=${hex(tag)}");
-    switch(tag ) {
+    switch (tag) {
       case SEQUENCE_TYPE: // sequence
         return new ASN1Sequence.fromBytes(b);
 
@@ -82,13 +86,13 @@ class ASN1Parser {
 
       case BOOLEAN_TYPE:
         return new ASN1Boolean.fromBytes(b);
-        
+
       case OBJECT_IDENTIFIER:
-        return new ASN1ObjectIdentifier.fromBytes(b); 
-              
+        return new ASN1ObjectIdentifier.fromBytes(b);
+
       case BIT_STRING_TYPE:
-        return new ASN1BitString.fromBytes(b); 
-               
+        return new ASN1BitString.fromBytes(b);
+
       case NULL_TYPE:
         return new ASN1Null.fromBytes(b);
 
@@ -98,7 +102,7 @@ class ASN1Parser {
       case UTC_TIME_TYPE:
         return new ASN1UtcTime.fromBytes(b);
 
-    default:
+      default:
         throw new ASN1Exception("Parser for tag ${tag} not implemented yet");
     }
   }
