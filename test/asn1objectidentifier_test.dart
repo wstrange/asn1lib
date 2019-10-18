@@ -3,9 +3,7 @@ library asn1test;
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 
-import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:io';
 
 // many tests from - http://luca.ntop.org/Teaching/Appunti/asn1.html
 // print(a.oi.map((x) => "0x" + x.toRadixString(16).padLeft(2, "0")));
@@ -98,7 +96,8 @@ main() {
 
   test("fromName", () {
     // test that registration works
-    ASN1ObjectIdentifier ou = ASN1ObjectIdentifier.fromComponentString("2.5.4.11");
+    ASN1ObjectIdentifier ou =
+        ASN1ObjectIdentifier.fromComponentString("2.5.4.11");
     ASN1ObjectIdentifier.registerObjectIdentiferName("Ou", ou);
 
     // test lookup (noting case indepence)
@@ -121,8 +120,10 @@ main() {
       "givenName": "2.5.4.42",
     });
 
-    ASN1ObjectIdentifier title = ASN1ObjectIdentifier.fromComponentString("2.5.4.12");
-    ASN1ObjectIdentifier givenName = ASN1ObjectIdentifier.fromComponentString("2.5.4.42");
+    ASN1ObjectIdentifier title =
+        ASN1ObjectIdentifier.fromComponentString("2.5.4.12");
+    ASN1ObjectIdentifier givenName =
+        ASN1ObjectIdentifier.fromComponentString("2.5.4.42");
 
     {
       ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("TITLE");
@@ -135,18 +136,29 @@ main() {
       expect(got.oi, equals(givenName.oi));
       expect(got.tag, equals(givenName.tag));
     }
-
   });
   test("registerFrequentNames", () {
     ASN1ObjectIdentifier.registerFrequentNames();
 
-    ASN1ObjectIdentifier registeredAddress = ASN1ObjectIdentifier.fromComponentString("2.5.4.26");
+    ASN1ObjectIdentifier registeredAddress =
+        ASN1ObjectIdentifier.fromComponentString("2.5.4.26");
 
     {
-      ASN1ObjectIdentifier got = ASN1ObjectIdentifier.fromName("registeredAddress");
+      ASN1ObjectIdentifier got =
+          ASN1ObjectIdentifier.fromName("registeredAddress");
       expect(got.oi, equals(registeredAddress.oi));
       expect(got.tag, equals(registeredAddress.tag));
     }
+  });
 
+  test("fromBytes", () {
+    Uint8List bytes = Uint8List.fromList([0x06, 0x03, 0x55, 0x04, 0x03]);
+    ASN1ObjectIdentifier objId = ASN1ObjectIdentifier.fromBytes(bytes);
+    expect(objId.identifier, "2.5.4.3");
+    expect(objId.oi.length, 4);
+    expect(objId.oi.elementAt(0), 2);
+    expect(objId.oi.elementAt(1), 5);
+    expect(objId.oi.elementAt(2), 4);
+    expect(objId.oi.elementAt(3), 3);
   });
 }
