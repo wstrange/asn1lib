@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.9
+
+- Merged #31. Improve fromBytes. Logic from Java Bouncy Castle.
+
 ## 0.5.8
 
 Merged #30
