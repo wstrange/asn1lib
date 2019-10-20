@@ -70,7 +70,7 @@ main() {
       var x = ASN1Length.decodeLength(b);
       fail("A RangeError is expected");
     } catch (e) {
-      expect(e, new isInstanceOf<RangeError>());
+      expect(e, TypeMatcher<RangeError>() );
     }
   });
 
@@ -150,7 +150,7 @@ main() {
 
     // TODO: This fails. We need to review the notion of
     // equality for asn1 elements, sets, sequences etc.
-    //expect(s.elements, everyElement(s2.elements));
+    // expect(s.elements, everyElement(s2.elements));
   });
 
   test("Create ASN1Integer from int", (){
