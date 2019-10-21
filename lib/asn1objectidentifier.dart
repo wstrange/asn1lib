@@ -1,5 +1,8 @@
 part of asn1lib;
 
+///
+/// An ASN1 Object Identifier
+///
 class ASN1ObjectIdentifier extends ASN1Object {
   static final Map<String, String> DN = {
     "cn": "2.5.4.3",
@@ -50,15 +53,18 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   String identifier;
 
-  ASN1ObjectIdentifier(this.oi, {this.identifier, tag: OBJECT_IDENTIFIER})
+  ASN1ObjectIdentifier(this.oi, {this.identifier, tag = OBJECT_IDENTIFIER})
       : super(tag: tag);
 
+  ///
+  /// Instantiate a [ASN1ObjectIdentifier] from the given [bytes].
+  ///
   ASN1ObjectIdentifier.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     // ignore the first 2 bytes because they are the tag and the length
     Uint8List subBytes = bytes.sublist(2, bytes.length);
     int value = 0;
     bool first = true;
-    BigInt bigValue = null;
+    BigInt bigValue;
     List<int> list = [];
     StringBuffer objId = StringBuffer();
     for (int i = 0; i != subBytes.length; i++) {
@@ -123,12 +129,12 @@ class ASN1ObjectIdentifier extends ASN1Object {
   }
 
   static ASN1ObjectIdentifier fromComponentString(String path,
-          {tag: OBJECT_IDENTIFIER}) =>
+          {tag = OBJECT_IDENTIFIER}) =>
       fromComponents(path.split(".").map((v) => int.parse(v)).toList(),
           tag: tag);
 
   static ASN1ObjectIdentifier fromComponents(List<int> components,
-      {tag: OBJECT_IDENTIFIER}) {
+      {tag = OBJECT_IDENTIFIER}) {
     assert(components.length >= 2);
     assert(components[0] < 3);
     assert(components[1] < 64);
@@ -161,7 +167,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
   static Map<String, ASN1ObjectIdentifier> _names =
       Map<String, ASN1ObjectIdentifier>();
 
-  static ASN1ObjectIdentifier fromName(String name, {tag: OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier fromName(String name, {tag = OBJECT_IDENTIFIER}) {
     name = name.toLowerCase();
 
     for (MapEntry<String, ASN1ObjectIdentifier> entry in _names.entries) {

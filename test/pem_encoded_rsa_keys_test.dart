@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 import 'package:convert/convert.dart' as convert;
@@ -83,7 +81,7 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 
   // data contains UTF8 and IA5 Strings and all sorts of complexity
   test('Test decode certificate', () {
-    var asn1Parser = new ASN1Parser(certificateDER);
+    var asn1Parser = ASN1Parser(certificateDER);
     var seq = asn1Parser.nextObject() as ASN1Sequence;
     expect(seq.valueBytes().length, 1549);
 
@@ -192,14 +190,14 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
   });
 
   test('Test decode outer sequence', () {
-    var asn1Parser = new ASN1Parser(publicKeyDER);
+    var asn1Parser = ASN1Parser(publicKeyDER);
     var seq = asn1Parser.nextObject();
 
     expect(seq.valueBytes().length, 290);
   });
 
   test('Test decode algorithm', () {
-    var asn1Parser = new ASN1Parser(publicKeyDER);
+    var asn1Parser = ASN1Parser(publicKeyDER);
     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     var algorithmSequence = topLevelSeq.elements[0] as ASN1Sequence;
     ;
@@ -209,16 +207,16 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     expect(algorithmSequence.elements[1].valueBytes().length, 0);
   });
   test('Test decode public key', () {
-    var asn1Parser = new ASN1Parser(publicKeyDER);
+    var asn1Parser = ASN1Parser(publicKeyDER);
     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     var publicKeyBitString = topLevelSeq.elements[1];
 
     expect(publicKeyBitString.valueBytes().length, 271);
 
-    asn1Parser = new ASN1Parser(publicKeyBitString.contentBytes());
+    asn1Parser = ASN1Parser(publicKeyBitString.contentBytes());
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
-    var expected = new BigInt.from(65537);
+    var expected = BigInt.from(65537);
     expect((pkSeq.elements[1] as ASN1Integer).valueAsBigInteger, expected);
 
     //dump from openssl
@@ -251,7 +249,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
   });
 
   test('Test decode private key', () {
-    var asn1Parser = new ASN1Parser(privateKeyDER);
+    var asn1Parser = ASN1Parser(privateKeyDER);
     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
 
     var version = topLevelSeq.elements[0];
@@ -263,7 +261,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     var privateKey = topLevelSeq.elements[2];
     expect(privateKey.valueBytes().length, 1193);
 
-    asn1Parser = new ASN1Parser(privateKey.contentBytes());
+    asn1Parser = ASN1Parser(privateKey.contentBytes());
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
     version = pkSeq.elements[0];
     var modulus = pkSeq.elements[1] as ASN1Integer;

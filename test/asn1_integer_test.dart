@@ -207,5 +207,4 @@ main() {
 
     expect(si.encodedBytes, equals(sb.encodedBytes));
   });
-
 }

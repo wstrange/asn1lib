@@ -1,14 +1,11 @@
-
 part of asn1lib;
 
-
 class ASN1Util {
-
   // convert a list to a hex string. Used for debugging ASN1 output
   static String listToString(List<int> list) {
-    StringBuffer b = new StringBuffer("[");
+    StringBuffer b = StringBuffer("[");
     bool doComma = false;
-    list.forEach( (v) {
+    list.forEach((v) {
       doComma ? b.write(", ") : doComma = true;
       b.write("0x${v.toRadixString(16)}");
     });
@@ -18,10 +15,11 @@ class ASN1Util {
 
   /// print an objects hex value. Object is a list or an integer
   static String obj2HexString(dynamic x) {
-    if( x is List)
+    if (x is List) {
       return listToString(x);
-    else
+    } else {
       return x.toRadixString(16);
+    }
   }
 
   // convert a list of bytes to a BigInt
@@ -29,11 +27,10 @@ class ASN1Util {
   // bytes format is NOT two's complement format
   static BigInt bytes2BigInt(List<int> bytes) {
     var x = BigInt.zero;
-    for(int i=0; i < bytes.length; ++i ) {
+    for (int i = 0; i < bytes.length; ++i) {
       x = x << 8;
-      x += new BigInt.from(bytes[i]);
+      x += BigInt.from(bytes[i]);
     }
     return x;
   }
-
 }

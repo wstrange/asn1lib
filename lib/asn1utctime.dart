@@ -1,22 +1,28 @@
 part of asn1lib;
 
+///
 /// An ASN1 UtcTime value.
+///
 /// UTCTime values take the form of either "YYMMDDhhmm[ss]Z" or "YYMMDDhhmm[ss](+|-)hhmm".
 /// The first form indicates (by the literal letter "Z") UTC time.
 /// The second form indicates a time that differs from UTC by plus or minus
-/// the hours and minutes represented by the final "hhmm".
+/// The hours and minutes represented by the final "hhmm".
+///
 class ASN1UtcTime extends ASN1Object {
-
   // The decoded date value
   DateTime dateTimeValue;
 
+  ///
   /// Create an [ASN1UtcTime] initialized with DateTime value.
-  /// optionally override the tag
-  ASN1UtcTime(this.dateTimeValue, {int tag: UTC_TIME_TYPE}):super(tag:tag);
+  ///
+  /// Optionally override the tag
+  ///
+  ASN1UtcTime(this.dateTimeValue, {int tag = UTC_TIME_TYPE}) : super(tag: tag);
 
+  ///
   /// Create an [ASN1UtcTime] from an encoded list of bytes
+  ///
   ASN1UtcTime.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-
     // The DateTime.parse() function wants:
     // * Either T or space as separator between date and time.
     // * Full year with 4 digits (the UtcTime in ASN.1 has only two digits for year).
@@ -24,10 +30,11 @@ class ASN1UtcTime extends ASN1Object {
     var octets = valueBytes();
     var stringValue = ascii.decode(octets);
     var y2 = int.parse(stringValue.substring(0, 2));
-    if (y2 > 75)
+    if (y2 > 75) {
       stringValue = "19" + stringValue;
-    else
+    } else {
       stringValue = "20" + stringValue;
+    }
     stringValue = stringValue.substring(0, 8) + "T" + stringValue.substring(8);
 
     dateTimeValue = DateTime.parse(stringValue);
@@ -44,7 +51,7 @@ class ASN1UtcTime extends ASN1Object {
     var second = utc.second.toString().padLeft(2, "0");
     // Encode string to YYMMDDhhmm[ss]Z
     var utcString = "$year$month$day$hour$minute${second}Z";
-    var valBytes = new List<int>();
+    var valBytes = List<int>();
     valBytes.addAll(ascii.encode(utcString));
     _valueByteLength = valBytes.length;
     _encodeHeader();
@@ -54,5 +61,4 @@ class ASN1UtcTime extends ASN1Object {
 
   @override
   String toString() => "UtcTime(${dateTimeValue})";
-
 }

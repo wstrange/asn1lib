@@ -9,7 +9,7 @@ import 'dart:math';
 main() {
   test('Test integer encoding', () {
     // key = integer to encode, val = expected encoding bytes
-    var m = new Map();
+    var m = Map();
     m[0] = [0x0];
     m[127] = [0x7f];
     m[128] = [0x0, 0x80];
@@ -27,7 +27,7 @@ main() {
     });
 
     // for fun try some random numbers
-    var random = new Random();
+    var random = Random();
     int sign = 1;
     for (int i = 0; i < 100000; ++i) {
       var x = random.nextInt(10000000) * sign;
@@ -42,10 +42,9 @@ main() {
       var int2 = ASN1Integer.fromBytes(int1.encodedBytes);
 
       // equality is broken..
-      expect(int1,equals(int2));
-      expect(int2.intValue,equals(x));
+      expect(int1, equals(int2));
+      expect(int2.intValue, equals(x));
     }
-
   });
 
   test('Length Encoding and Decoding', () {
@@ -63,42 +62,42 @@ main() {
   // the length. This could happen with some stream parsers that have not yet seen
   // all the bytes of a message.
   test('Length decoding when not enough bytes should throw RangeError', () {
-    var b = new Uint8List.fromList([0x0, 0x82, 0x04]); // missing 0x00
+    var b = Uint8List.fromList([0x0, 0x82, 0x04]); // missing 0x00
 
     try {
       // ignore: unused_local_variable
       var x = ASN1Length.decodeLength(b);
       fail("A RangeError is expected");
     } catch (e) {
-      expect(e, new isInstanceOf<RangeError>());
+      expect(e, e as RangeError);
     }
   });
 
   test('Octet String encoding', () {
     var s = "Hello";
-    var os = new ASN1OctetString(s);
-    var os2 = new ASN1OctetString.fromBytes(os.encodedBytes);
+    var os = ASN1OctetString(s);
+    var os2 = ASN1OctetString.fromBytes(os.encodedBytes);
     expect(os2.stringValue, equals(s));
   });
 
   test('Octet get octets', () {
     List<int> octets = [1, 2, 3, 4, 5, 123, 254, 0, 33];
-    var os1 = new ASN1OctetString(new String.fromCharCodes(octets));
-    var os1d = new ASN1OctetString.fromBytes(os1.encodedBytes);
-    var os2 = new ASN1OctetString(octets);
-    var os2d = new ASN1OctetString.fromBytes(os2.encodedBytes);
+    var os1 = ASN1OctetString(String.fromCharCodes(octets));
+    var os1d = ASN1OctetString.fromBytes(os1.encodedBytes);
+    var os2 = ASN1OctetString(octets);
+    var os2d = ASN1OctetString.fromBytes(os2.encodedBytes);
     expect(os1d.octets, equals(octets));
     expect(os2d.octets, equals(octets));
   });
 
   test('Sequence Test1', () {
-    var s1 = new ASN1OctetString("Hello");
-    var s2 = new ASN1OctetString("World");
-    var s = new ASN1Sequence();
+    var s1 = ASN1OctetString("Hello");
+    var s2 = ASN1OctetString("World");
+    var s = ASN1Sequence();
     s.add(s1);
     s.add(s2);
 
-    var seq2 = new ASN1Sequence.fromBytes(s.encodedBytes);
+    var seq2 = ASN1Sequence.fromBytes(s.encodedBytes);
     var t1 = seq2.elements[0] as ASN1OctetString;
     var t2 = seq2.elements[1] as ASN1OctetString;
 
@@ -109,20 +108,20 @@ main() {
   test('Create sequence test2', () {
     // create a sequence with a non default tag
     // Example - 96 - LDAP BIND request
-    var s = new ASN1Sequence(tag: 96);
+    var s = ASN1Sequence(tag: 96);
     expect(s.tag, equals(96));
   });
 
   test('Null Test', () {
-    var t = new ASN1Null();
-    var expected = new Uint8List.fromList([0x05, 0x00]);
+    var t = ASN1Null();
+    var expected = Uint8List.fromList([0x05, 0x00]);
     expect(t.encodedBytes, equals(expected));
   });
 
   // test for #26
-  test('Null Sequence', (){
+  test('Null Sequence', () {
     var seq = ASN1Sequence(tag: 96);
-    seq.add( ASN1Null());
+    seq.add(ASN1Null());
     expect(seq.encodedBytes, isNotNull);
   });
 
@@ -138,13 +137,13 @@ main() {
   });
 
   test('Set test', () {
-    var s = new ASN1Set();
+    var s = ASN1Set();
     s.add(ASN1Boolean.ASN1FalseBoolean);
-    s.add(new ASN1OctetString("hello world"));
+    s.add(ASN1OctetString("hello world"));
 
     var bytes = s.encodedBytes;
 
-    var s2 = new ASN1Set.fromBytes(bytes);
+    var s2 = ASN1Set.fromBytes(bytes);
 
     expect(s2.elements.length, equals(s.elements.length));
 
@@ -153,23 +152,23 @@ main() {
     //expect(s.elements, everyElement(s2.elements));
   });
 
-  test("Create ASN1Integer from int", (){
+  test("Create ASN1Integer from int", () {
     var x = ASN1Integer.fromInt(47);
-    expect( x.intValue, equals(47));
+    expect(x.intValue, equals(47));
   });
 
   // show sample ussage
   test("Sample for README", () {
-    var s = new ASN1Sequence();
-    s.add(new ASN1OctetString('This is a test'));
-    s.add(new ASN1Boolean(true));
+    var s = ASN1Sequence();
+    s.add(ASN1OctetString('This is a test'));
+    s.add(ASN1Boolean(true));
 
     // GET the BER Stream
     var bytes = s.encodedBytes;
 
     // decode
     // ignore: unused_local_variable
-    var p = new ASN1Parser(bytes);
+    var p = ASN1Parser(bytes);
     //var s2 = p.nextObject();
     // s2 is a sequence...
   });
