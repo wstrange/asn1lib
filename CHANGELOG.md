@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.11
+
+- Merged #34. Added example
+
 ## 0.5.10
 
 - Merged #32. Update length in asn1 parser.
