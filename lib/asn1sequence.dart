@@ -1,55 +1,60 @@
-
 part of asn1lib;
 
-/// Represents a ASN1 BER encoded sequence
+///
+/// Represents a ASN1 BER encoded sequence.
+///
 /// A sequence is a container for other ASN1 objects
 /// Objects are serialized sequentially to the stream
+///
 class ASN1Sequence extends ASN1Object {
+  List<ASN1Object> elements = List();
 
-  List<ASN1Object> elements = new List();
-
-
-  /**
-   * Create a sequence fromt the byte array [b]
-   * Note that bytes array b could be longer than the actual encoded sequence - in which case
-   * we ignore any remaining bytes
-   */
+  ///
+  /// Create a sequence fromt the byte array [b].
+  ///
+  /// Note that bytes array b could be longer than the actual encoded sequence - in which case
+  /// we ignore any remaining bytes
+  ///
   ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    // todo; Check if tag is a valid sequence type???
-    if( (tag & 0x30) == 0 )
-      throw new ASN1Exception("The tag ${tag} does not look like a sequence type");
+    // TODO Check if tag is a valid sequence type???
+    if ((tag & 0x30) == 0) {
+      throw ASN1Exception("The tag ${tag} does not look like a sequence type");
+    }
     //print("ASN1Sequence valbytes=${hex(valueBytes())}");
     _decodeSeq();
   }
 
+  ///
   /// Create a new empty ASN1 Sequence. Optionally override the default tag
-  ASN1Sequence({int tag:SEQUENCE_TYPE}):super(tag:tag);
+  ///
+  ASN1Sequence({int tag = SEQUENCE_TYPE}) : super(tag: tag);
 
-  /// Add an [ASN1Object] to the sequence. Objects will be
-  // serialized to BER in the order they were added
+  ///
+  /// Add an [ASN1Object] to the sequence. Objects will be serialized to BER in the order they were added
+  ///
   add(ASN1Object o) {
     elements.add(o);
   }
 
-
-
   Uint8List _encode() {
-   _valueByteLength = _childLength();
-   super._encodeHeader();
-   var i = _valueStartPosition;
-   // encode each element
-   elements.forEach( (obj) {
-     var  b = obj.encodedBytes;
-     encodedBytes.setRange(i, i+ b.length, b);
-     i += b.length;
-   });
-   return _encodedBytes;
+    _valueByteLength = _childLength();
+    super._encodeHeader();
+    var i = _valueStartPosition;
+    // encode each element
+    elements.forEach((obj) {
+      var b = obj.encodedBytes;
+      encodedBytes.setRange(i, i + b.length, b);
+      i += b.length;
+    });
+    return _encodedBytes;
   }
 
-  // Calculate encoded length of all children
+  ///
+  /// Calculate encoded length of all children
+  ///
   int _childLength() {
     int l = 0;
-    elements.forEach( (obj) {
+    elements.forEach((obj) {
       l += obj._encode().length;
     });
     return l;
@@ -62,21 +67,20 @@ class ASN1Sequence extends ASN1Object {
       this.valueByteLength = l.length;
       // now we know our value - but we need to scan for further embedded elements...
        */
-      var parser = new ASN1Parser(valueBytes());
+    var parser = ASN1Parser(valueBytes());
 
-      while( parser.hasNext() ) {
-        elements.add(parser.nextObject());
-      }
+    while (parser.hasNext()) {
+      elements.add(parser.nextObject());
+    }
   }
 
   String toString() {
-   var b = new StringBuffer("Seq[");
-   elements.forEach( (e) {
-     b.write(e.toString());
-     b.write(" ");
-   });
-   b.write("]");
-   return b.toString();
+    var b = StringBuffer("Seq[");
+    elements.forEach((e) {
+      b.write(e.toString());
+      b.write(" ");
+    });
+    b.write("]");
+    return b.toString();
   }
-
 }
