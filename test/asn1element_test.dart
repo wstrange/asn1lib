@@ -149,7 +149,7 @@ main() {
 
     // TODO: This fails. We need to review the notion of
     // equality for asn1 elements, sets, sequences etc.
-    //expect(s.elements, everyElement(s2.elements));
+    // expect(s.elements, everyElement(s2.elements));
   });
 
   test("Create ASN1Integer from int", () {
