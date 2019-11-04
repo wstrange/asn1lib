@@ -162,6 +162,7 @@ final List<int> longTestValues = [
   8
 ];
 
+/*
 String _printBytes(List<int> b) {
   var s = "";
   b.forEach((e) {
@@ -169,6 +170,7 @@ String _printBytes(List<int> b) {
   });
   return s;
 }
+*/
 
 // iterate over the list - which is a pair of (value,expected number of encoded bytes)
 void testList(List<int> l) {
@@ -184,8 +186,8 @@ void testList(List<int> l) {
 
 void testPair(int x, int expectedLength) {
   var int1 = ASN1Integer.fromInt(x);
-  print(
-      "Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}");
+  //print(
+  //    "Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}");
 
   var contentLength = int1.contentBytes().length;
   expect(contentLength, expectedLength,
