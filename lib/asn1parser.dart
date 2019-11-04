@@ -30,9 +30,11 @@ class ASN1Parser {
     bool isApplication = (0x40 & tag) != 0;
 
     //int l = _bytes.length - _position;
+
     int l = 0;
-    if (_bytes.length >= _position + 1) {
-      l = _bytes[_position + 1] + 2;
+    ASN1Length length = ASN1Length.decodeLength(_bytes);
+    if (_position < length.length + length.valueStartPosition) {
+      l = length.length + length.valueStartPosition;
     } else {
       l = _bytes.length - _position;
     }
