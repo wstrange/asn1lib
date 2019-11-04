@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.12
+
+- Merged #36. Improved length computing in the ASN1Parser. 
+
 ## 0.5.11
 
 - Merged #34. Added example
