@@ -3,7 +3,6 @@ library asn1lib;
 import 'dart:typed_data';
 import 'dart:convert';
 
-
 part 'asn1integer.dart';
 part 'asn1enumerated.dart';
 
