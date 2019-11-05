@@ -1,8 +1,6 @@
-
 part of asn1lib;
 
 // tag bytes for various ASN1 BER objects
-
 
 const int BOOLEAN_TYPE = 0x01;
 const int INTEGER_TYPE = 0x02;

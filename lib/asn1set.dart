@@ -3,8 +3,6 @@ part of asn1lib;
 ///
 /// An ASN1Set.
 ///
-/// TODO This code can be shared with ASN1Sequence
-///
 class ASN1Set extends ASN1Object {
   Set<ASN1Object> elements = Set<ASN1Object>();
 
@@ -14,8 +12,7 @@ class ASN1Set extends ASN1Object {
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    // TODO Check if tag is a valid sequence type???
-    if ((tag & 0x30) == 0) {
+    if ((tag & SET_TYPE) == 0) {
       throw ASN1Exception("The tag ${tag} does not look like a set type");
     }
     _decodeSet();
