@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.14
+
+- Add DN for subjectAltName
+
 ## 0.5.13
 
 - Merged #37. Improved length computing in the ASN1Parser.
