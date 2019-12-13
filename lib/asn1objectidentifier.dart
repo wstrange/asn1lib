@@ -47,7 +47,8 @@ class ASN1ObjectIdentifier extends ASN1Object {
     "md5WithRSAEncryption": "1.2.840.113549.1.1.4",
     "rsaEncryption": "1.2.840.113549.1.1.1",
     "sha256WithRSAEncryption": "1.2.840.113549.1.1.11",
-    "subjectAltName": "2.5.29.17"
+    "subjectAltName": "2.5.29.17",
+    "businessCategory": "2.5.4.15"
   };
 
   List<int> oi;
