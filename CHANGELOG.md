@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.15
+
+- Add businessCategory object identifier
+
 ## 0.5.14
 
 - Add DN for subjectAltName
