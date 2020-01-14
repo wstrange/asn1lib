@@ -8,6 +8,7 @@ class ASN1BitString extends ASN1Object {
   List<int> stringValue;
   int unusedbits;
 
+  @override
   Uint8List contentBytes() => Uint8List.fromList(stringValue);
 
   ///
@@ -39,5 +40,5 @@ class ASN1BitString extends ASN1Object {
       String.fromCharCodes(bytes);
 
   @override
-  String toString() => "BitString(${stringValue})";
+  String toString() => 'BitString(${stringValue})';
 }

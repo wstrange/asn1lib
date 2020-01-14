@@ -36,5 +36,5 @@ class ASN1PrintableString extends ASN1Object {
   }
 
   @override
-  String toString() => "PrintableString(${stringValue})";
+  String toString() => 'PrintableString(${stringValue})';
 }

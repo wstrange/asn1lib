@@ -18,7 +18,7 @@ class ASN1Integer extends ASN1Object {
   }
 
   ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    _intValue = decodeBigInt(this.valueBytes());
+    _intValue = decodeBigInt(valueBytes());
   }
 
   int get intValue => _intValue.toInt();
@@ -27,7 +27,7 @@ class ASN1Integer extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    var t = encodeBigInt(this._intValue);
+    var t = encodeBigInt(_intValue);
     _valueByteLength = t.length;
     super._encodeHeader();
     _setValueBytes(t);
@@ -38,7 +38,8 @@ class ASN1Integer extends ASN1Object {
 
   static int decodeInt(Uint8List bytes) => decodeBigInt(bytes).toInt();
 
-  String toString() => "ASNInteger($intValue)";
+  @override
+  String toString() => 'ASNInteger($intValue)';
 
   static final _b256 = BigInt.from(256);
   static final _minusOne = BigInt.from(-1);
@@ -49,7 +50,7 @@ class ASN1Integer extends ASN1Object {
   static BigInt decodeBigInt(Uint8List bytes) {
     var isNegative = (bytes[0] & 0x80) != 0;
     var result = BigInt.zero;
-    for (int i = 0; i < bytes.length; ++i) {
+    for (var i = 0; i < bytes.length; ++i) {
       result = result << 8;
       var x = isNegative ? (bytes[i] ^ 0xff) : bytes[i];
       result += BigInt.from(x);
@@ -62,16 +63,16 @@ class ASN1Integer extends ASN1Object {
   ///
   /// Encode an integer to ASN.1 byte format.
   /// ASN.1 integer is a two's complement format
-  /// with the ///smallest" possible representation
-  /// in "Big" Endian format (MSB first on the wire.)
+  /// with the ///smallest' possible representation
+  /// in 'Big' Endian format (MSB first on the wire.)
   ///
   /// The most significant bit is the sign bit (1 for negative,
   /// 0 postive).
   /// This may require padding the representation with an extra byte
   /// to get the correct sign bit
   ///
-  static var _negOne = BigInt.from(-1);
-  static var _negOneArray = Uint8List.fromList([0xff]);
+  static final _negOne = BigInt.from(-1);
+  static final _negOneArray = Uint8List.fromList([0xff]);
   static final _zeroList = Uint8List.fromList([0]);
 
   static Uint8List encodeBigInt(BigInt number) {
@@ -89,7 +90,7 @@ class ASN1Integer extends ASN1Object {
     var result = Uint8List(bytes);
 
     number = number.abs();
-    for (int i = 0, j = bytes - 1; i < (bytes); i++, --j) {
+    for (var i = 0, j = bytes - 1; i < (bytes); i++, --j) {
       var x = number.remainder(_b256).toInt();
       result[j] = x;
       number = number >> 8;
@@ -115,7 +116,7 @@ class ASN1Integer extends ASN1Object {
   ///
   static void _twosComplement(Uint8List result) {
     var carry = 1;
-    for (int j = result.length - 1; j >= 0; --j) {
+    for (var j = result.length - 1; j >= 0; --j) {
       // flip the bits
       result[j] ^= 0xFF;
 

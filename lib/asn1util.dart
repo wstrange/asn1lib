@@ -3,13 +3,13 @@ part of asn1lib;
 class ASN1Util {
   // convert a list to a hex string. Used for debugging ASN1 output
   static String listToString(List<int> list) {
-    StringBuffer b = StringBuffer("[");
-    bool doComma = false;
+    var b = StringBuffer('[');
+    var doComma = false;
     list.forEach((v) {
-      doComma ? b.write(", ") : doComma = true;
-      b.write("0x${v.toRadixString(16)}");
+      doComma ? b.write(', ') : doComma = true;
+      b.write('0x${v.toRadixString(16)}');
     });
-    b.write("]");
+    b.write(']');
     return b.toString();
   }
 
@@ -27,7 +27,7 @@ class ASN1Util {
   // bytes format is NOT two's complement format
   static BigInt bytes2BigInt(List<int> bytes) {
     var x = BigInt.zero;
-    for (int i = 0; i < bytes.length; ++i) {
+    for (var i = 0; i < bytes.length; ++i) {
       x = x << 8;
       x += BigInt.from(bytes[i]);
     }

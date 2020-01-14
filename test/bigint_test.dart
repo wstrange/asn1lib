@@ -7,18 +7,18 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:io';
 
-main() {
-  test("rsa private key", () {
+void main() {
+  test('rsa private key', () {
     //openssl genrsa -out rsa_private_key.pem
     //PKCS#1 format
-    File rsa_private_key_file = File("./test/resource/rsa_private_key.pem");
-    String pem = rsa_private_key_file.readAsStringSync();
+    var rsa_private_key_file = File('./test/resource/rsa_private_key.pem');
+    var pem = rsa_private_key_file.readAsStringSync();
     List lines = pem
-        .split("\n")
+        .split('\n')
         .map((line) => line.trim())
-        .skipWhile((String line) => !line.startsWith("---"))
+        .skipWhile((String line) => !line.startsWith('---'))
         .toList();
-    String key = lines.sublist(1, lines.length - 2).join("");
+    var key = lines.sublist(1, lines.length - 2).join('');
     var key_bytes = Uint8List.fromList(base64.decode(key));
 
     var p = ASN1Parser(key_bytes);
@@ -363,18 +363,18 @@ main() {
         ])));
   });
 
-  test("rsa public key", () {
+  test('rsa public key', () {
     //openssl genrsa -out rsa_private_key.pem
     //openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
     //PKCS#8 format
-    File rsa_private_key_file = File("./test/resource/rsa_public_key.pem");
-    String pem = rsa_private_key_file.readAsStringSync();
+    var rsa_private_key_file = File('./test/resource/rsa_public_key.pem');
+    var pem = rsa_private_key_file.readAsStringSync();
     List lines = pem
-        .split("\n")
+        .split('\n')
         .map((line) => line.trim())
-        .skipWhile((String line) => !line.startsWith("---"))
+        .skipWhile((String line) => !line.startsWith('---'))
         .toList();
-    String key = lines.sublist(1, lines.length - 2).join("");
+    var key = lines.sublist(1, lines.length - 2).join('');
     var key_bytes = Uint8List.fromList(base64.decode(key));
 
     var p = ASN1Parser(key_bytes);
@@ -470,25 +470,25 @@ main() {
 
   try {
     try {
-      test("x509 public key certificate", () {
-        String pem =
-            "MIIDBTCCAfGgAwIBAgIQNQb+T2ncIrNA6cKvUA1GWTAJBgUrDgMCHQUAMBIxEDAOBgNVBAMT\n"
-            "B0RldlJvb3QwHhcNMTAwMTIwMjIwMDAwWhcNMjAwMTIwMjIwMDAwWjAVMRMwEQYDVQQDEwpp\n"
-            "ZHNydjN0ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqnTksBdxOiOlsmRN\n"
-            "d+mMS2M3o1IDpK4uAr0T4/YqO3zYHAGAWTwsq4ms+NWynqY5HaB4EThNxuq2GWC5JKpO1Yir\n"
-            "OrwS97B5x9LJyHXPsdJcSikEI9BxOkl6WLQ0UzPxHdYTLpR4/O+0ILAlXw8NU4+jB4AP8Sn9\n"
-            "YGYJ5w0fLw5YmWioXeWvocz1wHrZdJPxS8XnqHXwMUozVzQj+x6daOv5FmrHU1r9/bbp0a1G\n"
-            "Lv4BbTtSh4kMyz1hXylho0EvPg5p9YIKStbNAW9eNWvv5R8HN7PPei21AsUqxekK0oW9jnEd\n"
-            "HewckToX7x5zULWKwwZIksll0XnVczVgy7fCFwIDAQABo1wwWjATBgNVHSUEDDAKBggrBgEF\n"
-            "BQcDATBDBgNVHQEEPDA6gBDSFgDaV+Q2d2191r6A38tBoRQwEjEQMA4GA1UEAxMHRGV2Um9v\n"
-            "dIIQLFk7exPNg41NRNaeNu0I9jAJBgUrDgMCHQUAA4IBAQBUnMSZxY5xosMEW6Mz4WEAjNoN\n"
-            "v2QvqNmk23RMZGMgr516ROeWS5D3RlTNyU8FkstNCC4maDM3E0Bi4bbzW3AwrpbluqtcyMN3\n"
-            "Pivqdxx+zKWKiORJqqLIvN8CT1fVPxxXb/e9GOdaR8eXSmB0PgNUhM4IjgNkwBbvWC9F/lzv\n"
-            "wjlQgciR7d4GfXPYsE1vf8tmdQaY8/PtdAkExmbrb9MihdggSoGXlELrPA91Yce+fiRcKY3r\n"
-            "QlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnp\n"
-            "W0xGvQb3VHSTVVbeei0CfXoW6iz1\n";
+      test('x509 public key certificate', () {
+        var pem =
+            'MIIDBTCCAfGgAwIBAgIQNQb+T2ncIrNA6cKvUA1GWTAJBgUrDgMCHQUAMBIxEDAOBgNVBAMT\n'
+            'B0RldlJvb3QwHhcNMTAwMTIwMjIwMDAwWhcNMjAwMTIwMjIwMDAwWjAVMRMwEQYDVQQDEwpp\n'
+            'ZHNydjN0ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqnTksBdxOiOlsmRN\n'
+            'd+mMS2M3o1IDpK4uAr0T4/YqO3zYHAGAWTwsq4ms+NWynqY5HaB4EThNxuq2GWC5JKpO1Yir\n'
+            'OrwS97B5x9LJyHXPsdJcSikEI9BxOkl6WLQ0UzPxHdYTLpR4/O+0ILAlXw8NU4+jB4AP8Sn9\n'
+            'YGYJ5w0fLw5YmWioXeWvocz1wHrZdJPxS8XnqHXwMUozVzQj+x6daOv5FmrHU1r9/bbp0a1G\n'
+            'Lv4BbTtSh4kMyz1hXylho0EvPg5p9YIKStbNAW9eNWvv5R8HN7PPei21AsUqxekK0oW9jnEd\n'
+            'HewckToX7x5zULWKwwZIksll0XnVczVgy7fCFwIDAQABo1wwWjATBgNVHSUEDDAKBggrBgEF\n'
+            'BQcDATBDBgNVHQEEPDA6gBDSFgDaV+Q2d2191r6A38tBoRQwEjEQMA4GA1UEAxMHRGV2Um9v\n'
+            'dIIQLFk7exPNg41NRNaeNu0I9jAJBgUrDgMCHQUAA4IBAQBUnMSZxY5xosMEW6Mz4WEAjNoN\n'
+            'v2QvqNmk23RMZGMgr516ROeWS5D3RlTNyU8FkstNCC4maDM3E0Bi4bbzW3AwrpbluqtcyMN3\n'
+            'Pivqdxx+zKWKiORJqqLIvN8CT1fVPxxXb/e9GOdaR8eXSmB0PgNUhM4IjgNkwBbvWC9F/lzv\n'
+            'wjlQgciR7d4GfXPYsE1vf8tmdQaY8/PtdAkExmbrb9MihdggSoGXlELrPA91Yce+fiRcKY3r\n'
+            'QlNWVd4DOoJ/cPXsXwry8pWjNCo5JD8Q+RQ5yZEy7YPoifwemLhTdsBz3hlZr28oCGJ3kbnp\n'
+            'W0xGvQb3VHSTVVbeei0CfXoW6iz1\n';
 
-        pem = pem = pem.replaceAll("\n", "");
+        pem = pem = pem.replaceAll('\n', '');
         var cert_bytes = Uint8List.fromList(base64.decode(pem));
 
         var p = ASN1Parser(cert_bytes);
@@ -507,16 +507,16 @@ main() {
         var element0_3_0_0_1 = element0_3_0_0.elements[1];
         expect(element0_3_0_0_1 is ASN1PrintableString, equals(true));
         expect((element0_3_0_0_1 as ASN1PrintableString).stringValue,
-            equals("DevRoot"));
+            equals('DevRoot'));
 
         var element0_4 = element0.elements[4] as ASN1Sequence;
         ;
         expect(element0_4.elements[0] is ASN1UtcTime, equals(true));
         expect((element0_4.elements[0] as ASN1UtcTime).dateTimeValue,
-            equals(DateTime.parse("2010-01-20 22:00:00.000Z")));
+            equals(DateTime.parse('2010-01-20 22:00:00.000Z')));
         expect(element0_4.elements[1] is ASN1UtcTime, equals(true));
         expect((element0_4.elements[1] as ASN1UtcTime).dateTimeValue,
-            equals(DateTime.parse("2020-01-20 22:00:00.000Z")));
+            equals(DateTime.parse('2020-01-20 22:00:00.000Z')));
 
         var element0_5 = element0.elements[5] as ASN1Sequence;
         ;
@@ -524,7 +524,7 @@ main() {
         var element0_5_0_0 = element0_5_0.elements.first as ASN1Sequence;
         var element0_5_0_0_1 =
             element0_5_0_0.elements[1] as ASN1PrintableString;
-        expect(element0_5_0_0_1.stringValue, equals("idsrv3test"));
+        expect(element0_5_0_0_1.stringValue, equals('idsrv3test'));
 
         var element0_6 = element0.elements[6] as ASN1Sequence;
 
@@ -542,7 +542,7 @@ main() {
 
         //modulus
         var modstring =
-            "21518154084705346821274138762882407922380704212922210585843251781362809907270675925777565628062936818636913854980154942861118239830759902009001533075067878914941993916218504286518450568111160810759646573203377874470315017865982194621508952434846313326601022451790654534552713106625866324293583211173710664343249256163552449547128977997155833237720259198928785721740265119531438131641233778575574837591001136583435616772442565871706297666044427912910371785883437973412968680553651820978964644100864723176694453218133732558009376882289418835471454808121837066085343171141842204722779999397248471822012940201656724210199";
+            '21518154084705346821274138762882407922380704212922210585843251781362809907270675925777565628062936818636913854980154942861118239830759902009001533075067878914941993916218504286518450568111160810759646573203377874470315017865982194621508952434846313326601022451790654534552713106625866324293583211173710664343249256163552449547128977997155833237720259198928785721740265119531438131641233778575574837591001136583435616772442565871706297666044427912910371785883437973412968680553651820978964644100864723176694453218133732558009376882289418835471454808121837066085343171141842204722779999397248471822012940201656724210199';
         var expectedModulus = BigInt.parse(modstring, radix: 10);
         expect((seq.elements[0] as ASN1Integer).valueAsBigInteger,
             equals(expectedModulus));

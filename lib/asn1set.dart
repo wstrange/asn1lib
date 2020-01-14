@@ -4,7 +4,7 @@ part of asn1lib;
 /// An ASN1Set.
 ///
 class ASN1Set extends ASN1Object {
-  Set<ASN1Object> elements = Set<ASN1Object>();
+  Set<ASN1Object> elements = <ASN1Object>{};
 
   ///
   /// Create a set fromt the bytes
@@ -13,7 +13,7 @@ class ASN1Set extends ASN1Object {
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     if ((tag & SET_TYPE) == 0) {
-      throw ASN1Exception("The tag ${tag} does not look like a set type");
+      throw ASN1Exception('The tag ${tag} does not look like a set type');
     }
     _decodeSet();
   }
@@ -23,7 +23,7 @@ class ASN1Set extends ASN1Object {
   ///
   /// Add an element to the set
   ///
-  add(ASN1Object o) {
+  void add(ASN1Object o) {
     elements.add(o);
   }
 
@@ -46,7 +46,7 @@ class ASN1Set extends ASN1Object {
   /// TODO: Merge with Sequence code
   ///
   int _childLength() {
-    int l = 0;
+    var l = 0;
     elements.forEach((obj) {
       obj._encode();
       l += obj.encodedBytes.length;
@@ -54,7 +54,7 @@ class ASN1Set extends ASN1Object {
     return l;
   }
 
-  _decodeSet() {
+  void _decodeSet() {
     /*
       var l = ASN1Length.decodeLength(encodedBytes);
       this.valueStartPosition = l.valueStartPosition;
@@ -70,12 +70,12 @@ class ASN1Set extends ASN1Object {
 
   @override
   String toString() {
-    var b = StringBuffer("Set[");
+    var b = StringBuffer('Set[');
     elements.forEach((e) {
       b.write(e.toString());
-      b.write(" ");
+      b.write(' ');
     });
-    b.write("]");
+    b.write(']');
     return b.toString();
   }
 }

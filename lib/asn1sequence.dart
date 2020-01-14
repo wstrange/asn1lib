@@ -7,7 +7,7 @@ part of asn1lib;
 /// Objects are serialized sequentially to the stream
 ///
 class ASN1Sequence extends ASN1Object {
-  List<ASN1Object> elements = List();
+  List<ASN1Object> elements = <ASN1Object>[];
 
   ///
   /// Create a sequence fromt the byte array [bytes].
@@ -17,9 +17,9 @@ class ASN1Sequence extends ASN1Object {
   ///
   ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     if ((tag & SEQUENCE_TYPE) == 0) {
-      throw ASN1Exception("The tag ${tag} does not look like a sequence type");
+      throw ASN1Exception('The tag ${tag} does not look like a sequence type');
     }
-    //print("ASN1Sequence valbytes=${hex(valueBytes())}");
+    //print('ASN1Sequence valbytes=${hex(valueBytes())}');
     _decodeSeq();
   }
 
@@ -31,10 +31,11 @@ class ASN1Sequence extends ASN1Object {
   ///
   /// Add an [ASN1Object] to the sequence. Objects will be serialized to BER in the order they were added
   ///
-  add(ASN1Object o) {
+  void add(ASN1Object o) {
     elements.add(o);
   }
 
+  @override
   Uint8List _encode() {
     _valueByteLength = _childLength();
     super._encodeHeader();
@@ -52,14 +53,14 @@ class ASN1Sequence extends ASN1Object {
   /// Calculate encoded length of all children
   ///
   int _childLength() {
-    int l = 0;
+    var l = 0;
     elements.forEach((obj) {
       l += obj._encode().length;
     });
     return l;
   }
 
-  _decodeSeq() {
+  void _decodeSeq() {
     /*
       var l = ASN1Length.decodeLength(encodedBytes);
       this.valueStartPosition = l.valueStartPosition;
@@ -73,13 +74,14 @@ class ASN1Sequence extends ASN1Object {
     }
   }
 
+  @override
   String toString() {
-    var b = StringBuffer("Seq[");
+    var b = StringBuffer('Seq[');
     elements.forEach((e) {
       b.write(e.toString());
-      b.write(" ");
+      b.write(' ');
     });
-    b.write("]");
+    b.write(']');
     return b.toString();
   }
 }

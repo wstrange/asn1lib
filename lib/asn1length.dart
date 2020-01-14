@@ -6,12 +6,12 @@ part of asn1lib;
 /// Also tells us the total length of an object and where the value bytes start in the object (valueStartPosition).
 ///
 class ASN1Length {
-  int _length;
+  final int _length;
 
   /// the decoded length in bytes of an object
   int get length => _length;
 
-  int _valueStartPosition;
+  final int _valueStartPosition;
 
   ///
   /// The decoded value start position. This is the offset in the
@@ -42,13 +42,13 @@ class ASN1Length {
       x[0] = length;
       var y = Uint8List.view(x.buffer);
       // skip null bytes
-      int num = 3;
+      var num = 3;
       while (y[num] == 0) {
         --num;
       }
       e = Uint8List(num + 2);
       e[0] = 0x80 + num + 1;
-      for (int i = 1; i < e.length; ++i) {
+      for (var i = 1; i < e.length; ++i) {
         e[i] = y[num--];
       }
     }
@@ -64,13 +64,13 @@ class ASN1Length {
   /// THe length starts at the second byte.
   ///
   static ASN1Length decodeLength(Uint8List encodedBytes) {
-    int valueStartPosition = 2; //default
-    int length = (encodedBytes[1] & 0x7F);
+    var valueStartPosition = 2; //default
+    var length = (encodedBytes[1] & 0x7F);
     if (length != encodedBytes[1]) {
-      int numLengthBytes = length;
+      var numLengthBytes = length;
 
       length = 0;
-      for (int i = 0; i < numLengthBytes; i++) {
+      for (var i = 0; i < numLengthBytes; i++) {
         length <<= 8;
         length |= (encodedBytes[valueStartPosition++] & 0xFF);
       }

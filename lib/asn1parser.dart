@@ -5,7 +5,7 @@ part of asn1lib;
 ///
 class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
-  Uint8List _bytes;
+  final Uint8List _bytes;
 
   /// Create a new parser for the stream of [_bytes]
   ASN1Parser(this._bytes);
@@ -22,18 +22,18 @@ class ASN1Parser {
   /// Return the next ASN1Object in the stream
   ///
   ASN1Object nextObject() {
-    int tag = _bytes[_position]; // get curren tag in stream
+    var tag = _bytes[_position]; // get curren tag in stream
 
     // print("parser tag = ${tag} bytes=${_bytes}");
     // ASN1 Primitives have high bits 8/7 set to 0
 
-    bool isPrimitive = (0xC0 & tag) == 0;
-    bool isApplication = (0x40 & tag) != 0;
+    var isPrimitive = (0xC0 & tag) == 0;
+    var isApplication = (0x40 & tag) != 0;
 
     //int l = _bytes.length - _position;
 
-    int l = 0;
-    ASN1Length length = ASN1Length.decodeLength(_bytes.sublist(_position));
+    var l = 0;
+    var length = ASN1Length.decodeLength(_bytes.sublist(_position));
     if (_position < length.length + length.valueStartPosition) {
       l = length.length + length.valueStartPosition;
     } else {
@@ -41,7 +41,7 @@ class ASN1Parser {
     }
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
-    int offset = _position + _bytes.offsetInBytes;
+    var offset = _position + _bytes.offsetInBytes;
     var subBytes = Uint8List.view(_bytes.buffer, offset, l);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
@@ -54,7 +54,7 @@ class ASN1Parser {
       if ((tag & SEQUENCE_TYPE) != 0) {
         obj = ASN1Sequence.fromBytes(subBytes);
       } else {
-        throw ASN1Exception("Parser for tag ${tag} not implemented yet");
+        throw ASN1Exception('Parser for tag ${tag} not implemented yet');
       }
     } else {
       // create a vanilla object
@@ -106,7 +106,7 @@ class ASN1Parser {
         return ASN1UtcTime.fromBytes(b);
 
       default:
-        throw ASN1Exception("Parser for tag ${tag} not implemented yet");
+        throw ASN1Exception('Parser for tag ${tag} not implemented yet');
     }
   }
 }

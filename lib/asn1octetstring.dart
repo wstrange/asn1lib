@@ -7,6 +7,7 @@ class ASN1OctetString extends ASN1Object {
   /// The decoded string value
   Uint8List octets;
 
+  @override
   Uint8List contentBytes() => octets;
 
   ///
@@ -23,7 +24,7 @@ class ASN1OctetString extends ASN1Object {
       this.octets = Uint8List.fromList(octets);
     } else {
       throw ArgumentError(
-          "Parameters octets should be either of type String or List<int>.");
+          'Parameters octets should be either of type String or List<int>.');
     }
   }
 
@@ -50,5 +51,5 @@ class ASN1OctetString extends ASN1Object {
   }
 
   @override
-  String toString() => "OctetString(${stringValue})";
+  String toString() => 'OctetString(${stringValue})';
 }

@@ -3,8 +3,8 @@ import 'package:asn1lib/asn1lib.dart';
 import 'package:convert/convert.dart' as convert;
 import 'dart:convert';
 
-main() {
-  List<int> publicKeyDER = decodePEM("""-----BEGIN PUBLIC KEY-----
+void main() {
+  var publicKeyDER = decodePEM('''-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1W25XAj9GvCvSY7JzVAh
 Z1L/kug3LMG8M2LRSDpI5mMZJ6ua3189uAMLCxKoIqOdC2/o74t5XcxAE5foIjwd
 eEpSQtjKy8O457hFa4j7Q9P6Ki/tCfd3BGG5V9fAaKu7bHh9csIDCQWhpgBMyTlh
@@ -12,9 +12,9 @@ eEpSQtjKy8O457hFa4j7Q9P6Ki/tCfd3BGG5V9fAaKu7bHh9csIDCQWhpgBMyTlh
 /vuDPIFU/d7kAlpdi/lzZXh9lFd3NwouFOQhxckYugtQpIXuEbv3wPHMDhosplKx
 7m6j/iHL5XtppMODSIoxePjn+j7H5kBEuVEyuHd/7fW1lm8bn3PwnTOQBMhipro+
 4wIDAQAB
------END PUBLIC KEY-----""");
+-----END PUBLIC KEY-----''');
 
-  List<int> privateKeyDER = decodePEM("""-----BEGIN PRIVATE KEY-----
+  var privateKeyDER = decodePEM('''-----BEGIN PRIVATE KEY-----
 MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDVbblcCP0a8K9J
 jsnNUCFnUv+S6DcswbwzYtFIOkjmYxknq5rfXz24AwsLEqgio50Lb+jvi3ldzEAT
 l+giPB14SlJC2MrLw7jnuEVriPtD0/oqL+0J93cEYblX18Boq7tseH1ywgMJBaGm
@@ -41,9 +41,9 @@ FXxeZOpUER+4kEx17JmfB1itf87p5CofwrFZQ3k5/j4X7Anye34kEUsW6JUU6O49
 BOGOgJI3ioqsTa/FJN7O76ptCCidfyaEQC7zimkfkhD5mYOCAFZ/HwMfPd+JFmqE
 mv7tjEMIkqh4RhoQYJ5eE95H4RyIB25s/4GARO1N1aGD+dSz45EmXEx4mf1N/5++
 dZGeuvqtAXpkUfBXJed4Ehdd9Q==
------END PRIVATE KEY-----""");
+-----END PRIVATE KEY-----''');
 
-  List<int> certificateDER = decodePEM("""-----BEGIN CERTIFICATE-----
+  var certificateDER = decodePEM('''-----BEGIN CERTIFICATE-----
 MIIGDTCCA/WgAwIBAgICNcowDQYJKoZIhvcNAQELBQAwgaMxCzAJBgNVBAYTAkNB
 MRAwDgYDVQQIDAdPbnRhcmlvMRgwFgYDVQQKDA9Db25zZW5zYXMsIEluYy4xKDAm
 BgNVBAsMH0NvbnNlbnNhcyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxHTAbBgNVBAMM
@@ -77,7 +77,7 @@ hBfnjkKGoIMkMKhCnXJU2GZRZDr95r19gQbBLjWhQJbh0rgKGOc5fBWm+/8qAozv
 Za6MHPQvYqXuFGHC1f34R/CKK7QyuJ1l1dWfhJxG+A9/s9G8nvGPugny8eLpuw2G
 L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 7zEUAmJp9KggGMmQp1+63A8=
------END CERTIFICATE-----""");
+-----END CERTIFICATE-----''');
 
   // data contains UTF8 and IA5 Strings and all sorts of complexity
   test('Test decode certificate', () {
@@ -85,108 +85,98 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     var seq = asn1Parser.nextObject() as ASN1Sequence;
     expect(seq.valueBytes().length, 1549);
 
-    ASN1Sequence dataSequence = seq.elements.elementAt(0) as ASN1Sequence;
+    var dataSequence = seq.elements.elementAt(0) as ASN1Sequence;
 
     // Version
-    ASN1Object versionObject = dataSequence.elements.elementAt(0);
-    int version = versionObject.valueBytes().elementAt(2);
+    var versionObject = dataSequence.elements.elementAt(0);
+    var version = versionObject.valueBytes().elementAt(2);
     expect(version, 2);
 
     // Serialnumber
-    ASN1Integer serialInteger =
-        dataSequence.elements.elementAt(1) as ASN1Integer;
-    BigInt serialNumber = serialInteger.valueAsBigInteger;
-    expect(serialNumber.toString(), "13770");
+    var serialInteger = dataSequence.elements.elementAt(1) as ASN1Integer;
+    var serialNumber = serialInteger.valueAsBigInteger;
+    expect(serialNumber.toString(), '13770');
 
     // Signature
-    ASN1Sequence signatureSequence =
-        dataSequence.elements.elementAt(2) as ASN1Sequence;
-    ASN1ObjectIdentifier o =
-        signatureSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
-    String signatureAlgorithm = o.identifier;
-    expect(signatureAlgorithm, "1.2.840.113549.1.1.11");
+    var signatureSequence = dataSequence.elements.elementAt(2) as ASN1Sequence;
+    var o = signatureSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
+    var signatureAlgorithm = o.identifier;
+    expect(signatureAlgorithm, '1.2.840.113549.1.1.11');
 
     // Issuer
-    ASN1Sequence issuerSequence =
-        dataSequence.elements.elementAt(3) as ASN1Sequence;
-    Map<String, String> issuer = {};
+    var issuerSequence = dataSequence.elements.elementAt(3) as ASN1Sequence;
+    var issuer = <String, String>{};
     for (ASN1Set s in issuerSequence.elements) {
-      ASN1Sequence setSequence = s.elements.elementAt(0) as ASN1Sequence;
-      ASN1ObjectIdentifier o =
-          setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
-      ASN1Object object = setSequence.elements.elementAt(1);
-      String value = "";
+      var setSequence = s.elements.elementAt(0) as ASN1Sequence;
+      var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
+      var object = setSequence.elements.elementAt(1);
+      var value = '';
       if (object is ASN1UTF8String) {
-        ASN1UTF8String objectAsUtf8 = object;
+        var objectAsUtf8 = object;
         value = objectAsUtf8.utf8StringValue;
       } else if (object is ASN1PrintableString) {
-        ASN1PrintableString objectPrintable = object;
+        var objectPrintable = object;
         value = objectPrintable.stringValue;
       }
       issuer.putIfAbsent(o.identifier, () => value);
     }
-    expect(issuer.containsKey("2.5.4.6"), true);
-    expect(issuer["2.5.4.6"], "CA");
-    expect(issuer.containsKey("2.5.4.8"), true);
-    expect(issuer["2.5.4.8"], "Ontario");
-    expect(issuer.containsKey("2.5.4.11"), true);
-    expect(issuer["2.5.4.11"], "Consensas Certificate Authority");
-    expect(issuer.containsKey("2.5.4.10"), true);
-    expect(issuer["2.5.4.10"], "Consensas, Inc.");
-    expect(issuer.containsKey("2.5.4.3"), true);
-    expect(issuer["2.5.4.3"], "Test Intermediate CA");
+    expect(issuer.containsKey('2.5.4.6'), true);
+    expect(issuer['2.5.4.6'], 'CA');
+    expect(issuer.containsKey('2.5.4.8'), true);
+    expect(issuer['2.5.4.8'], 'Ontario');
+    expect(issuer.containsKey('2.5.4.11'), true);
+    expect(issuer['2.5.4.11'], 'Consensas Certificate Authority');
+    expect(issuer.containsKey('2.5.4.10'), true);
+    expect(issuer['2.5.4.10'], 'Consensas, Inc.');
+    expect(issuer.containsKey('2.5.4.3'), true);
+    expect(issuer['2.5.4.3'], 'Test Intermediate CA');
 
     // Validity
-    ASN1Sequence validitySequence =
-        dataSequence.elements.elementAt(4) as ASN1Sequence;
-    ASN1UtcTime asn1From =
-        validitySequence.elements.elementAt(0) as ASN1UtcTime;
-    ASN1UtcTime asn1To = validitySequence.elements.elementAt(1) as ASN1UtcTime;
+    var validitySequence = dataSequence.elements.elementAt(4) as ASN1Sequence;
+    var asn1From = validitySequence.elements.elementAt(0) as ASN1UtcTime;
+    var asn1To = validitySequence.elements.elementAt(1) as ASN1UtcTime;
     expect(
-        asn1From.dateTimeValue.toIso8601String(), "2019-03-18T14:27:08.000Z");
-    expect(asn1To.dateTimeValue.toIso8601String(), "2020-03-17T14:27:08.000Z");
+        asn1From.dateTimeValue.toIso8601String(), '2019-03-18T14:27:08.000Z');
+    expect(asn1To.dateTimeValue.toIso8601String(), '2020-03-17T14:27:08.000Z');
 
     // Subject
-    ASN1Sequence subjectSequence =
-        dataSequence.elements.elementAt(5) as ASN1Sequence;
-    Map<String, String> subject = {};
+    var subjectSequence = dataSequence.elements.elementAt(5) as ASN1Sequence;
+    var subject = <String, String>{};
     for (ASN1Set s in subjectSequence.elements) {
-      ASN1Sequence setSequence = s.elements.elementAt(0) as ASN1Sequence;
-      ASN1ObjectIdentifier o =
-          setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
-      ASN1Object object = setSequence.elements.elementAt(1);
-      String value = "";
+      var setSequence = s.elements.elementAt(0) as ASN1Sequence;
+      var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
+      var object = setSequence.elements.elementAt(1);
+      var value = '';
       if (object is ASN1UTF8String) {
-        ASN1UTF8String objectAsUtf8 = object;
+        var objectAsUtf8 = object;
         value = objectAsUtf8.utf8StringValue;
       } else if (object is ASN1PrintableString) {
-        ASN1PrintableString objectPrintable = object;
+        var objectPrintable = object;
         value = objectPrintable.stringValue;
       }
       subject.putIfAbsent(o.identifier, () => value);
     }
-    expect(subject.containsKey("2.5.4.6"), true);
-    expect(subject["2.5.4.6"], "CA");
-    expect(subject.containsKey("2.5.4.8"), true);
-    expect(subject["2.5.4.8"], "Ontario");
-    expect(subject.containsKey("2.5.4.7"), true);
-    expect(subject["2.5.4.7"], "Toronto");
-    expect(subject.containsKey("2.5.4.10"), true);
-    expect(subject["2.5.4.10"], "Consensas");
-    expect(subject.containsKey("2.5.4.3"), true);
-    expect(subject["2.5.4.3"], "urn:consensas:user:0001:GlPLHyxzzH");
+    expect(subject.containsKey('2.5.4.6'), true);
+    expect(subject['2.5.4.6'], 'CA');
+    expect(subject.containsKey('2.5.4.8'), true);
+    expect(subject['2.5.4.8'], 'Ontario');
+    expect(subject.containsKey('2.5.4.7'), true);
+    expect(subject['2.5.4.7'], 'Toronto');
+    expect(subject.containsKey('2.5.4.10'), true);
+    expect(subject['2.5.4.10'], 'Consensas');
+    expect(subject.containsKey('2.5.4.3'), true);
+    expect(subject['2.5.4.3'], 'urn:consensas:user:0001:GlPLHyxzzH');
 
     // Subject Public Key Info
-    ASN1Sequence subjectPublicKeyInfoSequence =
+    var subjectPublicKeyInfoSequence =
         dataSequence.elements.elementAt(6) as ASN1Sequence;
-    ASN1Sequence subSubjectPublicKeyInfoSequence =
+    var subSubjectPublicKeyInfoSequence =
         subjectPublicKeyInfoSequence.elements.elementAt(0) as ASN1Sequence;
 
-    ASN1ObjectIdentifier publicKeyAlgorithmIdentifier =
-        subSubjectPublicKeyInfoSequence.elements.elementAt(0)
-            as ASN1ObjectIdentifier;
-    String publicKeyAlgorithm = publicKeyAlgorithmIdentifier.identifier;
-    expect(publicKeyAlgorithm, "1.2.840.113549.1.1.1");
+    var publicKeyAlgorithmIdentifier = subSubjectPublicKeyInfoSequence.elements
+        .elementAt(0) as ASN1ObjectIdentifier;
+    var publicKeyAlgorithm = publicKeyAlgorithmIdentifier.identifier;
+    expect(publicKeyAlgorithm, '1.2.840.113549.1.1.1');
   });
 
   test('Test decode outer sequence', () {
@@ -220,7 +210,7 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     expect((pkSeq.elements[1] as ASN1Integer).valueAsBigInteger, expected);
 
     //dump from openssl
-    var expectedHex = """00 d5 6d b9 5c 08 fd
+    var expectedHex = '''00 d5 6d b9 5c 08 fd
 1a f0 af 49 8e c9 cd 50-21 67 52 ff 92 e8 37 2c
 c1 bc 33 62 d1 48 3a 48-e6 63 19 27 ab 9a df 5f
 3d b8 03 0b 0b 12 a8 22-a3 9d 0b 6f e8 ef 8b 79
@@ -236,7 +226,7 @@ de e4 02 5a 5d 8b f9 73-65 78 7d 94 57 77 37 0a
 c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
 7b 69 a4 c3 83 48 8a 31-78 f8 e7 fa 3e c7 e6 40
 44 b9 51 32 b8 77 7f ed-f5 b5 96 6f 1b 9f 73 f0
- 9d 33 90 04 c8 62 a6 ba-3e e3""";
+ 9d 33 90 04 c8 62 a6 ba-3e e3''';
     expectedHex = expectedHex.replaceAll(' ', '');
     expectedHex = expectedHex.replaceAll('-', '');
     expectedHex = expectedHex.replaceAll('\n', '');
@@ -265,7 +255,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
     version = pkSeq.elements[0];
     var modulus = pkSeq.elements[1] as ASN1Integer;
-    var expectedModulus = decodeHex("""
+    var expectedModulus = decodeHex('''
 00:d5:6d:b9:5c:08:fd:1a:f0:af:49:8e:c9:cd:50:
 21:67:52:ff:92:e8:37:2c:c1:bc:33:62:d1:48:3a:
 48:e6:63:19:27:ab:9a:df:5f:3d:b8:03:0b:0b:12:
@@ -283,19 +273,19 @@ ee:11:bb:f7:c0:f1:cc:0e:1a:2c:a6:52:b1:ee:6e:
 a3:fe:21:cb:e5:7b:69:a4:c3:83:48:8a:31:78:f8:
 e7:fa:3e:c7:e6:40:44:b9:51:32:b8:77:7f:ed:f5:
 b5:96:6f:1b:9f:73:f0:9d:33:90:04:c8:62:a6:ba:
-3e:e3""");
+3e:e3''');
     //expect(modulus.valueAsBigInteger, new BigInteger.fromBytes(0, expectedModulus));
     expect(modulus.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedModulus));
 
     var publicExponent = pkSeq.elements[2] as ASN1Integer;
-    var expectedPublicExponent = decodeHex("""01:00:01""");
+    var expectedPublicExponent = decodeHex('''01:00:01''');
     //expect(publicExponent.valueAsBigInteger, new BigInteger.fromBytes(0, expectedPublicExponent));
 
     expect(publicExponent.valueAsBigInteger,
         ASN1Util.bytes2BigInt(expectedPublicExponent));
 
     var privateExponent = pkSeq.elements[3] as ASN1Integer;
-    var expectedPrivateExponent = decodeHex("""
+    var expectedPrivateExponent = decodeHex('''
 00:a9:85:e0:c0:18:a7:a9:b9:59:11:8d:27:ff:3b:
 51:7c:f7:70:e6:e8:29:c3:14:12:ff:a1:d2:e7:92:
 dc:0a:9a:d6:05:2b:89:f5:38:7a:16:69:dc:60:ac:
@@ -314,13 +304,13 @@ f0:0c:25:17:89:68:4a:ea:f3:ec:da:21:3f:4c:35:
 5b:ae:ae:4f:bd:0a:5c:00:90:d0:61:09:a9:2d:52:
 9c:41:f8:29:0b:bd:98:ae:bf:eb:0b:7c:91:86:57:
 0e:71
-""");
+''');
 
     expect(privateExponent.valueAsBigInteger,
         ASN1Util.bytes2BigInt(expectedPrivateExponent));
 
     var p = pkSeq.elements[4] as ASN1Integer;
-    var expectedP = decodeHex("""
+    var expectedP = decodeHex('''
 00:ff:95:fe:c1:75:aa:2d:cd:5b:52:4d:10:d5:d4:
 79:cc:cc:f0:08:f7:86:80:cb:ed:ca:7f:d2:d6:6c:
 bb:6c:b0:73:e5:f4:c5:75:c7:d9:34:73:d4:fb:df:
@@ -330,10 +320,10 @@ ab:81:71:e7:f5:fa:cf:2e:c3:39:df:33:db:7c:f6:
 ef:ff:b9:e4:1f:be:fb:6e:6e:3f:46:9c:6a:90:85:
 56:8e:fe:15:c4:78:2a:fb:1b:18:67:a5:0a:f0:ac:
 df:e2:d2:26:c0:26:b6:a9:6b
-""");
+''');
     expect(p.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedP));
     var q = pkSeq.elements[5] as ASN1Integer;
-    var expectedQ = decodeHex("""
+    var expectedQ = decodeHex('''
 00:d5:c6:3e:7b:e8:11:58:11:df:f6:fd:7b:8e:b8:
 c4:0b:f0:4d:a3:b4:7c:42:2e:6e:64:31:26:82:f1:
 7a:b4:bd:86:81:0f:9a:1f:bf:4f:9d:5e:82:c4:f4:
@@ -343,10 +333,10 @@ ae:ad:d2:38:74:84:02:4d:27:65:c8:84:de:fe:03:
 be:4e:6f:2c:8b:62:b5:a7:60:58:d7:51:eb:56:62:
 96:2f:f3:c0:e5:a2:ca:a0:92:52:a1:86:db:4a:02:
 96:c1:e3:e4:a7:cf:d2:c6:69
-""");
+''');
     expect(q.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedQ));
     var exp1 = pkSeq.elements[6] as ASN1Integer;
-    var expectedExp1 = decodeHex("""
+    var expectedExp1 = decodeHex('''
 00:99:c5:9e:fe:ba:52:67:38:34:87:71:c2:7d:44:
 56:fb:b7:19:7b:eb:a0:cb:00:e6:d2:7c:d1:57:1d:
 18:2e:ae:83:2c:89:75:fc:04:ff:53:a5:95:30:ed:
@@ -356,10 +346,10 @@ d4:21:0f:6d:25:fb:7e:87:7e:01:e5:9e:87:a1:c9:
 de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 06:8d:05:a6:07:0c:dd:9f:32:90:1e:5b:98:17:71:
 8b:4a:26:72:16:0d:b4:bc:7d
-""");
+''');
     expect(exp1.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedExp1));
     var exp2 = pkSeq.elements[7] as ASN1Integer;
-    var expectedExp2 = decodeHex("""
+    var expectedExp2 = decodeHex('''
 69:e8:31:04:89:d0:2d:e5:8d:23:7c:29:3e:67:e3:
 18:57:10:df:cd:86:d1:f2:d6:d5:e4:53:c4:03:86:
 5b:0c:9a:1a:4e:74:78:cd:fa:cf:68:07:39:34:4f:
@@ -369,10 +359,10 @@ de:f4:96:dc:ff:94:a2:25:b0:c2:f5:32:ca:92:a5:
 16:e8:95:14:e8:ee:3d:e1:c9:a1:c2:ff:e8:68:27:
 27:d2:86:fa:3d:50:4d:84:b0:53:3d:d0:5e:36:32:
 22:14:99:2f:5a:12:7e:21
-""");
+''');
     expect(exp2.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedExp2));
     var co = pkSeq.elements[8] as ASN1Integer;
-    var expectedCo = decodeHex("""
+    var expectedCo = decodeHex('''
 00:8e:fe:d6:6e:27:6e:4a:94:1b:fa:13:e0:d8:04:
 e1:8e:80:92:37:8a:8a:ac:4d:af:c5:24:de:ce:ef:
 aa:6d:08:28:9d:7f:26:84:40:2e:f3:8a:69:1f:92:
@@ -382,21 +372,21 @@ aa:6d:08:28:9d:7f:26:84:40:2e:f3:8a:69:1f:92:
 ed:4d:d5:a1:83:f9:d4:b3:e3:91:26:5c:4c:78:99:
 fd:4d:ff:9f:be:75:91:9e:ba:fa:ad:01:7a:64:51:
 f0:57:25:e7:78:12:17:5d:f5
-""");
+''');
     expect(co.valueAsBigInteger, ASN1Util.bytes2BigInt(expectedCo));
   });
 }
 
 List<int> decodePEM(pem) {
   var startsWith = [
-    "-----BEGIN PUBLIC KEY-----",
-    "-----BEGIN PRIVATE KEY-----",
-    "-----BEGIN CERTIFICATE-----",
+    '-----BEGIN PUBLIC KEY-----',
+    '-----BEGIN PRIVATE KEY-----',
+    '-----BEGIN CERTIFICATE-----',
   ];
   var endsWith = [
-    "-----END PUBLIC KEY-----",
-    "-----END PRIVATE KEY-----",
-    "-----END CERTIFICATE-----"
+    '-----END PUBLIC KEY-----',
+    '-----END PRIVATE KEY-----',
+    '-----END CERTIFICATE-----'
   ];
 
   //HACK

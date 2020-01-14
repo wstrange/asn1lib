@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:asn1lib/asn1lib.dart';
 
-List<int> certificateDER = decodePEM("""-----BEGIN CERTIFICATE-----
+List<int> certificateDER = decodePEM('''-----BEGIN CERTIFICATE-----
 MIIGDTCCA/WgAwIBAgICNcowDQYJKoZIhvcNAQELBQAwgaMxCzAJBgNVBAYTAkNB
 MRAwDgYDVQQIDAdPbnRhcmlvMRgwFgYDVQQKDA9Db25zZW5zYXMsIEluYy4xKDAm
 BgNVBAsMH0NvbnNlbnNhcyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxHTAbBgNVBAMM
@@ -36,7 +36,7 @@ hBfnjkKGoIMkMKhCnXJU2GZRZDr95r19gQbBLjWhQJbh0rgKGOc5fBWm+/8qAozv
 Za6MHPQvYqXuFGHC1f34R/CKK7QyuJ1l1dWfhJxG+A9/s9G8nvGPugny8eLpuw2G
 L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 7zEUAmJp9KggGMmQp1+63A8=
------END CERTIFICATE-----""");
+-----END CERTIFICATE-----''');
 
 void main() {
   var asn1Parser = ASN1Parser(certificateDER);
@@ -46,14 +46,14 @@ void main() {
 
 List<int> decodePEM(pem) {
   var startsWith = [
-    "-----BEGIN PUBLIC KEY-----",
-    "-----BEGIN PRIVATE KEY-----",
-    "-----BEGIN CERTIFICATE-----",
+    '-----BEGIN PUBLIC KEY-----',
+    '-----BEGIN PRIVATE KEY-----',
+    '-----BEGIN CERTIFICATE-----',
   ];
   var endsWith = [
-    "-----END PUBLIC KEY-----",
-    "-----END PRIVATE KEY-----",
-    "-----END CERTIFICATE-----"
+    '-----END PUBLIC KEY-----',
+    '-----END PRIVATE KEY-----',
+    '-----END CERTIFICATE-----'
   ];
 
   //HACK

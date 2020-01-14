@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- Fix all linter warnings
+
 ## 0.5.15
 
 - Add businessCategory object identifier

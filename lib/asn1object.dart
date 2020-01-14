@@ -73,7 +73,7 @@ class ASN1Object {
   /// Determines the length and where the value bytes start
   ////
   void _initFromBytes() {
-    ASN1Length l = ASN1Length.decodeLength(_encodedBytes);
+    var l = ASN1Length.decodeLength(_encodedBytes);
     _valueByteLength = l.length;
     _valueStartPosition = l.valueStartPosition;
   }
@@ -112,7 +112,7 @@ class ASN1Object {
   ///
   Uint8List _encodeHeader() {
     if (_encodedBytes == null) {
-      Uint8List lenEnc = ASN1Length.encodeLength(_valueByteLength);
+      var lenEnc = ASN1Length.encodeLength(_valueByteLength);
       _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength);
       _encodedBytes[0] = tag;
       _encodedBytes.setRange(1, 1 + lenEnc.length, lenEnc, 0);
@@ -150,13 +150,13 @@ class ASN1Object {
   /// Subclasses can call this to set the value bytes
   ///
   void _setValueBytes(List<int> valBytes) {
-    this.encodedBytes.setRange(
+    encodedBytes.setRange(
         _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
-  toHexString() => ASN1Util.listToString(encodedBytes);
+  String toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
   String toString() =>
-      "ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}";
+      'ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}';
 }

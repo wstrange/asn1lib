@@ -164,9 +164,9 @@ final List<int> longTestValues = [
 
 /*
 String _printBytes(List<int> b) {
-  var s = "";
+  var s = '';
   b.forEach((e) {
-    s += "0x${e.toRadixString(16)}, ";
+    s += '0x${e.toRadixString(16)}, ';
   });
   return s;
 }
@@ -187,18 +187,18 @@ void testList(List<int> l) {
 void testPair(int x, int expectedLength) {
   var int1 = ASN1Integer.fromInt(x);
   //print(
-  //    "Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}");
+  //    'Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}');
 
   var contentLength = int1.contentBytes().length;
   expect(contentLength, expectedLength,
-      reason: "expected number of content bytes is wrong");
+      reason: 'expected number of content bytes is wrong');
   var int2 = ASN1Integer.fromBytes(int1.encodedBytes);
-  expect(int1, equals(int2), reason: "decoded value didnt match original");
+  expect(int1, equals(int2), reason: 'decoded value didnt match original');
   expect(int2.intValue, equals(x));
 }
 
-main() {
-  test("Int encode/decode test", () {
+void main() {
+  test('Int encode/decode test', () {
     testList(intTestValues);
     testList(longTestValues);
   });
