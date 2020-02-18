@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1
+
+- Add sha1WithRSAEncryption object identifier
+- Add ASN1GeneralizedTime Parser
+- Add unit tests
+
 ## 0.6.0
 
 - Fix all linter warnings

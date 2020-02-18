@@ -24,3 +24,4 @@ part 'asn1printablestring.dart';
 part 'asn1utf8string.dart';
 part 'asn1ia5string.dart';
 part 'asn1utctime.dart';
+part 'asn1generalizedtime.dart';

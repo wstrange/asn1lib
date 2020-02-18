@@ -105,6 +105,9 @@ class ASN1Parser {
       case UTC_TIME_TYPE:
         return ASN1UtcTime.fromBytes(b);
 
+      case GENERALIZED_TIME:
+        return ASN1GeneralizedTime.fromBytes(b);
+
       default:
         throw ASN1Exception('Parser for tag ${tag} not implemented yet');
     }
