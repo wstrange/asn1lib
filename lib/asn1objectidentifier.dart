@@ -52,6 +52,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
     'jurisdictionOfIncorporationC': '1.3.6.1.4.1.311.60.2.1.3',
     'jurisdictionOfIncorporationSP': '1.3.6.1.4.1.311.60.2.1.2',
     'jurisdictionOfIncorporationL': '1.3.6.1.4.1.311.60.2.1.1',
+    'sha1WithRSAEncryption': '1.2.840.113549.1.1.5'
   };
 
   List<int> oi;
