@@ -15,7 +15,8 @@ const int UTC_TIME_TYPE = 0x17;
 const int SEQUENCE_TYPE = 0x30;
 const int SET_TYPE = 0x31;
 const int OBJECT_IDENTIFIER = 0x06;
-const int GENERALIZED_TIME = 0x24;
+const int GENERALIZED_TIME = 0x18;
+const int TELETEXT_STRING = 0x14;
 
 const int BOOLEAN_TRUE_VALUE = 0xff;
 const int BOOLEAN_FALSE_VALUE = 0x00;

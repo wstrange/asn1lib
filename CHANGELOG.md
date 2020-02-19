@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.3
+
+- Add ASN1TeletextString Parser
+- Add unit tests
+
+## 0.6.2
+
+- Small fix for the ASN1GeneralizedTime parser
+
 ## 0.6.1
 
 - Add sha1WithRSAEncryption object identifier

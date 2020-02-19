@@ -108,6 +108,9 @@ class ASN1Parser {
       case GENERALIZED_TIME:
         return ASN1GeneralizedTime.fromBytes(b);
 
+      case TELETEXT_STRING:
+        return ASN1TeletextString.fromBytes(b);
+
       default:
         throw ASN1Exception('Parser for tag ${tag} not implemented yet');
     }
