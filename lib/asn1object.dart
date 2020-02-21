@@ -50,7 +50,8 @@ class ASN1Object {
   ASN1Object.preEncoded(int tag, Uint8List valBytes) : _tag = tag {
     _valueByteLength = valBytes.length;
     _encodeHeader();
-    _encodedBytes.setRange(_valueStartPosition, valBytes.length, valBytes);
+    _encodedBytes.setRange(
+        _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
   ///
