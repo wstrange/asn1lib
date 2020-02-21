@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.4
+
+- Fix ASN1Object.preEncoded bytes range
+- Add unit tests
+
 ## 0.6.3
 
 - Add ASN1TeletextString Parser
