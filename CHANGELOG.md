@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5
+
+- Add new object identifiers
+
 ## 0.6.4
 
 - Fix ASN1Object.preEncoded bytes range
