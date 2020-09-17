@@ -151,4 +151,22 @@ void main() {
     expect(objId.oi.elementAt(2), 4);
     expect(objId.oi.elementAt(3), 3);
   });
+
+  /// Test fromBytes() with an oid that does not exist in the DN map
+  /// OID used for test is SNMP protocol "sysDesc"
+  test('fromBytes (Unrecognized)', () {
+    var bytes = Uint8List.fromList(
+        [0x06, 0x07, 0x2B, 0x06, 0x01, 0x02, 0x01, 0x01, 0x01]);
+    var objId = ASN1ObjectIdentifier.fromBytes(bytes);
+    expect(objId.identifier, '1.3.6.1.2.1.1.1');
+    expect(objId.oi.length, 8);
+    expect(objId.oi.elementAt(0), 1);
+    expect(objId.oi.elementAt(1), 3);
+    expect(objId.oi.elementAt(2), 6);
+    expect(objId.oi.elementAt(3), 1);
+    expect(objId.oi.elementAt(4), 2);
+    expect(objId.oi.elementAt(5), 1);
+    expect(objId.oi.elementAt(6), 1);
+    expect(objId.oi.elementAt(7), 1);
+  });
 }
