@@ -117,14 +117,9 @@ class ASN1ObjectIdentifier extends ASN1Object {
         }
       }
     }
-    var objIdAsString = objId.toString();
 
-    for (var k in DN.keys) {
-      if (DN[k] == objIdAsString) {
-        oi = list;
-        identifier = objId.toString();
-      }
-    }
+    oi = list;
+    identifier = objId.toString();
   }
 
   @override
