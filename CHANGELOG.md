@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- Improve object identifier tests
+- Fix ASN1ObjectIdentifier static methods fromBytes() and fromComponents()
+
 ## 0.6.5
 
 - Add new object identifiers
