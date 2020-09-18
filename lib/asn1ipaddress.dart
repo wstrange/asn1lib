@@ -8,9 +8,14 @@ class ASN1IpAddress extends ASN1OctetString {
   /// Create an [ASN1IpAddress] initialized with a [String] or a [List<int>].
   /// Optionally override the tag
   ///
-  ASN1IpAddress(dynamic octets, {int tag = IP_ADDRESS})
+  ASN1IpAddress(List<int> octets, {int tag = IP_ADDRESS})
       : super(octets, tag: tag) {
     _assertValidLength(this.octets);
+    for (var o in octets) {
+      if (0 > o || o > 255) {
+        throw ArgumentError('Octet out of range!.');
+      }
+    }
   }
 
   ///
@@ -36,11 +41,15 @@ class ASN1IpAddress extends ASN1OctetString {
           {tag = IP_ADDRESS}) =>
       ASN1IpAddress(components, tag: tag);
 
+  /// Ensure there are no more or less than 4 octets for an IPv4 address
   void _assertValidLength(Uint8List octets) {
     if (octets.length != 4) {
       throw ArgumentError('IPv4 Address should contain exactly 4 octets.');
     }
   }
+
+  @override
+  String get stringValue => octets.join('.');
 
   @override
   String toString() => 'IpAddress(${stringValue})';
