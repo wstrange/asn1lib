@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0
+
+- Add ASN1IpAddress object based on ASN1OctetString
+- Add tests for ASN1IpAddress
+
 ## 0.7.0
 
 - Improve object identifier tests
