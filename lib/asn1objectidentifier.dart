@@ -129,29 +129,11 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    _valueByteLength = oi.length;
-    super._encodeHeader();
-    _setValueBytes(oi);
-    return _encodedBytes;
-  }
+    var _valBytes = <int>[oi[0] * 40 + oi[1]];
 
-  static ASN1ObjectIdentifier fromComponentString(String path,
-          {tag = OBJECT_IDENTIFIER}) =>
-      fromComponents(path.split('.').map((v) => int.parse(v)).toList(),
-          tag: tag);
-
-  static ASN1ObjectIdentifier fromComponents(List<int> components,
-      {tag = OBJECT_IDENTIFIER}) {
-    assert(components.length >= 2);
-    assert(components[0] < 3);
-    assert(components[1] < 64);
-
-    var oi = <int>[];
-    oi.add(components[0] * 40 + components[1]);
-
-    for (var ci = 2; ci < components.length; ci++) {
-      var position = oi.length;
-      var v = components[ci];
+    for (var ci = 2; ci < oi.length; ci++) {
+      var position = _valBytes.length;
+      var v = oi[ci];
       assert(v > 0);
 
       var first = true;
@@ -164,11 +146,28 @@ class ASN1ObjectIdentifier extends ASN1Object {
           remainder |= 0x80;
         }
 
-        oi.insert(position, remainder);
+        _valBytes.insert(position, remainder);
       } while (v > 0);
     }
+    _valueByteLength = _valBytes.length;
+    super._encodeHeader();
+    _setValueBytes(_valBytes);
+    return _encodedBytes;
+  }
 
-    return ASN1ObjectIdentifier(oi, tag: tag);
+  static ASN1ObjectIdentifier fromComponentString(String path,
+          {tag = OBJECT_IDENTIFIER}) =>
+      fromComponents(path.split('.').map((v) => int.parse(v)).toList(),
+          tag: tag);
+
+  static ASN1ObjectIdentifier fromComponents(List<int> components,
+      {tag = OBJECT_IDENTIFIER}) {
+    assert(components.length >= 2);
+    assert(components[0] < 3);
+    assert(components[1] < 39);
+
+    return ASN1ObjectIdentifier(components,
+        identifier: components.join('.'), tag: tag);
   }
 
   static final _names = <String, ASN1ObjectIdentifier>{};
