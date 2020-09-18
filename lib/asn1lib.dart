@@ -26,3 +26,5 @@ part 'asn1ia5string.dart';
 part 'asn1utctime.dart';
 part 'asn1generalizedtime.dart';
 part 'asn1teletextstring.dart';
+
+part 'asn1ipaddress.dart';
