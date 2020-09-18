@@ -20,3 +20,7 @@ const int TELETEXT_STRING = 0x14;
 
 const int BOOLEAN_TRUE_VALUE = 0xff;
 const int BOOLEAN_FALSE_VALUE = 0x00;
+
+// application-specific tag bytes for SNMP protocol
+
+const int IP_ADDRESS = 0x40;
