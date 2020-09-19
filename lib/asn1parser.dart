@@ -49,13 +49,9 @@ class ASN1Parser {
 
     if (isPrimitive) {
       obj = _doPrimitive(tag, subBytes);
-    } else if (isApplication) {
+    } else if (isApplication && ((tag & SEQUENCE_TYPE) != 0)) {
       // sequence subtype
-      if ((tag & SEQUENCE_TYPE) != 0) {
-        obj = ASN1Sequence.fromBytes(subBytes);
-      } else {
-        throw ASN1Exception('Parser for tag ${tag} not implemented yet');
-      }
+      obj = ASN1Sequence.fromBytes(subBytes);
     } else {
       // create a vanilla object
       obj = ASN1Object.fromBytes(subBytes);
