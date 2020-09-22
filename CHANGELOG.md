@@ -5,6 +5,12 @@
 - Add ASN1IpAddress object based on ASN1OctetString
 - Add tests for ASN1IpAddress
 
+## 0.7.1
+
+- Allow parsing of unrecognizes application tags into generic ASN1Objects
+- Fix parser test filename typo
+- Add new tag tests
+
 ## 0.7.0
 
 - Improve object identifier tests
