@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+- Allow OID octets to be 0
+- Fix ASN1Integer.toString() typo
+
 ## 0.8.0
 
 - Add ASN1IpAddress object based on ASN1OctetString
