@@ -39,7 +39,7 @@ class ASN1Integer extends ASN1Object {
   static int decodeInt(Uint8List bytes) => decodeBigInt(bytes).toInt();
 
   @override
-  String toString() => 'ASNInteger($intValue)';
+  String toString() => 'ASN1Integer($intValue)';
 
   static final _b256 = BigInt.from(256);
   static final _minusOne = BigInt.from(-1);
