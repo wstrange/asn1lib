@@ -129,7 +129,6 @@ class ASN1ObjectIdentifier extends ASN1Object {
     for (var ci = 2; ci < oi.length; ci++) {
       var position = _valBytes.length;
       var v = oi[ci];
-      assert(v > 0);
 
       var first = true;
       do {
