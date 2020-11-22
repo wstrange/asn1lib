@@ -1,8 +1,8 @@
 import 'dart:convert';
-
+import 'dart:typed_data';
 import 'package:asn1lib/asn1lib.dart';
 
-List<int> certificateDER = decodePEM('''-----BEGIN CERTIFICATE-----
+final certificateDER = decodePEM('''-----BEGIN CERTIFICATE-----
 MIIGDTCCA/WgAwIBAgICNcowDQYJKoZIhvcNAQELBQAwgaMxCzAJBgNVBAYTAkNB
 MRAwDgYDVQQIDAdPbnRhcmlvMRgwFgYDVQQKDA9Db25zZW5zYXMsIEluYy4xKDAm
 BgNVBAsMH0NvbnNlbnNhcyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxHTAbBgNVBAMM
@@ -44,7 +44,7 @@ void main() {
   print(seq.valueBytes().length);
 }
 
-List<int> decodePEM(pem) {
+Uint8List decodePEM(pem) {
   var startsWith = [
     '-----BEGIN PUBLIC KEY-----',
     '-----BEGIN PRIVATE KEY-----',
@@ -68,5 +68,5 @@ List<int> decodePEM(pem) {
   //Dart base64 decoder does not support line breaks
   pem = pem.replaceAll('\n', '');
   pem = pem.replaceAll('\r', '');
-  return base64.decode(pem);
+  return Uint8List.fromList(base64.decode(pem));
 }

@@ -26,7 +26,7 @@ void main() {
     var asn1object = p.nextObject();
     expect(asn1object is ASN1Sequence, equals(true));
 
-    ASN1Sequence seq = asn1object;
+    ASN1Sequence seq = asn1object as ASN1Sequence;
     expect(seq.elements.length, equals(9));
 
     //?
@@ -382,16 +382,16 @@ void main() {
     var asn1object = p.nextObject();
     expect(asn1object is ASN1Sequence, equals(true));
 
-    ASN1Sequence seq = asn1object;
+    ASN1Sequence seq = asn1object as ASN1Sequence;
     expect(seq.elements[1] is ASN1BitString, equals(true));
-    ASN1BitString os = seq.elements[1]; //always ASN1BitString ?
+    var os = seq.elements[1] as ASN1BitString; //always ASN1BitString ?
     expect(os.valueBytes()[0], equals(0)); //always zero ?
     var bytes = os.valueBytes().sublist(1); //remove unused bits count
     p = ASN1Parser(bytes);
     expect(p.hasNext(), equals(true));
     asn1object = p.nextObject();
     expect(asn1object is ASN1Sequence, equals(true));
-    seq = asn1object;
+    seq = asn1object as ASN1Sequence;
     expect(seq.elements.length, equals(2));
 
     //modulus
@@ -495,7 +495,7 @@ void main() {
         expect(p.hasNext(), equals(true));
         var asn1object = p.nextObject();
         expect(asn1object is ASN1Sequence, equals(true));
-        ASN1Sequence seq = asn1object;
+        ASN1Sequence seq = asn1object as ASN1Sequence;
 
         expect(seq.elements[0] is ASN1Sequence, equals(true));
         var element0 = seq.elements[0] as ASN1Sequence;
@@ -529,7 +529,7 @@ void main() {
         var element0_6 = element0.elements[6] as ASN1Sequence;
 
         expect(element0_6.elements[1] is ASN1BitString, equals(true));
-        ASN1BitString os = element0_6.elements[1]; //always ASN1BitString ?
+        ASN1BitString os = element0_6.elements[1] as ASN1BitString; //always ASN1BitString ?
 
         expect(os.valueBytes()[0], equals(0)); //always zero ?
         var bytes = os.valueBytes().sublist(1); //remove unused bits count
@@ -537,7 +537,7 @@ void main() {
         expect(p.hasNext(), equals(true));
         asn1object = p.nextObject();
         expect(asn1object is ASN1Sequence, equals(true));
-        seq = asn1object;
+        seq = asn1object as ASN1Sequence;
         expect(seq.elements.length, equals(2));
 
         //modulus

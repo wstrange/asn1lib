@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
+import 'dart:typed_data';
 import 'package:convert/convert.dart' as convert;
 import 'dart:convert';
 
@@ -106,8 +107,8 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     // Issuer
     var issuerSequence = dataSequence.elements.elementAt(3) as ASN1Sequence;
     var issuer = <String, String>{};
-    for (ASN1Set s in issuerSequence.elements) {
-      var setSequence = s.elements.elementAt(0) as ASN1Sequence;
+    for (var s in issuerSequence.elements) {
+      var setSequence = (s as ASN1Set).elements.elementAt(0) as ASN1Sequence;
       var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
       var object = setSequence.elements.elementAt(1);
       var value = '';
@@ -142,8 +143,8 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     // Subject
     var subjectSequence = dataSequence.elements.elementAt(5) as ASN1Sequence;
     var subject = <String, String>{};
-    for (ASN1Set s in subjectSequence.elements) {
-      var setSequence = s.elements.elementAt(0) as ASN1Sequence;
+    for (var s in subjectSequence.elements) {
+      var setSequence = (s as ASN1Set).elements.elementAt(0) as ASN1Sequence;
       var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
       var object = setSequence.elements.elementAt(1);
       var value = '';
@@ -377,7 +378,7 @@ f0:57:25:e7:78:12:17:5d:f5
   });
 }
 
-List<int> decodePEM(pem) {
+Uint8List decodePEM(pem) {
   var startsWith = [
     '-----BEGIN PUBLIC KEY-----',
     '-----BEGIN PRIVATE KEY-----',
