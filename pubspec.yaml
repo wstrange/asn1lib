@@ -4,11 +4,11 @@ description: An ASN1 parser library for Dart. Encodes / decodes from ASN1 Object
 homepage: https://github.com/wstrange/asn1lib
 environment:
 # sdk: '>=2.12.0-0 <3.0.0'
- sdk: '>=2.11.0-0 <3.0.0'
+ sdk: '>=2.12.0-29.10.beta <3.0.0'
 
 dev_dependencies:
   test: '>=  1.16.0-nullsafety.12'
 #  convert: '>= 3.0.0-nullsafety.0'
   # null safe version conflicts with test
-  convert: any
+#  convert: any
   pedantic: ^1.10.0-nullsafety.3

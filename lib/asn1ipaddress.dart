@@ -10,7 +10,7 @@ class ASN1IpAddress extends ASN1OctetString {
   ///
   ASN1IpAddress(List<int> octets, {int tag = IP_ADDRESS})
       : super(octets, tag: tag) {
-    _assertValidLength(this.octets);
+    _assertValidLength(this.octets!);
     for (var o in octets) {
       if (0 > o || o > 255) {
         throw ArgumentError('Octet out of range!.');
@@ -23,7 +23,7 @@ class ASN1IpAddress extends ASN1OctetString {
   ///
   ASN1IpAddress.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     octets = valueBytes();
-    _assertValidLength(octets);
+    _assertValidLength(octets!);
   }
 
   ///
@@ -49,7 +49,7 @@ class ASN1IpAddress extends ASN1OctetString {
   }
 
   @override
-  String get stringValue => octets.join('.');
+  String get stringValue => octets!.join('.');
 
   @override
   String toString() => 'IpAddress(${stringValue})';

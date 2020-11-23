@@ -12,7 +12,7 @@ class ASN1Set extends ASN1Object {
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    if ((tag & SET_TYPE) == 0) {
+    if ((tag! & SET_TYPE) == 0) {
       throw ASN1Exception('The tag ${tag} does not look like a set type');
     }
     _decodeSet();
@@ -28,15 +28,15 @@ class ASN1Set extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     _valueByteLength = _childLength();
     //super._encode();
 
     super._encodeHeader();
     var i = _valueStartPosition;
     elements.forEach((obj) {
-      var b = obj.encodedBytes;
-      encodedBytes.setRange(i, i + b.length, b);
+      var b = obj.encodedBytes!;
+      encodedBytes!.setRange(i, i + b.length, b);
       i += b.length;
     });
     return _encodedBytes;
@@ -49,7 +49,7 @@ class ASN1Set extends ASN1Object {
     var l = 0;
     elements.forEach((obj) {
       obj._encode();
-      l += obj.encodedBytes.length;
+      l += obj.encodedBytes!.length;
     });
     return l;
   }

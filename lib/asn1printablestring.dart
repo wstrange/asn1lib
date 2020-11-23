@@ -8,7 +8,7 @@ part of asn1lib;
 ///
 class ASN1PrintableString extends ASN1Object {
   // The decoded string value
-  String stringValue;
+  String? stringValue;
 
   ///
   /// Create an [ASN1PrintableString] initialized with String value.
@@ -27,8 +27,8 @@ class ASN1PrintableString extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
-    var octets = ascii.encode(stringValue);
+  Uint8List? _encode() {
+    var octets = ascii.encode(stringValue!);
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);

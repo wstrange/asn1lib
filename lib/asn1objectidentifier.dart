@@ -58,9 +58,9 @@ class ASN1ObjectIdentifier extends ASN1Object {
     'ecdsaWithSHA256': '1.2.840.10045.4.3.2'
   };
 
-  List<int> oi;
+  List<int>? oi;
 
-  String identifier;
+  String? identifier;
 
   ASN1ObjectIdentifier(this.oi, {this.identifier, tag = OBJECT_IDENTIFIER})
       : super(tag: tag);
@@ -73,7 +73,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
     var subBytes = bytes.sublist(2, bytes.length);
     var value = 0;
     var first = true;
-    BigInt bigValue;
+    BigInt? bigValue;
     var list = <int>[];
     var objId = StringBuffer();
     for (var i = 0; i != subBytes.length; i++) {
@@ -123,12 +123,12 @@ class ASN1ObjectIdentifier extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
-    var _valBytes = <int>[oi[0] * 40 + oi[1]];
+  Uint8List? _encode() {
+    var _valBytes = <int>[oi![0] * 40 + oi![1]];
 
-    for (var ci = 2; ci < oi.length; ci++) {
+    for (var ci = 2; ci < oi!.length; ci++) {
       var position = _valBytes.length;
-      var v = oi[ci];
+      var v = oi![ci];
 
       var first = true;
       do {
@@ -166,7 +166,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   static final _names = <String, ASN1ObjectIdentifier>{};
 
-  static ASN1ObjectIdentifier fromName(String name, {tag = OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier? fromName(String name, {tag = OBJECT_IDENTIFIER}) {
     name = name.toLowerCase();
 
     for (var entry in _names.entries) {

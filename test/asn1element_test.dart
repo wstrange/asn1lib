@@ -39,7 +39,7 @@ void main() {
 
       // try via constructor
       var int1 = ASN1Integer.fromInt(x);
-      var int2 = ASN1Integer.fromBytes(int1.encodedBytes);
+      var int2 = ASN1Integer.fromBytes(int1.encodedBytes!);
 
       // equality is broken..
       expect(int1, equals(int2));
@@ -88,16 +88,16 @@ void main() {
   test('Octet String encoding', () {
     var s = 'Hello';
     var os = ASN1OctetString(s);
-    var os2 = ASN1OctetString.fromBytes(os.encodedBytes);
+    var os2 = ASN1OctetString.fromBytes(os.encodedBytes!);
     expect(os2.stringValue, equals(s));
   });
 
   test('Octet get octets', () {
     var octets = <int>[1, 2, 3, 4, 5, 123, 254, 0, 33];
     var os1 = ASN1OctetString(String.fromCharCodes(octets));
-    var os1d = ASN1OctetString.fromBytes(os1.encodedBytes);
+    var os1d = ASN1OctetString.fromBytes(os1.encodedBytes!);
     var os2 = ASN1OctetString(octets);
-    var os2d = ASN1OctetString.fromBytes(os2.encodedBytes);
+    var os2d = ASN1OctetString.fromBytes(os2.encodedBytes!);
     expect(os1d.octets, equals(octets));
     expect(os2d.octets, equals(octets));
   });
@@ -109,7 +109,7 @@ void main() {
     s.add(s1);
     s.add(s2);
 
-    var seq2 = ASN1Sequence.fromBytes(s.encodedBytes);
+    var seq2 = ASN1Sequence.fromBytes(s.encodedBytes!);
     var t1 = seq2.elements[0] as ASN1OctetString;
     var t2 = seq2.elements[1] as ASN1OctetString;
 
@@ -126,8 +126,8 @@ void main() {
       ints.add(int.parse(s, radix: 16));
     });
     var s = ASN1Sequence.fromBytes(Uint8List.fromList(ints));
-    s.encodedBytes.length;
-    var length = s.elements.elementAt(0).encodedBytes.length;
+    s.encodedBytes!.length;
+    var length = s.elements.elementAt(0).encodedBytes!.length;
     expect(length, 294);
   });
 
@@ -155,11 +155,11 @@ void main() {
     var f = ASN1Boolean.ASN1FalseBoolean;
     var t = ASN1Boolean.ASN1TrueBoolean;
 
-    var fa = [BOOLEAN_TYPE, 0x01, 0x00];
-    var ta = [BOOLEAN_TYPE, 0x01, 0xff];
+    var fa = Uint8List.fromList([BOOLEAN_TYPE, 0x01, 0x00]);
+    var ta = Uint8List.fromList([BOOLEAN_TYPE, 0x01, 0xff]);
 
-    expect(f.encodedBytes.toList(), equals(fa));
-    expect(t.encodedBytes.toList(), equals(ta));
+    expect(f.encodedBytes, equals(fa));
+    expect(t.encodedBytes, equals(ta));
   });
 
   test('Set test', () {
@@ -167,7 +167,7 @@ void main() {
     s.add(ASN1Boolean.ASN1FalseBoolean);
     s.add(ASN1OctetString('hello world'));
 
-    var bytes = s.encodedBytes;
+    var bytes = s.encodedBytes!;
 
     var s2 = ASN1Set.fromBytes(bytes);
 

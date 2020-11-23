@@ -16,7 +16,7 @@ void main() {
     List lines = pem
         .split('\n')
         .map((line) => line.trim())
-        .skipWhile((String line) => !line.startsWith('---'))
+        .skipWhile((line) => !line.startsWith('---'))
         .toList();
     var key = lines.sublist(1, lines.length - 2).join('');
     var key_bytes = Uint8List.fromList(base64.decode(key));
@@ -372,7 +372,7 @@ void main() {
     List lines = pem
         .split('\n')
         .map((line) => line.trim())
-        .skipWhile((String line) => !line.startsWith('---'))
+        .skipWhile((line) => !line.startsWith('---'))
         .toList();
     var key = lines.sublist(1, lines.length - 2).join('');
     var key_bytes = Uint8List.fromList(base64.decode(key));

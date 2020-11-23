@@ -16,7 +16,7 @@ class ASN1Sequence extends ASN1Object {
   /// we ignore any remaining bytes.
   ///
   ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    if ((tag & SEQUENCE_TYPE) == 0) {
+    if ((tag! & SEQUENCE_TYPE) == 0) {
       throw ASN1Exception('The tag ${tag} does not look like a sequence type');
     }
     //print('ASN1Sequence valbytes=${hex(valueBytes())}');
@@ -36,14 +36,14 @@ class ASN1Sequence extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     _valueByteLength = _childLength();
     super._encodeHeader();
     var i = _valueStartPosition;
     // encode each element
     elements.forEach((obj) {
-      var b = obj.encodedBytes;
-      encodedBytes.setRange(i, i + b.length, b);
+      var b = obj.encodedBytes!;
+      encodedBytes!.setRange(i, i + b.length, b);
       i += b.length;
     });
     return _encodedBytes;
@@ -55,7 +55,7 @@ class ASN1Sequence extends ASN1Object {
   int _childLength() {
     var l = 0;
     elements.forEach((obj) {
-      l += obj._encode().length;
+      l += obj._encode()!.length;
     });
     return l;
   }

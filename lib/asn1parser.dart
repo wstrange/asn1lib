@@ -5,7 +5,7 @@ part of asn1lib;
 ///
 class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
-  final Uint8List _bytes;
+  final Uint8List? _bytes;
 
   /// Create a new parser for the stream of [_bytes]
   ASN1Parser(this._bytes);
@@ -15,14 +15,14 @@ class ASN1Parser {
 
   bool hasNext() {
     //return _position < ASN1Length.decodeLength(_bytes).length;
-    return _position < _bytes.length;
+    return _position < _bytes!.length;
   }
 
   ///
   /// Return the next ASN1Object in the stream
   ///
   ASN1Object nextObject() {
-    var tag = _bytes[_position]; // get curren tag in stream
+    var tag = _bytes![_position]; // get curren tag in stream
 
     // print("parser tag = ${tag} bytes=${_bytes}");
     // ASN1 Primitives have high bits 8/7 set to 0
@@ -33,16 +33,16 @@ class ASN1Parser {
     //int l = _bytes.length - _position;
 
     var l = 0;
-    var length = ASN1Length.decodeLength(_bytes.sublist(_position));
+    var length = ASN1Length.decodeLength(_bytes!.sublist(_position));
     if (_position < length.length + length.valueStartPosition) {
       l = length.length + length.valueStartPosition;
     } else {
-      l = _bytes.length - _position;
+      l = _bytes!.length - _position;
     }
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
-    var offset = _position + _bytes.offsetInBytes;
-    var subBytes = Uint8List.view(_bytes.buffer, offset, l);
+    var offset = _position + _bytes!.offsetInBytes;
+    var subBytes = Uint8List.view(_bytes!.buffer, offset, l);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
     ASN1Object obj;

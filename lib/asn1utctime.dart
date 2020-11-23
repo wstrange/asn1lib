@@ -10,7 +10,7 @@ part of asn1lib;
 ///
 class ASN1UtcTime extends ASN1Object {
   // The decoded date value
-  DateTime dateTimeValue;
+  DateTime? dateTimeValue;
 
   ///
   /// Create an [ASN1UtcTime] initialized with DateTime value.
@@ -41,8 +41,8 @@ class ASN1UtcTime extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
-    var utc = dateTimeValue.toUtc();
+  Uint8List? _encode() {
+    var utc = dateTimeValue!.toUtc();
     var year = utc.year.toString().substring(2).padLeft(2, '0');
     var month = utc.month.toString().padLeft(2, '0');
     var day = utc.day.toString().padLeft(2, '0');

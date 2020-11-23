@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 import 'dart:typed_data';
-import 'package:convert/convert.dart' as convert;
-import 'dart:convert';
+
 
 void main() {
   var publicKeyDER = decodePEM('''-----BEGIN PUBLIC KEY-----
@@ -106,12 +106,12 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 
     // Issuer
     var issuerSequence = dataSequence.elements.elementAt(3) as ASN1Sequence;
-    var issuer = <String, String>{};
+    var issuer = <String?, String?>{};
     for (var s in issuerSequence.elements) {
       var setSequence = (s as ASN1Set).elements.elementAt(0) as ASN1Sequence;
       var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
       var object = setSequence.elements.elementAt(1);
-      var value = '';
+      String? value = '';
       if (object is ASN1UTF8String) {
         var objectAsUtf8 = object;
         value = objectAsUtf8.utf8StringValue;
@@ -137,17 +137,17 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     var asn1From = validitySequence.elements.elementAt(0) as ASN1UtcTime;
     var asn1To = validitySequence.elements.elementAt(1) as ASN1UtcTime;
     expect(
-        asn1From.dateTimeValue.toIso8601String(), '2019-03-18T14:27:08.000Z');
-    expect(asn1To.dateTimeValue.toIso8601String(), '2020-03-17T14:27:08.000Z');
+        asn1From.dateTimeValue!.toIso8601String(), '2019-03-18T14:27:08.000Z');
+    expect(asn1To.dateTimeValue!.toIso8601String(), '2020-03-17T14:27:08.000Z');
 
     // Subject
     var subjectSequence = dataSequence.elements.elementAt(5) as ASN1Sequence;
-    var subject = <String, String>{};
+    var subject = <String?, String?>{};
     for (var s in subjectSequence.elements) {
       var setSequence = (s as ASN1Set).elements.elementAt(0) as ASN1Sequence;
       var o = setSequence.elements.elementAt(0) as ASN1ObjectIdentifier;
       var object = setSequence.elements.elementAt(1);
-      var value = '';
+      String? value = '';
       if (object is ASN1UTF8String) {
         var objectAsUtf8 = object;
         value = objectAsUtf8.utf8StringValue;
@@ -233,7 +233,8 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     expectedHex = expectedHex.replaceAll('\n', '');
     expectedHex = expectedHex.replaceAll('\r', '');
 
-    var x = convert.hex.decode(expectedHex);
+
+    List<int> x = decodeHex(expectedHex);
 
     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger,
         ASN1Util.bytes2BigInt(x));
@@ -405,11 +406,32 @@ Uint8List decodePEM(pem) {
   return base64.decode(pem);
 }
 
+// Very kludgy implementation of hex conversion so we can
+// avoid the convert package dependency
 List<int> decodeHex(String hex) {
-  hex = hex
+  var h = hex
       .replaceAll(':', '')
       .replaceAll('\n', '')
       .replaceAll('\r', '')
-      .replaceAll('\t', '');
-  return convert.hex.decode(hex);
+      .replaceAll('\t', '')
+      .toUpperCase();
+  var l = h.codeUnits;
+  List<int> hexList = [];
+  for(int i=0; i < l.length; i+= 2) {
+    var x = _digitForCodeUnit(l[i]) * 16;
+    var y = _digitForCodeUnit(l[i+1]);
+    hexList.add(x+y);
+  }
+  return hexList;
+}
+
+const int $0 = 48;
+const int $9 = 57;
+const int $A = 65;
+
+int _digitForCodeUnit(int codeUnit) {
+  if (codeUnit >= $0 && codeUnit <= $9) {
+    return codeUnit - $0;
+  }
+  return codeUnit - $A +10;
 }
