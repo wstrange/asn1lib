@@ -1,4 +1,7 @@
 # Changelog
+## 0.9.0 
+
+- null safety 
 
 ## 0.8.1
 

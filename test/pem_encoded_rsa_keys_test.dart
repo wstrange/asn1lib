@@ -137,8 +137,8 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     var asn1From = validitySequence.elements.elementAt(0) as ASN1UtcTime;
     var asn1To = validitySequence.elements.elementAt(1) as ASN1UtcTime;
     expect(
-        asn1From.dateTimeValue!.toIso8601String(), '2019-03-18T14:27:08.000Z');
-    expect(asn1To.dateTimeValue!.toIso8601String(), '2020-03-17T14:27:08.000Z');
+        asn1From.dateTimeValue.toIso8601String(), '2019-03-18T14:27:08.000Z');
+    expect(asn1To.dateTimeValue.toIso8601String(), '2020-03-17T14:27:08.000Z');
 
     // Subject
     var subjectSequence = dataSequence.elements.elementAt(5) as ASN1Sequence;

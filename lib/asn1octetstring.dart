@@ -5,7 +5,7 @@ part of asn1lib;
 ///
 class ASN1OctetString extends ASN1Object {
   /// The decoded string value
-  Uint8List? octets;
+  late Uint8List octets;
 
   @override
   Uint8List? contentBytes() => octets;
@@ -38,13 +38,13 @@ class ASN1OctetString extends ASN1Object {
   ///
   /// Get the [String] value of this octet string.
   ///
-  String get stringValue => String.fromCharCodes(octets!);
+  String get stringValue => String.fromCharCodes(octets);
 
   @override
   Uint8List? _encode() {
-    _valueByteLength = octets!.length;
+    _valueByteLength = octets.length;
     _encodeHeader();
-    _setValueBytes(octets!);
+    _setValueBytes(octets);
     //this.encodedBytes.setRange(valueStartPosition,
     //  valueStartPosition + valBytes.length, valBytes);
     return _encodedBytes;

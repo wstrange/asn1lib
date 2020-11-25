@@ -5,7 +5,7 @@ part of asn1lib;
 ///
 class ASN1TeletextString extends ASN1Object {
   // The decoded string value
-  String? stringValue;
+  late String stringValue;
 
   ///
   /// Create an [ASN1TeletextString] initialized with String value.
@@ -25,7 +25,7 @@ class ASN1TeletextString extends ASN1Object {
 
   @override
   Uint8List? _encode() {
-    var octets = ascii.encode(stringValue!);
+    var octets = ascii.encode(stringValue);
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);

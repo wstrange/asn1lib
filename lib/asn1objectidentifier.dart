@@ -58,7 +58,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
     'ecdsaWithSHA256': '1.2.840.10045.4.3.2'
   };
 
-  List<int>? oi;
+  late List<int> oi;
 
   String? identifier;
 
@@ -124,11 +124,11 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   @override
   Uint8List? _encode() {
-    var _valBytes = <int>[oi![0] * 40 + oi![1]];
+    var _valBytes = <int>[oi[0] * 40 + oi[1]];
 
-    for (var ci = 2; ci < oi!.length; ci++) {
+    for (var ci = 2; ci < oi.length; ci++) {
       var position = _valBytes.length;
-      var v = oi![ci];
+      var v = oi[ci];
 
       var first = true;
       do {
@@ -166,7 +166,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   static final _names = <String, ASN1ObjectIdentifier>{};
 
-  static ASN1ObjectIdentifier? fromName(String name, {tag = OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier fromName(String name, {tag = OBJECT_IDENTIFIER}) {
     name = name.toLowerCase();
 
     for (var entry in _names.entries) {
@@ -175,7 +175,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
       }
     }
 
-    return null;
+    throw ASN1Exception('No ObjectIdentifier found for name $name');
   }
 
   static void registerObjectIdentiferName(
