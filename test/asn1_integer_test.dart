@@ -192,7 +192,7 @@ void testPair(int x, int expectedLength) {
   var contentLength = int1.contentBytes()!.length;
   expect(contentLength, expectedLength,
       reason: 'expected number of content bytes is wrong');
-  var int2 = ASN1Integer.fromBytes(int1.encodedBytes!);
+  var int2 = ASN1Integer.fromBytes(int1.encodedBytes);
   expect(int1, equals(int2), reason: 'decoded value didnt match original');
   expect(int2.intValue, equals(x));
 }

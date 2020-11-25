@@ -67,7 +67,7 @@ void main() {
     var time = ASN1TeletextString.fromBytes(bytes);
     expect(time.stringValue,
         'www.entrust.net/CPS_2048 incorp. by ref. (limits liab.)');
-    var encoded = time.encodedBytes!;
+    var encoded = time.encodedBytes;
     expect(encoded.length, bytes.length);
     expect(encoded, bytes);
   });

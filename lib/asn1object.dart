@@ -12,8 +12,8 @@ part of asn1lib;
 ///
 class ASN1Object {
   /// The BER tag representing this object
-  final int? _tag;
-  int? get tag => _tag;
+  final int _tag;
+  int get tag => _tag;
 
   ///
   /// The ASN1 encoded bytes.
@@ -28,18 +28,23 @@ class ASN1Object {
 
   ///
   /// Get the encoded byte representation for this object. This can trigger
-  /// calling the [encodeBigInt] method if the object has not yet been encoded
+  /// calling the subclasss [_encode] method if the object has not yet been encoded
   ///
-  Uint8List? get encodedBytes {
-    if (_encodedBytes == null) _encode();
-    return _encodedBytes;
+  Uint8List get encodedBytes {
+    if (_encodedBytes == null) {
+      _encode();
+    }
+    if (_encodedBytes == null) {
+      throw ASN1Exception('ASN1 Encoding failed. This should never happen');
+    }
+    return _encodedBytes!;
   }
 
   /// Check if the encoding is ready.
   bool get isEncoded => _encodedBytes != null;
 
   /// Create an ASN1Object. Optionally set the tag
-  ASN1Object({int? tag = 0}) : _tag = tag;
+  ASN1Object({int tag = 0}) : _tag = tag;
 
   ///
   /// Create an object that encapsulates a set of value bytes that are already encoded.
@@ -115,7 +120,7 @@ class ASN1Object {
     if (_encodedBytes == null) {
       var lenEnc = ASN1Length.encodeLength(_valueByteLength!);
       _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength!);
-      _encodedBytes![0] = tag!;
+      _encodedBytes![0] = tag;
       _encodedBytes!.setRange(1, 1 + lenEnc.length, lenEnc, 0);
       _valueStartPosition = 1 + lenEnc.length;
     }
@@ -151,13 +156,13 @@ class ASN1Object {
   /// Subclasses can call this to set the value bytes
   ///
   void _setValueBytes(List<int> valBytes) {
-    encodedBytes!.setRange(
+    encodedBytes.setRange(
         _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
-  String toHexString() => ASN1Util.listToString(encodedBytes!);
+  String toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
   String toString() =>
-      'ASN1Object(tag=${tag!.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}';
+      'ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}';
 }

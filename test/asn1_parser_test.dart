@@ -315,33 +315,33 @@ void main() {
 
     var parser = ASN1Parser(bytes);
     var sequence = parser.nextObject() as ASN1Sequence;
-    expect(sequence.encodedBytes!.length, sequence.totalEncodedByteLength);
+    expect(sequence.encodedBytes.length, sequence.totalEncodedByteLength);
 
     var subsequence = sequence.elements.elementAt(0) as ASN1Sequence;
-    expect(subsequence.encodedBytes!.length, subsequence.totalEncodedByteLength);
+    expect(subsequence.encodedBytes.length, subsequence.totalEncodedByteLength);
 
     var obj = subsequence.elements.elementAt(0);
     var subsubsequence = subsequence.elements.elementAt(1) as ASN1Sequence;
     var bitString = subsequence.elements.elementAt(2) as ASN1BitString;
 
-    expect(obj.encodedBytes!.length, obj.totalEncodedByteLength);
-    expect(subsubsequence.encodedBytes!.length,
+    expect(obj.encodedBytes.length, obj.totalEncodedByteLength);
+    expect(subsubsequence.encodedBytes.length,
         subsubsequence.totalEncodedByteLength);
-    expect(bitString.encodedBytes!.length, bitString.totalEncodedByteLength);
+    expect(bitString.encodedBytes.length, bitString.totalEncodedByteLength);
 
     var oid = subsubsequence.elements.elementAt(0) as ASN1ObjectIdentifier;
     var nullObj = subsubsequence.elements.elementAt(1);
-    expect(oid.encodedBytes!.length, oid.totalEncodedByteLength);
-    expect(nullObj.encodedBytes!.length, nullObj.totalEncodedByteLength);
+    expect(oid.encodedBytes.length, oid.totalEncodedByteLength);
+    expect(nullObj.encodedBytes.length, nullObj.totalEncodedByteLength);
 
     var subParser = ASN1Parser(bitString.contentBytes());
     var seq = subParser.nextObject() as ASN1Sequence;
-    expect(seq.encodedBytes!.length, seq.totalEncodedByteLength);
+    expect(seq.encodedBytes.length, seq.totalEncodedByteLength);
     var int1 = seq.elements.elementAt(0) as ASN1Integer;
     var int2 = seq.elements.elementAt(1) as ASN1Integer;
 
-    expect(int1.encodedBytes!.length, int1.totalEncodedByteLength);
-    expect(int2.encodedBytes!.length, int2.totalEncodedByteLength);
+    expect(int1.encodedBytes.length, int1.totalEncodedByteLength);
+    expect(int2.encodedBytes.length, int2.totalEncodedByteLength);
   });
 
   test('ASN1Parser Universal / Primitive Tag Test', () {

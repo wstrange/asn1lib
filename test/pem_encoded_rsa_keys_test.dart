@@ -204,7 +204,7 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 
     expect(publicKeyBitString.valueBytes().length, 271);
 
-    asn1Parser = ASN1Parser(publicKeyBitString.contentBytes());
+    asn1Parser = ASN1Parser(publicKeyBitString.contentBytes()!);
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
     var expected = BigInt.from(65537);
@@ -234,7 +234,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     expectedHex = expectedHex.replaceAll('\r', '');
 
 
-    List<int> x = decodeHex(expectedHex);
+    var x = decodeHex(expectedHex);
 
     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger,
         ASN1Util.bytes2BigInt(x));
@@ -253,7 +253,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     var privateKey = topLevelSeq.elements[2];
     expect(privateKey.valueBytes().length, 1193);
 
-    asn1Parser = ASN1Parser(privateKey.contentBytes());
+    asn1Parser = ASN1Parser(privateKey.contentBytes()!);
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
     version = pkSeq.elements[0];
     var modulus = pkSeq.elements[1] as ASN1Integer;
@@ -416,8 +416,8 @@ List<int> decodeHex(String hex) {
       .replaceAll('\t', '')
       .toUpperCase();
   var l = h.codeUnits;
-  List<int> hexList = [];
-  for(int i=0; i < l.length; i+= 2) {
+  var hexList = <int>[];
+  for(var i=0; i < l.length; i+= 2) {
     var x = _digitForCodeUnit(l[i]) * 16;
     var y = _digitForCodeUnit(l[i+1]);
     hexList.add(x+y);

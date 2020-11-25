@@ -9,7 +9,7 @@ void main() {
         [24, 15, 50, 48, 49, 48, 49, 48, 51, 48, 49, 48, 49, 48, 51, 48, 90]);
     var time = ASN1GeneralizedTime.fromBytes(bytes);
     expect(time.dateTimeValue!.toIso8601String(), '2010-10-30T10:10:30.000Z');
-    var encoded = time.encodedBytes!;
+    var encoded = time.encodedBytes;
     expect(encoded.length, bytes.length);
     expect(encoded, bytes);
   });
