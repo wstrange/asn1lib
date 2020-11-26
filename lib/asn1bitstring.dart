@@ -5,8 +5,8 @@ part of asn1lib;
 ///
 class ASN1BitString extends ASN1Object {
   /// The decoded string value
-  List<int> stringValue;
-  int unusedbits;
+  late List<int> stringValue;
+  int unusedbits =0;
 
   @override
   Uint8List contentBytes() => Uint8List.fromList(stringValue);
@@ -27,7 +27,7 @@ class ASN1BitString extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     var valBytes = [unusedbits];
     valBytes.addAll(stringValue);
     _valueByteLength = valBytes.length;

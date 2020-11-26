@@ -10,7 +10,7 @@ part of asn1lib;
 ///
 class ASN1GeneralizedTime extends ASN1Object {
   // The decoded date value
-  DateTime dateTimeValue;
+  late DateTime dateTimeValue;
 
   ///
   /// Create an [ASN1GeneralizedTime] initialized with DateTime value.
@@ -42,7 +42,7 @@ class ASN1GeneralizedTime extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     var utc = dateTimeValue.toUtc();
     var year = utc.year.toString();
     var month = utc.month.toString();

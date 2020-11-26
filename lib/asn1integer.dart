@@ -8,7 +8,7 @@ part of asn1lib;
 /// int or BigInt
 ///
 class ASN1Integer extends ASN1Object {
-  BigInt _intValue;
+  late BigInt _intValue;
 
   ASN1Integer(this._intValue, {tag = INTEGER_TYPE}) : super(tag: tag);
 
@@ -23,10 +23,10 @@ class ASN1Integer extends ASN1Object {
 
   int get intValue => _intValue.toInt();
 
-  BigInt get valueAsBigInteger => _intValue;
+  BigInt? get valueAsBigInteger => _intValue;
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     var t = encodeBigInt(_intValue);
     _valueByteLength = t.length;
     super._encodeHeader();

@@ -189,7 +189,7 @@ void testPair(int x, int expectedLength) {
   //print(
   //    'Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}');
 
-  var contentLength = int1.contentBytes().length;
+  var contentLength = int1.contentBytes()!.length;
   expect(contentLength, expectedLength,
       reason: 'expected number of content bytes is wrong');
   var int2 = ASN1Integer.fromBytes(int1.encodedBytes);

@@ -5,7 +5,7 @@ part of asn1lib;
 ///
 class ASN1UTF8String extends ASN1Object {
   // The decoded string value
-  String utf8StringValue;
+  late String utf8StringValue;
 
   ///
   /// Create an [ASN1UTF8String] initialized with String value.
@@ -24,7 +24,7 @@ class ASN1UTF8String extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     var octets = utf8.encode(utf8StringValue);
     _valueByteLength = octets.length;
     _encodeHeader();

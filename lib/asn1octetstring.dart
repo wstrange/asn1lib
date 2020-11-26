@@ -5,10 +5,10 @@ part of asn1lib;
 ///
 class ASN1OctetString extends ASN1Object {
   /// The decoded string value
-  Uint8List octets;
+  late Uint8List octets;
 
   @override
-  Uint8List contentBytes() => octets;
+  Uint8List? contentBytes() => octets;
 
   ///
   /// Create an [ASN1OctetString] initialized with a [String] or a [List<int>].
@@ -41,7 +41,7 @@ class ASN1OctetString extends ASN1Object {
   String get stringValue => String.fromCharCodes(octets);
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);

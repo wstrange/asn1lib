@@ -28,7 +28,7 @@ class ASN1Set extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     _valueByteLength = _childLength();
     //super._encode();
 

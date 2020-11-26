@@ -155,11 +155,11 @@ void main() {
     var f = ASN1Boolean.ASN1FalseBoolean;
     var t = ASN1Boolean.ASN1TrueBoolean;
 
-    var fa = [BOOLEAN_TYPE, 0x01, 0x00];
-    var ta = [BOOLEAN_TYPE, 0x01, 0xff];
+    var fa = Uint8List.fromList([BOOLEAN_TYPE, 0x01, 0x00]);
+    var ta = Uint8List.fromList([BOOLEAN_TYPE, 0x01, 0xff]);
 
-    expect(f.encodedBytes.toList(), equals(fa));
-    expect(t.encodedBytes.toList(), equals(ta));
+    expect(f.encodedBytes, equals(fa));
+    expect(t.encodedBytes, equals(ta));
   });
 
   test('Set test', () {

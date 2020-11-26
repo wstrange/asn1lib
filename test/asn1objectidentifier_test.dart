@@ -185,10 +185,8 @@ void main() {
     }
 
     // test name doesn't exist
-    {
-      var got = ASN1ObjectIdentifier.fromName('doesNotExist');
-      expect(got, equals(null));
-    }
+
+      expect(() => ASN1ObjectIdentifier.fromName('doesNotExist'), throwsException);
   });
 
   test('registerManyNames', () {

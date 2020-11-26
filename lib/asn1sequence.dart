@@ -36,7 +36,7 @@ class ASN1Sequence extends ASN1Object {
   }
 
   @override
-  Uint8List _encode() {
+  Uint8List? _encode() {
     _valueByteLength = _childLength();
     super._encodeHeader();
     var i = _valueStartPosition;
@@ -55,7 +55,7 @@ class ASN1Sequence extends ASN1Object {
   int _childLength() {
     var l = 0;
     elements.forEach((obj) {
-      l += obj._encode().length;
+      l += obj._encode()!.length;
     });
     return l;
   }

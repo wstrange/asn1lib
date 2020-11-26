@@ -14,9 +14,9 @@ class ASN1Util {
   }
 
   /// print an objects hex value. Object is a list or an integer
-  static String obj2HexString(dynamic x) {
+  static String? obj2HexString(dynamic x) {
     if (x is List) {
-      return listToString(x);
+      return listToString(x as List<int>);
     } else {
       return x.toRadixString(16);
     }

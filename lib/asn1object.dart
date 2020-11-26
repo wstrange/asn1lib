@@ -24,15 +24,20 @@ class ASN1Object {
   /// other sub objects). Care should be taken to not modify the bytes
   /// The length of _encodedBytes could be larger than the actual bytes for this specific object
   ///
-  Uint8List _encodedBytes;
+  Uint8List? _encodedBytes;
 
   ///
   /// Get the encoded byte representation for this object. This can trigger
-  /// calling the [encodeBigInt] method if the object has not yet been encoded
+  /// calling the subclasss [_encode] method if the object has not yet been encoded
   ///
   Uint8List get encodedBytes {
-    if (_encodedBytes == null) _encode();
-    return _encodedBytes;
+    if (_encodedBytes == null) {
+      _encode();
+    }
+    if (_encodedBytes == null) {
+      throw ASN1Exception('ASN1 Encoding failed. This should never happen');
+    }
+    return _encodedBytes!;
   }
 
   /// Check if the encoding is ready.
@@ -50,7 +55,7 @@ class ASN1Object {
   ASN1Object.preEncoded(int tag, Uint8List valBytes) : _tag = tag {
     _valueByteLength = valBytes.length;
     _encodeHeader();
-    _encodedBytes.setRange(
+    _encodedBytes!.setRange(
         _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
@@ -74,7 +79,7 @@ class ASN1Object {
   /// Determines the length and where the value bytes start
   ////
   void _initFromBytes() {
-    var l = ASN1Length.decodeLength(_encodedBytes);
+    var l = ASN1Length.decodeLength(_encodedBytes!);
     _valueByteLength = l.length;
     _valueStartPosition = l.valueStartPosition;
   }
@@ -87,13 +92,13 @@ class ASN1Object {
   /// next object starts in the stream.
   ///
   ////
-  int get totalEncodedByteLength => _valueStartPosition + _valueByteLength;
+  int get totalEncodedByteLength => _valueStartPosition + _valueByteLength!;
 
   ///
   /// Length of the encoded value bytes. This does not include the length of
   /// the tag or length fields. See [totalEncodedByteLength].
   ///
-  int _valueByteLength;
+  int? _valueByteLength;
 
   ///
   /// The index where the value bytes start. This is the position after the tag + length bytes.
@@ -111,12 +116,12 @@ class ASN1Object {
   /// calling this. We need this know how big to make the encoded object array. Subclasses are
   /// responsible for encoding their value representations using [encodeBigInt]
   ///
-  Uint8List _encodeHeader() {
+  Uint8List? _encodeHeader() {
     if (_encodedBytes == null) {
-      var lenEnc = ASN1Length.encodeLength(_valueByteLength);
-      _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength);
-      _encodedBytes[0] = tag;
-      _encodedBytes.setRange(1, 1 + lenEnc.length, lenEnc, 0);
+      var lenEnc = ASN1Length.encodeLength(_valueByteLength!);
+      _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength!);
+      _encodedBytes![0] = tag;
+      _encodedBytes!.setRange(1, 1 + lenEnc.length, lenEnc, 0);
       _valueStartPosition = 1 + lenEnc.length;
     }
     return _encodedBytes;
@@ -127,7 +132,7 @@ class ASN1Object {
   ///
   /// Subclasses will need to override this.
   ///
-  Uint8List _encode() => _encodeHeader();
+  Uint8List? _encode() => _encodeHeader();
 
   ///
   /// Return just the value bytes.
@@ -135,8 +140,8 @@ class ASN1Object {
   /// This returns a view into the byte buffer
   ///
   Uint8List valueBytes() {
-    return Uint8List.view(_encodedBytes.buffer,
-        _valueStartPosition + _encodedBytes.offsetInBytes, _valueByteLength);
+    return Uint8List.view(_encodedBytes!.buffer,
+        _valueStartPosition + _encodedBytes!.offsetInBytes, _valueByteLength);
   }
 
   ///
@@ -145,7 +150,7 @@ class ASN1Object {
   /// some other tags like BitString include padding in their valueBytes.
   /// This method always returns the unpadded contentBytes.
   ///
-  Uint8List contentBytes() => valueBytes();
+  Uint8List? contentBytes() => valueBytes();
 
   ///
   /// Subclasses can call this to set the value bytes
