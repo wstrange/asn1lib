@@ -1,7 +1,9 @@
 # Changelog
+
 ## 0.9.0 
 
-- null safety 
+- Requires Dart 2.12
+- Enable null-safety
 
 ## 0.8.1
 

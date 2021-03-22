@@ -33,5 +33,5 @@ class ASN1UTF8String extends ASN1Object {
   }
 
   @override
-  String toString() => 'UTF8String(${utf8StringValue})';
+  String toString() => 'UTF8String($utf8StringValue)';
 }

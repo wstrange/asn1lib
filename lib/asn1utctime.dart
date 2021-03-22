@@ -60,5 +60,5 @@ class ASN1UtcTime extends ASN1Object {
   }
 
   @override
-  String toString() => 'UtcTime(${dateTimeValue})';
+  String toString() => 'UtcTime($dateTimeValue)';
 }

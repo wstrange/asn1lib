@@ -17,7 +17,7 @@ class ASN1Sequence extends ASN1Object {
   ///
   ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     if ((tag & SEQUENCE_TYPE) == 0) {
-      throw ASN1Exception('The tag ${tag} does not look like a sequence type');
+      throw ASN1Exception('The tag $tag does not look like a sequence type');
     }
     //print('ASN1Sequence valbytes=${hex(valueBytes())}');
     _decodeSeq();

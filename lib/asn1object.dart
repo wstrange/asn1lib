@@ -164,5 +164,5 @@ class ASN1Object {
 
   @override
   String toString() =>
-      'ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=${_valueByteLength}) startpos=$_valueStartPosition bytes=${toHexString()}';
+      'ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=$_valueByteLength) startpos=$_valueStartPosition bytes=${toHexString()}';
 }
