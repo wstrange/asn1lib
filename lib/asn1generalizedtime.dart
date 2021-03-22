@@ -61,5 +61,5 @@ class ASN1GeneralizedTime extends ASN1Object {
   }
 
   @override
-  String toString() => 'GeneralizedTime(${dateTimeValue})';
+  String toString() => 'GeneralizedTime($dateTimeValue)';
 }

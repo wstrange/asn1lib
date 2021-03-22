@@ -34,5 +34,5 @@ class ASN1IA5String extends ASN1Object {
   }
 
   @override
-  String toString() => 'IA5String(${stringValue})';
+  String toString() => 'IA5String($stringValue)';
 }

@@ -3,7 +3,6 @@ import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 import 'dart:typed_data';
 
-
 void main() {
   var publicKeyDER = decodePEM('''-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1W25XAj9GvCvSY7JzVAh
@@ -233,7 +232,6 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     expectedHex = expectedHex.replaceAll('\n', '');
     expectedHex = expectedHex.replaceAll('\r', '');
 
-
     var x = decodeHex(expectedHex);
 
     expect((pkSeq.elements[0] as ASN1Integer).valueAsBigInteger,
@@ -417,10 +415,10 @@ List<int> decodeHex(String hex) {
       .toUpperCase();
   var l = h.codeUnits;
   var hexList = <int>[];
-  for(var i=0; i < l.length; i+= 2) {
+  for (var i = 0; i < l.length; i += 2) {
     var x = _digitForCodeUnit(l[i]) * 16;
-    var y = _digitForCodeUnit(l[i+1]);
-    hexList.add(x+y);
+    var y = _digitForCodeUnit(l[i + 1]);
+    hexList.add(x + y);
   }
   return hexList;
 }
@@ -433,5 +431,5 @@ int _digitForCodeUnit(int codeUnit) {
   if (codeUnit >= $0 && codeUnit <= $9) {
     return codeUnit - $0;
   }
-  return codeUnit - $A +10;
+  return codeUnit - $A + 10;
 }

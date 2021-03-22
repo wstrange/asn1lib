@@ -52,5 +52,5 @@ class ASN1IpAddress extends ASN1OctetString {
   String get stringValue => octets.join('.');
 
   @override
-  String toString() => 'IpAddress(${stringValue})';
+  String toString() => 'IpAddress($stringValue)';
 }

@@ -33,5 +33,5 @@ class ASN1TeletextString extends ASN1Object {
   }
 
   @override
-  String toString() => 'ASN1TeletextString(${stringValue})';
+  String toString() => 'ASN1TeletextString($stringValue)';
 }

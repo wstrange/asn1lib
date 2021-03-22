@@ -51,5 +51,5 @@ class ASN1OctetString extends ASN1Object {
   }
 
   @override
-  String toString() => 'OctetString(${stringValue})';
+  String toString() => 'OctetString($stringValue)';
 }

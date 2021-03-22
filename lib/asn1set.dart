@@ -13,7 +13,7 @@ class ASN1Set extends ASN1Object {
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     if ((tag & SET_TYPE) == 0) {
-      throw ASN1Exception('The tag ${tag} does not look like a set type');
+      throw ASN1Exception('The tag $tag does not look like a set type');
     }
     _decodeSet();
   }

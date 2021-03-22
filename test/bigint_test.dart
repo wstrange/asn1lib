@@ -529,7 +529,8 @@ void main() {
         var element0_6 = element0.elements[6] as ASN1Sequence;
 
         expect(element0_6.elements[1] is ASN1BitString, equals(true));
-        var os = element0_6.elements[1] as ASN1BitString; //always ASN1BitString ?
+        var os =
+            element0_6.elements[1] as ASN1BitString; //always ASN1BitString ?
 
         expect(os.valueBytes()[0], equals(0)); //always zero ?
         var bytes = os.valueBytes().sublist(1); //remove unused bits count
