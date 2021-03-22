@@ -55,11 +55,5 @@ jobs:
           sdk: ${{ matrix.sdk }}
       - id: install
         run: dart pub get
-      - name: make git happy
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-      - run: dart test -x presubmit-only
-        if: always() && steps.install.outcome == 'success'
-      - run: dart test --run-skipped -t presubmit-only
+      - run: dart test
         if: always() && steps.install.outcome == 'success'
