@@ -9,6 +9,7 @@ const int OCTET_STRING_TYPE = 0x04;
 const int NULL_TYPE = 0x05;
 const int ENUMERATED_TYPE = 0x0A;
 const int UTF8_STRING_TYPE = 0x0C;
+const int NUMERIC_STRING_TYPE = 0x12;
 const int PRINTABLE_STRING_TYPE = 0x13;
 const int IA5_STRING_TYPE = 0x16;
 const int UTC_TIME_TYPE = 0x17;

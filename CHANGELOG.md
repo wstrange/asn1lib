@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.0.1
+
+- Add ASN1NumericString support
+
 ### 1.0.0
 
 - Bumped to 1.0.0 as this is now null safe
