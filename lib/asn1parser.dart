@@ -95,6 +95,9 @@ class ASN1Parser {
       case NULL_TYPE:
         return ASN1Null.fromBytes(b);
 
+      case NUMERIC_STRING_TYPE:
+        return ASN1NumericString.fromBytes(b);
+
       case PRINTABLE_STRING_TYPE:
         return ASN1PrintableString.fromBytes(b);
 
