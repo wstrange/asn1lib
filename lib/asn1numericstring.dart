@@ -16,10 +16,15 @@ class ASN1NumericString extends ASN1Object {
   /// Optionally override the tag
   ///
   ASN1NumericString(this.stringValue, {int tag = NUMERIC_STRING_TYPE})
-      : super(tag: tag);
+      : super(tag: tag) {
+    if (!RegExp(r'^[\d\s]*$').hasMatch(stringValue)) {
+      throw ASN1Exception(
+          'ASN1 NumericString should only include digits or spaces');
+    }
+  }
 
   ///
-  /// Create an [ASN1PrintableString] from an encoded list of bytes.
+  /// Create an [ASN1NumericString] from an encoded list of bytes.
   ///
   ASN1NumericString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
     var octets = valueBytes();

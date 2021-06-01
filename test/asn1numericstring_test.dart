@@ -43,6 +43,9 @@ void main() {
       ]);
     }
   });
+  test('encode', () {
+    expect(() => ASN1NumericString('a'), throwsException);
+  });
   test('decode', () {
     {
       var raw = Uint8List.fromList([
