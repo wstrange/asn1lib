@@ -193,4 +193,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
   static void registerFrequentNames() {
     registerManyNames(DN);
   }
+
+  @override
+  String toString() => 'ObjectIdentifier($identifier)';
 }

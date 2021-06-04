@@ -256,4 +256,11 @@ void main() {
       expect(objId.oi.elementAt(7), 1);
     }
   });
+
+  test('toString', () {
+    var bytes = Uint8List.fromList(
+        [0x06, 0x07, 0x2B, 0x06, 0x01, 0x02, 0x01, 0x01, 0x01]);
+    var objId = ASN1ObjectIdentifier.fromBytes(bytes);
+    expect(objId.toString(), 'ObjectIdentifier(1.3.6.1.2.1.1.1)');
+  });
 }
