@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.0.2
+
+- Better toString() for ASN1ObjectIdentifier
+  
 ### 1.0.1
 
 - Add ASN1NumericString support
