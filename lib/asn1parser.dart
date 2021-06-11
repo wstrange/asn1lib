@@ -111,7 +111,8 @@ class ASN1Parser {
         return ASN1TeletextString.fromBytes(b);
 
       default:
-        throw ASN1Exception('Parser for tag $tag not implemented yet');
+        return ASN1Object.fromBytes(b); // allow anything.
+        //throw ASN1Exception('Parser for tag $tag not implemented yet');
     }
   }
 }
