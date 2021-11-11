@@ -1,7 +1,5 @@
 library asn1test.der;
 
-import 'dart:typed_data';
-
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 
