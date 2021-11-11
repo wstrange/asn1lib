@@ -103,6 +103,9 @@ class ASN1Parser {
 
       case UTC_TIME_TYPE:
         return ASN1UtcTime.fromBytes(b);
+      
+      case BMP_STRING_TYPE:
+        return ASN1BMPString.fromBytes(b);
 
       case GENERALIZED_TIME:
         return ASN1GeneralizedTime.fromBytes(b);

@@ -13,6 +13,7 @@ const int NUMERIC_STRING_TYPE = 0x12;
 const int PRINTABLE_STRING_TYPE = 0x13;
 const int IA5_STRING_TYPE = 0x16;
 const int UTC_TIME_TYPE = 0x17;
+const int BMP_STRING_TYPE = 0x1e;
 const int SEQUENCE_TYPE = 0x30;
 const int SET_TYPE = 0x31;
 const int OBJECT_IDENTIFIER = 0x06;

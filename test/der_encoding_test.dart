@@ -1,5 +1,7 @@
 library asn1test.der;
 
+import 'dart:typed_data';
+
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 
@@ -83,6 +85,27 @@ void main() {
             0x30,
             0x30,
             0x5a
+          ]));
+    });
+
+    test('bmp-string', () {
+      final testString = 'SubCA';
+      final bmpString = ASN1BMPString(testString);
+      expect(
+          bmpString.encodedBytes,
+          equals([
+            BMP_STRING_TYPE,
+            0x0A,
+            0x00,
+            0x53,
+            0x00,
+            0x75,
+            0x00,
+            0x62,
+            0x00,
+            0x43,
+            0x00,
+            0x41
           ]));
     });
   });
