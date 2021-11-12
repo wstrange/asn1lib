@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.0.3
+
+- Add ASN1BMPString support
+
 ### 1.0.2
 
 - Better toString() for ASN1ObjectIdentifier
