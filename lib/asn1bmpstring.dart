@@ -41,7 +41,7 @@ class ASN1BMPString extends ASN1Object {
       doubleOctets.add(octets[i] >> 8);
       doubleOctets.add(octets[i] & 0xff);
     }
-    
+
     _valueByteLength = doubleOctets.length;
     _encodeHeader();
     _setValueBytes(doubleOctets);
