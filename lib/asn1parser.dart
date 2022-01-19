@@ -6,9 +6,11 @@ part of asn1lib;
 class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
   final Uint8List _bytes;
+  final bool _relaxedParsing;
 
   /// Create a new parser for the stream of [_bytes]
-  ASN1Parser(this._bytes);
+  ASN1Parser(this._bytes, {bool relaxedParsing = false})
+      : _relaxedParsing = relaxedParsing;
 
   /// current position in the byte array
   int _position = 0;
@@ -114,7 +116,11 @@ class ASN1Parser {
         return ASN1TeletextString.fromBytes(b);
 
       default:
-        throw ASN1Exception('Parser for tag $tag not implemented yet');
+        if (_relaxedParsing) {
+          return ASN1Object.fromBytes(b);
+        }
+        throw ASN1Exception(
+            'Parser for tag $tag not implemented yet and relaxedParsing is off');
     }
   }
 }
