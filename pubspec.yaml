@@ -8,3 +8,8 @@ environment:
 dev_dependencies:
   test: ^1.16.0
   pedantic: ^1.10.0
+
+# PEM certs are for testing - and are OK to publish
+false_secrets:
+ - /test/resource/*.pem
+ - test/*.dart
