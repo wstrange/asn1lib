@@ -9,7 +9,8 @@ class ASN1Parser {
   final bool _relaxedParsing;
 
   /// Create a new parser for the stream of [_bytes]
-  ASN1Parser(this._bytes, {bool relaxedParsing = false}) : _relaxedParsing = relaxedParsing;
+  ASN1Parser(this._bytes, {bool relaxedParsing = false})
+      : _relaxedParsing = relaxedParsing;
 
   /// current position in the byte array
   int _position = 0;
@@ -118,7 +119,8 @@ class ASN1Parser {
         if (_relaxedParsing) {
           return ASN1Object.fromBytes(b);
         }
-        throw ASN1Exception('Parser for tag $tag not implemented yet and relaxedParsing is off');
+        throw ASN1Exception(
+            'Parser for tag $tag not implemented yet and relaxedParsing is off');
     }
   }
 }
