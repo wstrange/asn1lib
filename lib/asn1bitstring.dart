@@ -22,7 +22,7 @@ class ASN1BitString extends ASN1Object {
   /// Create an [ASN1OctetString] from an encoded list of bytes
   ///
   ASN1BitString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    unusedbits = bytes[0];
+    unusedbits = valueBytes()[0];
     stringValue = valueBytes().sublist(1);
   }
 
