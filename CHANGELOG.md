@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.1.1
+
+- fix: Use the correct value for `unusedBits` in `ASN1BitString.fromBytes `
+
 ### 1.1.0
 
 - Add optional flag whether to relax parsing, off by default, for backwards-compatibility
