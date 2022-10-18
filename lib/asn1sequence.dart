@@ -16,7 +16,7 @@ class ASN1Sequence extends ASN1Object {
   /// we ignore any remaining bytes.
   ///
   ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    if ((tag & SEQUENCE_TYPE) == 0) {
+    if( ! isSequence(tag)) {
       throw ASN1Exception('The tag $tag does not look like a sequence type');
     }
     //print('ASN1Sequence valbytes=${hex(valueBytes())}');
@@ -26,7 +26,7 @@ class ASN1Sequence extends ASN1Object {
   ///
   /// Create a new empty ASN1 Sequence. Optionally override the default tag
   ///
-  ASN1Sequence({int tag = SEQUENCE_TYPE}) : super(tag: tag);
+  ASN1Sequence({int tag = CONSTRUCTED_SEQUENCE_TYPE}) : super(tag: tag);
 
   ///
   /// Add an [ASN1Object] to the sequence. Objects will be serialized to BER in the order they were added

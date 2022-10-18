@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.2.0 
+
+- Fix #61. Adds a flag to the parser `encodeApplicationTagsAsObject` that will 
+ force APPLICATION objects to be encoded as ASN1Objects, skipping any attempt to create sequences.
+
 ### 1.1.1
 
 - fix: Use the correct value for `unusedBits` in `ASN1BitString.fromBytes `

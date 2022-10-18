@@ -358,22 +358,34 @@ void main() {
     expect(parsed.nextObject(), isA<ASN1Object>());
   });
 
+  // todo: This test does not look legit. See comments below and
+  // See https://github.com/wstrange/asn1lib/issues/61
   test('ASN1Parser Sequence Subtype Tag Test', () {
+
+    // encodes as APPLICATION + SEQUENCE type, but does not set the constructed bit
     var sequence = ASN1Sequence(tag: 0x50);
     sequence.add(ASN1Integer.fromInt(10));
     var parsed = ASN1Parser(sequence.encodedBytes);
-    expect(parsed.nextObject(), isA<ASN1Sequence>());
+    // todo: this wont parse as a sequence
+    // expect(parsed.nextObject(), isA<ASN1Sequence>());
+    expect(parsed.nextObject(), isA<ASN1Object>());
 
+
+    // Sets APPLICATION + constructed, but the type is 0
     var sequence2 = ASN1Sequence(tag: 0x60);
     sequence2.add(ASN1Integer.fromInt(10));
-    var parsed2 = ASN1Parser(sequence.encodedBytes);
-    expect(parsed2.nextObject(), isA<ASN1Sequence>());
+    var parsed2 = ASN1Parser(sequence2.encodedBytes);
+    // wont parse as a sequence
+    // expect(parsed2.nextObject(), isA<ASN1Sequence>());
+    expect(parsed2.nextObject(), isA<ASN1Object>());
 
+
+    // Sets APPLICATION + constructed + SEQUENCE
     var sequence3 = ASN1Sequence(tag: 0x70);
     sequence3.add(ASN1Integer.fromInt(10));
-    var parsed3 = ASN1Parser(sequence.encodedBytes);
+    var parsed3 = ASN1Parser(sequence3.encodedBytes);
     expect(parsed3.nextObject(), isA<ASN1Sequence>());
-  });
+  }, skip: false);
 
   test('ASN1Parser Context-Specific Tag Test', () {
     var sequence = ASN1Sequence(tag: 0x80);

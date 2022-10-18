@@ -7,18 +7,18 @@ class ASN1Set extends ASN1Object {
   Set<ASN1Object> elements = <ASN1Object>{};
 
   ///
-  /// Create a set fromt the bytes
+  /// Create a set from the bytes
   ///
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    if ((tag & SET_TYPE) == 0) {
+    if ( ! isSet(tag)) {
       throw ASN1Exception('The tag $tag does not look like a set type');
     }
     _decodeSet();
   }
 
-  ASN1Set({int tag = SET_TYPE}) : super(tag: tag);
+  ASN1Set({int tag = CONSTRUCTED_SET_TYPE}) : super(tag: tag);
 
   ///
   /// Add an element to the set

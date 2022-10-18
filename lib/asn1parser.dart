@@ -7,10 +7,19 @@ class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
   final Uint8List _bytes;
   final bool _relaxedParsing;
+  final bool _encodeApplicationTagAsObject;
 
   /// Create a new parser for the stream of [_bytes]
-  ASN1Parser(this._bytes, {bool relaxedParsing = false})
-      : _relaxedParsing = relaxedParsing;
+  /// if [relaxedParsing] is true, dont throw an exception if we encounter
+  /// unknown ASN1 objects. Just encode them as an ASN1Object.
+  /// If [encodeApplicationTagsAsObject] is true, dont attempt to
+  /// encode Application or Private tags as a possible sequence. Just
+  /// encode them as ASN1Objects. This is probably not a sensible thing
+  /// to do, but is a short term fix for https://github.com/wstrange/asn1lib/issues/61.
+  ASN1Parser(this._bytes,
+      {bool relaxedParsing = false, bool encodeApplicationTagsAsObject = false})
+      : _relaxedParsing = relaxedParsing,
+        _encodeApplicationTagAsObject = encodeApplicationTagsAsObject;
 
   /// current position in the byte array
   int _position = 0;
@@ -20,20 +29,15 @@ class ASN1Parser {
     return _position < _bytes.length;
   }
 
+
   ///
   /// Return the next ASN1Object in the stream
   ///
   ASN1Object nextObject() {
     var tag = _bytes[_position]; // get curren tag in stream
 
-    // print("parser tag = ${tag} bytes=${_bytes}");
-    // ASN1 Primitives have high bits 8/7 set to 0
-
-    var isPrimitive = (0xC0 & tag) == 0;
-    var isApplication = (0x40 & tag) != 0;
-
-    //int l = _bytes.length - _position;
-
+    // decode the length, and use this to create a view into the
+    // byte stream that contains the next object
     var l = 0;
     var length = ASN1Length.decodeLength(_bytes.sublist(_position));
     if (_position < length.length + length.valueStartPosition) {
@@ -47,11 +51,14 @@ class ASN1Parser {
     var subBytes = Uint8List.view(_bytes.buffer, offset, l);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
-    ASN1Object obj;
+    late ASN1Object obj;
 
-    if (isPrimitive) {
+    if (isPrimitive(tag)) {
       obj = _doPrimitive(tag, subBytes);
-    } else if (isApplication && ((tag & SEQUENCE_TYPE) != 0)) {
+    } else if (isApplication(tag) && isSet(tag)  && !_encodeApplicationTagAsObject) {
+      // TODO: This fails.. why?
+      obj = ASN1Set.fromBytes(subBytes);
+    } else if (isApplication(tag) && isSequence(tag) && !_encodeApplicationTagAsObject) {
       // sequence subtype
       obj = ASN1Sequence.fromBytes(subBytes);
     } else {
@@ -66,7 +73,7 @@ class ASN1Parser {
   ASN1Object _doPrimitive(int tag, Uint8List b) {
     //print("Primitive tag=${hex(tag)}");
     switch (tag) {
-      case SEQUENCE_TYPE: // sequence
+      case CONSTRUCTED_SEQUENCE_TYPE: // sequence
         return ASN1Sequence.fromBytes(b);
 
       case OCTET_STRING_TYPE:
@@ -82,7 +89,7 @@ class ASN1Parser {
       case ENUMERATED_TYPE:
         return ASN1Integer.fromBytes(b);
 
-      case SET_TYPE:
+      case CONSTRUCTED_SET_TYPE:
         return ASN1Set.fromBytes(b);
 
       case BOOLEAN_TYPE:
