@@ -29,6 +29,7 @@ void main() {
     }
   });
 
+  // just to ensure the sample cert provided in #61 parses OK.
   test('cert test', () {
     var cert = '''
 -----BEGIN CERTIFICATE-----
@@ -53,9 +54,9 @@ M1/+
     while (parser.hasNext()) {
       var obj = parser.nextObject() as ASN1Sequence;
       print('sequence obj len = ${obj.totalEncodedByteLength}');
-      for (var elem in obj.elements) {
-        //print('nested elem is $elem\n');
-      }
+      // for (var elem in obj.elements) {
+      //   print('nested elem is $elem\n');
+      // }
     }
   });
 }
