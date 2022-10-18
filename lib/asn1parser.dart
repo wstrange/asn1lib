@@ -29,7 +29,6 @@ class ASN1Parser {
     return _position < _bytes.length;
   }
 
-
   ///
   /// Return the next ASN1Object in the stream
   ///
@@ -55,10 +54,14 @@ class ASN1Parser {
 
     if (isPrimitive(tag)) {
       obj = _doPrimitive(tag, subBytes);
-    } else if (isApplication(tag) && isSet(tag)  && !_encodeApplicationTagAsObject) {
+    } else if (isApplication(tag) &&
+        isSet(tag) &&
+        !_encodeApplicationTagAsObject) {
       // TODO: This fails.. why?
       obj = ASN1Set.fromBytes(subBytes);
-    } else if (isApplication(tag) && isSequence(tag) && !_encodeApplicationTagAsObject) {
+    } else if (isApplication(tag) &&
+        isSequence(tag) &&
+        !_encodeApplicationTagAsObject) {
       // sequence subtype
       obj = ASN1Sequence.fromBytes(subBytes);
     } else {

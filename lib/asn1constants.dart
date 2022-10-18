@@ -18,8 +18,10 @@ const int BMP_STRING_TYPE = 0x1e;
 // SET and SEQUENCE TYPES include the constructed bit set.
 const int SEQUENCE_TYPE = 0x10;
 const int SET_TYPE = 0x11;
-const int CONSTRUCTED_SEQUENCE_TYPE = CONSTRUCTED_BIT | SEQUENCE_TYPE;  // 0x10 + constructed bit
-const int CONSTRUCTED_SET_TYPE = CONSTRUCTED_BIT | SET_TYPE; // 0x11 + constructed bit
+const int CONSTRUCTED_SEQUENCE_TYPE =
+    CONSTRUCTED_BIT | SEQUENCE_TYPE; // 0x10 + constructed bit
+const int CONSTRUCTED_SET_TYPE =
+    CONSTRUCTED_BIT | SET_TYPE; // 0x11 + constructed bit
 const int OBJECT_IDENTIFIER = 0x06;
 const int GENERALIZED_TIME = 0x18;
 const int TELETEXT_STRING = 0x14;
@@ -45,8 +47,9 @@ const int CONSTRUCTED_BIT = 0x20;
 int type_bits(int tag) => tag & 0x1f;
 bool isPrimitive(int tag) => (0xC0 & tag) == 0;
 bool isApplication(int tag) => (APPLICATION_TYPE & tag) == APPLICATION_TYPE;
-bool isPrivate(int tag) => (PRIVATE_TYPE & tag)  == PRIVATE_TYPE;
+bool isPrivate(int tag) => (PRIVATE_TYPE & tag) == PRIVATE_TYPE;
 bool isConstructed(int tag) => CONSTRUCTED_BIT & tag != 0;
 // set or sequence
 bool isSet(int tag) => isConstructed(tag) && type_bits(tag) == SET_TYPE;
-bool isSequence(int tag) => isConstructed(tag) && type_bits(tag) == SEQUENCE_TYPE;
+bool isSequence(int tag) =>
+    isConstructed(tag) && type_bits(tag) == SEQUENCE_TYPE;

@@ -361,7 +361,6 @@ void main() {
   // todo: This test does not look legit. See comments below and
   // See https://github.com/wstrange/asn1lib/issues/61
   test('ASN1Parser Sequence Subtype Tag Test', () {
-
     // encodes as APPLICATION + SEQUENCE type, but does not set the constructed bit
     var sequence = ASN1Sequence(tag: 0x50);
     sequence.add(ASN1Integer.fromInt(10));
@@ -370,7 +369,6 @@ void main() {
     // expect(parsed.nextObject(), isA<ASN1Sequence>());
     expect(parsed.nextObject(), isA<ASN1Object>());
 
-
     // Sets APPLICATION + constructed, but the type is 0
     var sequence2 = ASN1Sequence(tag: 0x60);
     sequence2.add(ASN1Integer.fromInt(10));
@@ -378,7 +376,6 @@ void main() {
     // wont parse as a sequence
     // expect(parsed2.nextObject(), isA<ASN1Sequence>());
     expect(parsed2.nextObject(), isA<ASN1Object>());
-
 
     // Sets APPLICATION + constructed + SEQUENCE
     var sequence3 = ASN1Sequence(tag: 0x70);

@@ -12,7 +12,7 @@ class ASN1Set extends ASN1Object {
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
   ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    if ( ! isSet(tag)) {
+    if (!isSet(tag)) {
       throw ASN1Exception('The tag $tag does not look like a set type');
     }
     _decodeSet();
