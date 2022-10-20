@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.1
+
+- Fix #57
+
 ### 1.2.0 
 
 - Fix #61. Adds a flag to the parser `encodeApplicationTagsAsObject` that will 

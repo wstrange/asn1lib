@@ -37,17 +37,12 @@ class ASN1Parser {
 
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
-    var l = 0;
     var length = ASN1Length.decodeLength(_bytes.sublist(_position));
-    if (_position < length.length + length.valueStartPosition) {
-      l = length.length + length.valueStartPosition;
-    } else {
-      l = _bytes.length - _position;
-    }
+    var len = length.length + length.valueStartPosition;
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
     var offset = _position + _bytes.offsetInBytes;
-    var subBytes = Uint8List.view(_bytes.buffer, offset, l);
+    var subBytes = Uint8List.view(_bytes.buffer, offset, len);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
     late ASN1Object obj;
