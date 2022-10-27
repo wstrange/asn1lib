@@ -3,6 +3,9 @@
 ### 1.2.1
 
 - Fix #57
+### 1.2.2
+
+- Fix #62. Allow context specific tags to be cast to an asn1 sequence.
 
 ### 1.2.0 
 

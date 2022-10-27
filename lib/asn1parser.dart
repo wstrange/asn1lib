@@ -49,13 +49,13 @@ class ASN1Parser {
 
     if (isPrimitive(tag)) {
       obj = _doPrimitive(tag, subBytes);
-    } else if (isApplication(tag) &&
+    } else if (!isPrimitive(tag) &&
         isSet(tag) &&
         !_encodeApplicationTagAsObject) {
       // TODO: This fails.. why?
       obj = ASN1Set.fromBytes(subBytes);
-    } else if (isApplication(tag) &&
-        isSequence(tag) &&
+    } else if (!isPrimitive(tag) &&
+        isConstructed(tag) &&
         !_encodeApplicationTagAsObject) {
       // sequence subtype
       obj = ASN1Sequence.fromBytes(subBytes);
