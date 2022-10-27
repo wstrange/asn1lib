@@ -25,10 +25,9 @@ void main() {
     var seq = p.nextObject() as ASN1Sequence;
     expect(seq.elements[0], isA<ASN1Integer>());
     expect(seq.elements[1], isA<ASN1OctetString>());
-    // tag 162, 0xa2 - is contect specific
+    // tag 162, 0xa2 - is context specific
     // Allow this to be "cast" as a sequence type.
     var s = seq.elements[2];
     expect(s, isA<ASN1Sequence>());
   });
 }
-
