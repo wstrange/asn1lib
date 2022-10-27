@@ -32,12 +32,3 @@ void main() {
   });
 }
 
-void _printObj(ASN1Object obj) {
-  if (obj is ASN1Sequence) {
-    obj.elements.forEach((o) {
-      print(o);
-    });
-  } else {
-    print(obj);
-  }
-}
