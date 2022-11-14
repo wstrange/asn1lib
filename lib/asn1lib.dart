@@ -7,6 +7,8 @@ part 'asn1integer.dart';
 part 'asn1enumerated.dart';
 
 part 'asn1object.dart';
+part 'asn1application.dart';
+
 part 'asn1util.dart';
 part 'asn1octetstring.dart';
 part 'asn1exception.dart';

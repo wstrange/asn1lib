@@ -7,19 +7,12 @@ class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
   final Uint8List _bytes;
   final bool _relaxedParsing;
-  final bool _encodeApplicationTagAsObject;
 
   /// Create a new parser for the stream of [_bytes]
   /// if [relaxedParsing] is true, dont throw an exception if we encounter
   /// unknown ASN1 objects. Just encode them as an ASN1Object.
-  /// If [encodeApplicationTagsAsObject] is true, dont attempt to
-  /// encode Application or Private tags as a possible sequence. Just
-  /// encode them as ASN1Objects. This is probably not a sensible thing
-  /// to do, but is a short term fix for https://github.com/wstrange/asn1lib/issues/61.
-  ASN1Parser(this._bytes,
-      {bool relaxedParsing = false, bool encodeApplicationTagsAsObject = false})
-      : _relaxedParsing = relaxedParsing,
-        _encodeApplicationTagAsObject = encodeApplicationTagsAsObject;
+  ASN1Parser(this._bytes, {bool relaxedParsing = false})
+      : _relaxedParsing = relaxedParsing {}
 
   /// current position in the byte array
   int _position = 0;
@@ -33,7 +26,7 @@ class ASN1Parser {
   /// Return the next ASN1Object in the stream
   ///
   ASN1Object nextObject() {
-    var tag = _bytes[_position]; // get curren tag in stream
+    var tag = _bytes[_position]; // get current tag in stream
 
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
@@ -47,21 +40,20 @@ class ASN1Parser {
 
     late ASN1Object obj;
 
-    if (isPrimitive(tag)) {
-      obj = _doPrimitive(tag, subBytes);
-    } else if (!isPrimitive(tag) &&
-        isSet(tag) &&
-        !_encodeApplicationTagAsObject) {
-      // TODO: This fails.. why?
-      obj = ASN1Set.fromBytes(subBytes);
-    } else if (!isPrimitive(tag) &&
-        isConstructed(tag) &&
-        !_encodeApplicationTagAsObject) {
-      // sequence subtype
-      obj = ASN1Sequence.fromBytes(subBytes);
-    } else {
-      // create a vanilla object
-      obj = ASN1Object.fromBytes(subBytes);
+    switch (tag & 0xc0) {
+      // get highest 2 bits - these are the type
+      case 0:
+        obj = _doPrimitive(tag, subBytes);
+        break;
+      case APPLICATION_CLASS:
+        obj = ASN1Application.fromBytes(subBytes);
+        break;
+      case PRIVATE_CLASS:
+        obj = ASN1ContextSpecific.fromBytes(subBytes);
+        break;
+      case CONTEXT_SPECIFIC_CLASS:
+        obj = ASN1Object.fromBytes(subBytes);
+        break;
     }
 
     _position = _position + obj.totalEncodedByteLength;

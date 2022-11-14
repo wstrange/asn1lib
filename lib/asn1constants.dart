@@ -1,5 +1,6 @@
 part of asn1lib;
 
+// Sere https://luca.ntop.org/Teaching/Appunti/asn1.html
 // tag bytes for various ASN1 BER objects
 
 // Value to AND against to test for the constructed bit (sequence, set)
@@ -39,27 +40,32 @@ const int BOOLEAN_FALSE_VALUE = 0x00;
 
 const int IP_ADDRESS = 0x40;
 
+// These are the patterns to AND against to test
+// for the tag class.
 // Generic application type.
 // 0100 0000
-const int APPLICATION_TYPE = 0x40;
+const int APPLICATION_CLASS = 0x40;
 // Private type.
 // 1100 0000
-const int PRIVATE_TYPE = 0xc0;
+const int PRIVATE_CLASS = 0xc0;
 
 // 1000 0000
-const int CONTEXT_SPECIFIC_TYPE = 0x80;
+const int CONTEXT_SPECIFIC_CLASS = 0x80;
+
+// 0000 0000
+const int UNIVERSAL_CLASS = 0x0;
 
 // Utilities to test the tag
 
 // return just the type bits - the lower 5 bits of the tag
 int type_bits(int tag) => tag & 0x1f;
-bool isPrimitive(int tag) => (0xC0 & tag) == 0;
-bool isApplication(int tag) => (APPLICATION_TYPE & tag) == APPLICATION_TYPE;
+bool isUniversal(int tag) => (0xC0 & tag) == 0;
+bool isApplication(int tag) => (APPLICATION_CLASS & tag) == APPLICATION_CLASS;
 bool isContextSpecific(int tag) =>
-    (CONTEXT_SPECIFIC_TYPE & tag) == CONTEXT_SPECIFIC_TYPE;
-bool isPrivate(int tag) => (PRIVATE_TYPE & tag) == PRIVATE_TYPE;
+    (CONTEXT_SPECIFIC_CLASS & tag) == CONTEXT_SPECIFIC_CLASS;
+bool isPrivate(int tag) => (PRIVATE_CLASS & tag) == PRIVATE_CLASS;
 bool isConstructed(int tag) => CONSTRUCTED_BIT & tag != 0;
-// set or sequence
+// primitive set or sequence
 bool isSet(int tag) => isConstructed(tag) && type_bits(tag) == SET_TYPE;
 bool isSequence(int tag) =>
     isConstructed(tag) && type_bits(tag) == SEQUENCE_TYPE;

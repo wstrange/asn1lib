@@ -69,7 +69,7 @@ class ASN1Object {
   /// byte stream we dont always know how long an object is
   /// until we complete parsing it).
   ///
-  ASN1Object.fromBytes(bytes) : _tag = bytes[0] {
+  ASN1Object.fromBytes(Uint8List bytes) : _tag = bytes[0] {
     _encodedBytes = bytes;
     _initFromBytes();
   }

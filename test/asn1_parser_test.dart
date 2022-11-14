@@ -374,14 +374,13 @@ void main() {
     sequence2.add(ASN1Integer.fromInt(10));
     var parsed2 = ASN1Parser(sequence2.encodedBytes);
     // wont parse as a sequence
-    // expect(parsed2.nextObject(), isA<ASN1Sequence>());
-    expect(parsed2.nextObject(), isA<ASN1Object>());
+    expect(parsed2.nextObject(), isA<ASN1Application>());
 
     // Sets APPLICATION + constructed + SEQUENCE
     var sequence3 = ASN1Sequence(tag: 0x70);
     sequence3.add(ASN1Integer.fromInt(10));
     var parsed3 = ASN1Parser(sequence3.encodedBytes);
-    expect(parsed3.nextObject(), isA<ASN1Sequence>());
+    expect(parsed3.nextObject(), isA<ASN1Application>());
   }, skip: false);
 
   test('ASN1Parser Context-Specific Tag Test', () {

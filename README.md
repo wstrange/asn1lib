@@ -34,3 +34,33 @@ var p2 = ASN1Parser(bytes, relaxedParsing: true);
 var s3 = p2.nextObject();
 // s3 is a sequence...
 ```
+
+## ASN1 Object classes
+
+The library has been most thoroughly tested against ASN1 _primitive_ class types, such as strings, integers, 
+sequences and sets.
+
+There is minimal support for ASN1 Application, Context-specific and Private classes. If the parser encounters 
+these tags, it will wrap them in an a corresponding object ( ASN1Application, ASN1ContextSpecific, ASN1Private). You 
+can force decode these to another type, by doing something like this:
+
+```dart 
+    var s = parser.nextObject();
+    // We expect this is a context-specific class
+    expect(s, isA<ASN1ContextSpecific>());
+    // which is also an ASN1Object...
+    expect(s, isA<ASN1Object>());
+    // We expect this is a sequence, so "recast" to a sequence type
+    var sequence = ASN1Sequence.fromBytes(s.encodedBytes);
+    expect(sequence, isA<ASN1Sequence>()); 
+```
+## Issues
+
+ASN1 parsing is complex, so bugs are expected. If you find a bug, please provide a test case 
+that demonstrates the issue, along with the 
+expected output. Bonus points if it is formatted as a dart test. 
+
+## References
+
+* https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/
+* https://luca.ntop.org/Teaching/Appunti/asn1.html

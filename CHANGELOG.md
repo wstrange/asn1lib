@@ -1,11 +1,19 @@
 # Changelog
 
-### 1.2.1
+### 1.3.0
 
-- Fix #57
+* Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private. 
+* This is a potential change in behavior for consumers that expect some of these classes
+ to be parsed as primitive or sequence types. See [README.md]
+* The `encodeApplicationTagsAsObject` option on ASN1Parser has been dropped as it
+ is now the default. Consumers should reparse bytes they know to be a sequence, etc.
+
 ### 1.2.2
 
 - Fix #62. Allow context specific tags to be cast to an asn1 sequence.
+### 1.2.1
+
+- Fix #57
 
 ### 1.2.0 
 
