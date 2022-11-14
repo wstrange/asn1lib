@@ -12,7 +12,7 @@ class ASN1Parser {
   /// if [relaxedParsing] is true, dont throw an exception if we encounter
   /// unknown ASN1 objects. Just encode them as an ASN1Object.
   ASN1Parser(this._bytes, {bool relaxedParsing = false})
-      : _relaxedParsing = relaxedParsing {}
+      : _relaxedParsing = relaxedParsing;
 
   /// current position in the byte array
   int _position = 0;
