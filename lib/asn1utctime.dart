@@ -31,11 +31,11 @@ class ASN1UtcTime extends ASN1Object {
     var stringValue = ascii.decode(octets);
     var y2 = int.parse(stringValue.substring(0, 2));
     if (y2 > 75) {
-      stringValue = '19' + stringValue;
+      stringValue = '19$stringValue';
     } else {
-      stringValue = '20' + stringValue;
+      stringValue = '20$stringValue';
     }
-    stringValue = stringValue.substring(0, 8) + 'T' + stringValue.substring(8);
+    stringValue = '${stringValue.substring(0, 8)}T${stringValue.substring(8)}';
 
     dateTimeValue = DateTime.parse(stringValue);
   }

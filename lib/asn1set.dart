@@ -34,11 +34,11 @@ class ASN1Set extends ASN1Object {
 
     super._encodeHeader();
     var i = _valueStartPosition;
-    elements.forEach((obj) {
+    for (var obj in elements) {
       var b = obj.encodedBytes;
       encodedBytes.setRange(i, i + b.length, b);
       i += b.length;
-    });
+    }
     return _encodedBytes;
   }
 
@@ -47,10 +47,10 @@ class ASN1Set extends ASN1Object {
   ///
   int _childLength() {
     var l = 0;
-    elements.forEach((obj) {
+    for (var obj in elements) {
       obj._encode();
       l += obj.encodedBytes.length;
-    });
+    }
     return l;
   }
 
@@ -71,10 +71,10 @@ class ASN1Set extends ASN1Object {
   @override
   String toString() {
     var b = StringBuffer('Set[');
-    elements.forEach((e) {
+    for (var e in elements) {
       b.write(e.toString());
       b.write(' ');
-    });
+    }
     b.write(']');
     return b.toString();
   }

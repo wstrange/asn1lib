@@ -5,10 +5,10 @@ class ASN1Util {
   static String listToString(List<int> list) {
     var b = StringBuffer('[');
     var doComma = false;
-    list.forEach((v) {
+    for (var v in list) {
       doComma ? b.write(', ') : doComma = true;
       b.write('0x${v.toRadixString(16)}');
-    });
+    }
     b.write(']');
     return b.toString();
   }

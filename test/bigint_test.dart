@@ -503,14 +503,12 @@ void main() {
         var element0_3 = element0.elements[3] as ASN1Sequence;
         var element0_3_0 = element0_3.elements[0] as ASN1Set;
         var element0_3_0_0 = element0_3_0.elements.first as ASN1Sequence;
-        ;
         var element0_3_0_0_1 = element0_3_0_0.elements[1];
         expect(element0_3_0_0_1 is ASN1PrintableString, equals(true));
         expect((element0_3_0_0_1 as ASN1PrintableString).stringValue,
             equals('DevRoot'));
 
         var element0_4 = element0.elements[4] as ASN1Sequence;
-        ;
         expect(element0_4.elements[0] is ASN1UtcTime, equals(true));
         expect((element0_4.elements[0] as ASN1UtcTime).dateTimeValue,
             equals(DateTime.parse('2010-01-20 22:00:00.000Z')));
@@ -519,7 +517,6 @@ void main() {
             equals(DateTime.parse('2020-01-20 22:00:00.000Z')));
 
         var element0_5 = element0.elements[5] as ASN1Sequence;
-        ;
         var element0_5_0 = element0_5.elements[0] as ASN1Set;
         var element0_5_0_0 = element0_5_0.elements.first as ASN1Sequence;
         var element0_5_0_0_1 =

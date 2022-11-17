@@ -124,10 +124,10 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   @override
   Uint8List? _encode() {
-    var _valBytes = <int>[oi[0] * 40 + oi[1]];
+    var valBytes = <int>[oi[0] * 40 + oi[1]];
 
     for (var ci = 2; ci < oi.length; ci++) {
-      var position = _valBytes.length;
+      var position = valBytes.length;
       var v = oi[ci];
 
       var first = true;
@@ -140,12 +140,12 @@ class ASN1ObjectIdentifier extends ASN1Object {
           remainder |= 0x80;
         }
 
-        _valBytes.insert(position, remainder);
+        valBytes.insert(position, remainder);
       } while (v > 0);
     }
-    _valueByteLength = _valBytes.length;
+    _valueByteLength = valBytes.length;
     super._encodeHeader();
-    _setValueBytes(_valBytes);
+    _setValueBytes(valBytes);
     return _encodedBytes;
   }
 

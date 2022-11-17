@@ -7,7 +7,7 @@ import 'package:asn1lib/asn1lib.dart';
 void main() {
   // test snmp message should be a sequence
   // @format:off
-  var _bytes = [
+  var bytes = [
     // sequence
     48, 74,
     //
@@ -22,7 +22,7 @@ void main() {
   // @format:on
 
   test('issue 62 sequence does not parse', () {
-    var p = ASN1Parser(Uint8List.fromList(_bytes));
+    var p = ASN1Parser(Uint8List.fromList(bytes));
 
     var seq = p.nextObject() as ASN1Sequence;
     expect(seq.elements[0], isA<ASN1Integer>());

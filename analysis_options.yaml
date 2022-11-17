@@ -1,1 +1,7 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
+
+# This package was created before these constant rules were best practice.
+linter:
+  rules:
+    constant_identifier_names: false
+    non_constant_identifier_names: false

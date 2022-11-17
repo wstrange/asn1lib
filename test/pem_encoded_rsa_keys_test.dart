@@ -190,7 +190,6 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
     var asn1Parser = ASN1Parser(publicKeyDER);
     var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
     var algorithmSequence = topLevelSeq.elements[0] as ASN1Sequence;
-    ;
 
     expect(algorithmSequence.valueBytes().length, 13);
     expect(algorithmSequence.elements[0].valueBytes().length, 9);

@@ -46,10 +46,15 @@ class ASN1Parser {
         obj = _doPrimitive(tag, subBytes);
         break;
       case APPLICATION_CLASS:
+        // LDAP tags are APPLICATION specific. Need to parse sequences
+        if (isConstructed(tag)) {
+          obj = ASN1Sequence.fromBytes(subBytes);
+          break;
+        }
         obj = ASN1Application.fromBytes(subBytes);
         break;
       case PRIVATE_CLASS:
-        obj = ASN1ContextSpecific.fromBytes(subBytes);
+        obj = ASN1Private.fromBytes(subBytes);
         break;
       case CONTEXT_SPECIFIC_CLASS:
         obj = ASN1Object.fromBytes(subBytes);

@@ -1,63 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
 
-import '../example/main.dart';
-
-// Test for https://github.com/wstrange/asn1lib/issues/61
 void main() {
-  test('decode application tag', () {
-    var bytes = Uint8List.fromList([113, 1, 0]);
-
-    var parser = ASN1Parser(bytes);
-
-    while (parser.hasNext()) {
-      var obj = parser.nextObject();
-      expect(obj, isA<ASN1Object>());
-    }
-  });
-
-  test('private tag', () {
-    var bytes = Uint8List.fromList([254, 0]);
-
-    var parser = ASN1Parser(bytes);
-
-    while (parser.hasNext()) {
-      var obj = parser.nextObject();
-      expect(obj, isA<ASN1Object>());
-    }
-  });
-
-  // just to ensure the sample cert provided in #61 parses OK.
-  test('cert test', () {
-    var cert = '''
------BEGIN CERTIFICATE-----
-MIICPzCCAaGgAwIBAgIRAPElNQH1Zf574+gYxunRunkwCgYIKoZIzj0EAwQwNTEW
-MBQGA1UEAxMNUVNhZmUgUm9vdCBDQTELMAkGA1UEBhMCQ0gxDjAMBgNVBAoTBXFz
-YWZlMB4XDTIyMTAxMzE0NDg0NFoXDTMyMTAxMDE0NDg0NFowPjEfMB0GA1UEAxMW
-UVNhZmUgTWFuYWdlbWVudCBTdWJDQTELMAkGA1UEBhMCQ0gxDjAMBgNVBAoTBXFz
-YWZlMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9SWgzbrJhDcO/x++1fhHhae7
-+aCF/e1Q8PH95kxpcsXRbwJUaRzOJRqr6z6F+rZ5TaqiiuThjXUCwdAhyuU42KOB
-iDCBhTAhBgNVHQ4EGgQYslYllZJjRy3vVHfJ4PckyiG3ao+lSiZdMA4GA1UdDwEB
-/wQEAwIBBjAXBgNVHREEEDAOgQxxbXNAcXNhZmUuY2gwEgYDVR0TAQH/BAgwBgEB
-/wIBATAjBgNVHSMEHDAagBjMCERuxctYw37BbTt4TbhmA1sLUC2s1RUwCgYIKoZI
-zj0EAwQDgYsAMIGHAkIByxKSZ6MHvIWNBy/8qvz0+fRRbBEaHBEXcNFBiTftfK8F
-MwWOvqtn/aiPUn5Vnml65D78hEll4Q/pD0p+hECMnfUCQSMOWOXD0aHl3WaD7R04
-GWqAJPFa3hnYHmlogrdJ4LlzZUPVkMT4d00yihVl5KiwhmQUyh6jL5u0Eu357ptL
-M1/+
------END CERTIFICATE-----''';
-
-    var bytes = decodePEM(cert);
-
-    var parser = ASN1Parser(bytes);
-    while (parser.hasNext()) {
-      var obj = parser.nextObject() as ASN1Sequence;
-      expect(obj, isA<ASN1Sequence>());
-    }
-  }, skip: false);
-
   // https://github.com/wstrange/asn1lib/issues/57
   test('test key ext key usage decoding, issue 57', () {
     final pem =
@@ -86,7 +32,7 @@ M1/+
 
   test('parse failing sequence', () {
     // @format:off
-    var _bytes = [
+    var bytes = [
       // sequence header, length 42
       48, 42,
       // first ASN1ObjectIndentifier
@@ -98,7 +44,7 @@ M1/+
     ];
     // @format:on
 
-    var p = ASN1Parser(Uint8List.fromList(_bytes));
+    var p = ASN1Parser(Uint8List.fromList(bytes));
     var seq = p.nextObject() as ASN1Sequence;
 
     expect((seq.elements[1] as ASN1ObjectIdentifier).identifier,
