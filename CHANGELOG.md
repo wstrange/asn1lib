@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.4.0
+
+* Reverted parsing of APPLICATION tags to the older behaviour. If the constructed bit  is
+ set, the tag is parsed as an ASN1Sequence. The recent updates broke LDAP ASN1 parsing.
+
 ### 1.3.0
 
 * Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private. 
