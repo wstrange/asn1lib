@@ -140,8 +140,8 @@ class ASN1Object {
   /// This returns a view into the byte buffer
   ///
   Uint8List valueBytes() {
-    return Uint8List.view(_encodedBytes!.buffer,
-        _valueStartPosition + _encodedBytes!.offsetInBytes, _valueByteLength);
+    return Uint8List.view(encodedBytes.buffer,
+        _valueStartPosition + encodedBytes.offsetInBytes, _valueByteLength);
   }
 
   ///
