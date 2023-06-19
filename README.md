@@ -64,3 +64,4 @@ expected output. Bonus points if it is formatted as a dart test.
 
 * https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/
 * https://luca.ntop.org/Teaching/Appunti/asn1.html
+* https://ldap.com/ldapv3-wire-protocol-reference-asn1-ber/

@@ -3,7 +3,7 @@ version: 1.4.1
 description: An ASN1 parser library for Dart. Encodes / decodes from ASN1 Objects to BER bytes
 homepage: https://github.com/wstrange/asn1lib
 environment:
- sdk: '>=2.12.0 <3.0.0'
+ sdk: '>=2.12.0 <4.0.0'
 
 dev_dependencies:
   test: ^1.22.0
