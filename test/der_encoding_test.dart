@@ -19,6 +19,12 @@ void main() {
       expect(n.encodedBytes, equals([0x05, 0x00]));
     });
 
+    test('valueBytes before encoding', () {
+      // null object
+      var n = ASN1OctetString('0123');
+      expect(n.valueBytes, returnsNormally);
+    });
+
     test('octet-string', () {
       // the octetstring 01 23 45 67 89 ab cd ef
       // should become 04 08 01 23 45 67 89 ab cd ef
