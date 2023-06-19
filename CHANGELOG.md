@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.1
+
+- Fix null assertion when accessing valueBytes before encodedBytes.
+
 ### 1.4.0
 
 * Reverted parsing of APPLICATION tags to the older behaviour. If the constructed bit  is
