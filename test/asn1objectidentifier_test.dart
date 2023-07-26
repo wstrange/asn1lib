@@ -1,9 +1,7 @@
-library asn1test;
-
-import 'package:test/test.dart';
-import 'package:asn1lib/asn1lib.dart';
-
 import 'dart:typed_data';
+
+import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 // many tests from - http://luca.ntop.org/Teaching/Appunti/asn1.html
 // print(a.oi.map((x) => '0x' + x.toRadixString(16).padLeft(2, '0')));

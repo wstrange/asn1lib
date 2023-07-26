@@ -1,21 +1,20 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 Octet String. This is an array of character codes.
 ///
 class ASN1OctetString extends ASN1Object {
   /// The decoded string value
-  late Uint8List octets;
+  late final Uint8List octets;
 
   @override
-  Uint8List? contentBytes() => octets;
+  Uint8List contentBytes() => octets;
 
   ///
   /// Create an [ASN1OctetString] initialized with a [String] or a [List<int>].
   /// Optionally override the tag
   ///
-  ASN1OctetString(dynamic octets, {int tag = OCTET_STRING_TYPE})
-      : super(tag: tag) {
+  ASN1OctetString(dynamic octets, {super.tag = OCTET_STRING_TYPE}) {
     if (octets is String) {
       this.octets = Uint8List.fromList(octets.codeUnits);
     } else if (octets is Uint8List) {
@@ -31,7 +30,7 @@ class ASN1OctetString extends ASN1Object {
   ///
   /// Create an [ASN1OctetString] from an encoded list of bytes.
   ///
-  ASN1OctetString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1OctetString.fromBytes(super.bytes) : super.fromBytes() {
     octets = valueBytes();
   }
 
@@ -41,13 +40,13 @@ class ASN1OctetString extends ASN1Object {
   String get stringValue => String.fromCharCodes(octets);
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);
     //this.encodedBytes.setRange(valueStartPosition,
     //  valueStartPosition + valBytes.length, valBytes);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

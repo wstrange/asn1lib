@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 // Sere https://luca.ntop.org/Teaching/Appunti/asn1.html
 // tag bytes for various ASN1 BER objects

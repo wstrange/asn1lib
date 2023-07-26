@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:asn1lib/asn1lib.dart';
 
 final certificateDER = decodePEM('''-----BEGIN CERTIFICATE-----
@@ -44,7 +45,7 @@ void main() {
   print(seq.valueBytes().length);
 }
 
-Uint8List decodePEM(pem) {
+Uint8List decodePEM(String pem) {
   var startsWith = [
     '-----BEGIN PUBLIC KEY-----',
     '-----BEGIN PRIVATE KEY-----',

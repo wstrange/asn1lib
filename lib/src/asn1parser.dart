@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// Parses ASN1 BER Encoded bytes to create ASN1 Objects
@@ -38,7 +38,7 @@ class ASN1Parser {
     var subBytes = Uint8List.view(_bytes.buffer, offset, len);
     //print("parser _bytes=${_bytes} position=${_position} len=$l  bytes=${hex(subBytes)}");
 
-    late ASN1Object obj;
+    final ASN1Object obj;
 
     switch (tag & 0xc0) {
       // get highest 2 bits - these are the type
@@ -59,6 +59,8 @@ class ASN1Parser {
       case CONTEXT_SPECIFIC_CLASS:
         obj = ASN1Object.fromBytes(subBytes);
         break;
+      default:
+        throw UnimplementedError();
     }
 
     _position = _position + obj.totalEncodedByteLength;

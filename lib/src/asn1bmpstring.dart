@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 BMP String.
@@ -7,19 +7,18 @@ part of asn1lib;
 ///
 class ASN1BMPString extends ASN1Object {
   /// The decoded string value
-  late String stringValue;
+  late final String stringValue;
 
   ///
   /// Create an [ASN1BMPString] initialized with String value.
   /// Optionally override the tag
   ///
-  ASN1BMPString(this.stringValue, {int tag = BMP_STRING_TYPE})
-      : super(tag: tag);
+  ASN1BMPString(this.stringValue, {super.tag = BMP_STRING_TYPE});
 
   ///
   /// Create an [ASN1BMPString] from an encoded list of bytes
   ///
-  ASN1BMPString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1BMPString.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
     var mergedOctets = <int>[];
 
@@ -33,7 +32,7 @@ class ASN1BMPString extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var octets = utf8.encode(stringValue);
     var doubleOctets = <int>[];
 
@@ -45,7 +44,7 @@ class ASN1BMPString extends ASN1Object {
     _valueByteLength = doubleOctets.length;
     _encodeHeader();
     _setValueBytes(doubleOctets);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

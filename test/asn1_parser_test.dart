@@ -1,9 +1,7 @@
-library asn1test;
-
 import 'dart:typed_data';
 
-import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('ASN1Parser Encode/Decode Test', () {

@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 Exception

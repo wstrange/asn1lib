@@ -1,10 +1,10 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 Object Identifier
 ///
 class ASN1ObjectIdentifier extends ASN1Object {
-  static final Map<String, String> DN = {
+  static const Map<String, String> DN = {
     'cn': '2.5.4.3',
     'sn': '2.5.4.4',
     'c': '2.5.4.6',
@@ -58,12 +58,12 @@ class ASN1ObjectIdentifier extends ASN1Object {
     'ecdsaWithSHA256': '1.2.840.10045.4.3.2'
   };
 
-  late List<int> oi;
+  late final List<int> oi;
 
   String? identifier;
 
-  ASN1ObjectIdentifier(this.oi, {this.identifier, tag = OBJECT_IDENTIFIER})
-      : super(tag: tag);
+  ASN1ObjectIdentifier(this.oi,
+      {this.identifier, super.tag = OBJECT_IDENTIFIER});
 
   ///
   /// Instantiate a [ASN1ObjectIdentifier] from the given [bytes].
@@ -123,7 +123,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var valBytes = <int>[oi[0] * 40 + oi[1]];
 
     for (var ci = 2; ci < oi.length; ci++) {
@@ -146,16 +146,15 @@ class ASN1ObjectIdentifier extends ASN1Object {
     _valueByteLength = valBytes.length;
     super._encodeHeader();
     _setValueBytes(valBytes);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   static ASN1ObjectIdentifier fromComponentString(String path,
-          {tag = OBJECT_IDENTIFIER}) =>
-      fromComponents(path.split('.').map((v) => int.parse(v)).toList(),
-          tag: tag);
+          {int tag = OBJECT_IDENTIFIER}) =>
+      fromComponents(path.split('.').map(int.parse).toList(), tag: tag);
 
   static ASN1ObjectIdentifier fromComponents(List<int> components,
-      {tag = OBJECT_IDENTIFIER}) {
+      {int tag = OBJECT_IDENTIFIER}) {
     assert(components.length >= 2);
     assert(components[0] < 3);
     assert(components[1] < 39);
@@ -166,7 +165,8 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   static final _names = <String, ASN1ObjectIdentifier>{};
 
-  static ASN1ObjectIdentifier fromName(String name, {tag = OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier fromName(String name,
+      {int tag = OBJECT_IDENTIFIER}) {
     name = name.toLowerCase();
 
     for (var entry in _names.entries) {

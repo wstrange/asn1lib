@@ -1,15 +1,13 @@
-library asn1test;
-
-import 'package:test/test.dart';
-import 'package:asn1lib/asn1lib.dart';
-
-import 'dart:typed_data';
 import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('Test integer encoding', () {
     // key = integer to encode, val = expected encoding bytes
-    var m = {};
+    var m = <int, List<int>>{};
     m[0] = [0x0];
     m[127] = [0x7f];
     m[128] = [0x0, 0x80];

@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// Class to encode /decode ASN1 length bytes.
@@ -65,14 +65,14 @@ class ASN1Length {
   ///
   static ASN1Length decodeLength(Uint8List encodedBytes) {
     var valueStartPosition = 2; //default
-    var length = (encodedBytes[1] & 0x7F);
+    var length = encodedBytes[1] & 0x7F;
     if (length != encodedBytes[1]) {
       var numLengthBytes = length;
 
       length = 0;
       for (var i = 0; i < numLengthBytes; i++) {
         length <<= 8;
-        length |= (encodedBytes[valueStartPosition++] & 0xFF);
+        length |= encodedBytes[valueStartPosition++] & 0xFF;
       }
     }
     /*

@@ -1,34 +1,28 @@
-library asn1lib;
-
-import 'dart:typed_data';
 import 'dart:convert';
+import 'dart:typed_data';
 
-part 'asn1integer.dart';
-part 'asn1enumerated.dart';
-
-part 'asn1object.dart';
-part 'asn1application.dart';
-
-part 'asn1util.dart';
-part 'asn1octetstring.dart';
-part 'asn1exception.dart';
-part 'asn1sequence.dart';
-part 'asn1length.dart';
-part 'asn1parser.dart';
-part 'asn1constants.dart';
-part 'asn1null.dart';
-part 'asn1boolean.dart';
-part 'asn1set.dart';
-
-part 'asn1objectidentifier.dart';
-part 'asn1bitstring.dart';
-part 'asn1printablestring.dart';
-part 'asn1numericstring.dart';
-part 'asn1utf8string.dart';
-part 'asn1ia5string.dart';
-part 'asn1utctime.dart';
-part 'asn1bmpstring.dart';
-part 'asn1generalizedtime.dart';
-part 'asn1teletextstring.dart';
-
-part 'asn1ipaddress.dart';
+part 'src/asn1application.dart';
+part 'src/asn1bitstring.dart';
+part 'src/asn1bmpstring.dart';
+part 'src/asn1boolean.dart';
+part 'src/asn1constants.dart';
+part 'src/asn1enumerated.dart';
+part 'src/asn1exception.dart';
+part 'src/asn1generalizedtime.dart';
+part 'src/asn1ia5string.dart';
+part 'src/asn1integer.dart';
+part 'src/asn1ipaddress.dart';
+part 'src/asn1length.dart';
+part 'src/asn1null.dart';
+part 'src/asn1numericstring.dart';
+part 'src/asn1object.dart';
+part 'src/asn1objectidentifier.dart';
+part 'src/asn1octetstring.dart';
+part 'src/asn1parser.dart';
+part 'src/asn1printablestring.dart';
+part 'src/asn1sequence.dart';
+part 'src/asn1set.dart';
+part 'src/asn1teletextstring.dart';
+part 'src/asn1utctime.dart';
+part 'src/asn1utf8string.dart';
+part 'src/asn1util.dart';
