@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// ASN1Integer encoding / decoding.
@@ -8,30 +8,28 @@ part of asn1lib;
 /// int or BigInt
 ///
 class ASN1Integer extends ASN1Object {
-  late BigInt _intValue;
+  late final BigInt valueAsBigInteger;
 
-  ASN1Integer(this._intValue, {tag = INTEGER_TYPE}) : super(tag: tag);
+  ASN1Integer(this.valueAsBigInteger, {super.tag = INTEGER_TYPE});
 
-  ASN1Integer.fromInt(int x, {tag = INTEGER_TYPE}) : super(tag: tag) {
-    _intValue = BigInt.from(x);
+  ASN1Integer.fromInt(int x, {super.tag = INTEGER_TYPE}) {
+    valueAsBigInteger = BigInt.from(x);
     _encode();
   }
 
-  ASN1Integer.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    _intValue = decodeBigInt(valueBytes());
+  ASN1Integer.fromBytes(super.bytes) : super.fromBytes() {
+    valueAsBigInteger = decodeBigInt(valueBytes());
   }
 
-  int get intValue => _intValue.toInt();
-
-  BigInt? get valueAsBigInteger => _intValue;
+  int get intValue => valueAsBigInteger.toInt();
 
   @override
-  Uint8List? _encode() {
-    var t = encodeBigInt(_intValue);
+  Uint8List _encode() {
+    var t = encodeBigInt(valueAsBigInteger);
     _valueByteLength = t.length;
     super._encodeHeader();
     _setValueBytes(t);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   static Uint8List encodeInt(int x) => encodeBigInt(BigInt.from(x));
@@ -90,7 +88,7 @@ class ASN1Integer extends ASN1Object {
     var result = Uint8List(bytes);
 
     number = number.abs();
-    for (var i = 0, j = bytes - 1; i < (bytes); i++, --j) {
+    for (var i = 0, j = bytes - 1; i < bytes; i++, --j) {
       var x = number.remainder(_b256).toInt();
       result[j] = x;
       number = number >> 8;
@@ -137,8 +135,8 @@ class ASN1Integer extends ASN1Object {
       identical(this, other) ||
       other is ASN1Integer &&
           runtimeType == other.runtimeType &&
-          _intValue == other._intValue;
+          valueAsBigInteger == other.valueAsBigInteger;
 
   @override
-  int get hashCode => _intValue.hashCode;
+  int get hashCode => valueAsBigInteger.hashCode;
 }

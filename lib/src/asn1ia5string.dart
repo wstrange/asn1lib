@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 IA5 String.
@@ -7,30 +7,29 @@ part of asn1lib;
 ///
 class ASN1IA5String extends ASN1Object {
   /// The decoded string value
-  late String stringValue;
+  late final String stringValue;
 
   ///
   /// Create an [ASN1IA5String] initialized with String value.
   /// Optionally override the tag
   ///
-  ASN1IA5String(this.stringValue, {int tag = IA5_STRING_TYPE})
-      : super(tag: tag);
+  ASN1IA5String(this.stringValue, {super.tag = IA5_STRING_TYPE});
 
   ///
   /// Create an [ASN1IA5String] from an encoded list of bytes
   ///
-  ASN1IA5String.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1IA5String.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
     stringValue = ascii.decode(octets);
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var octets = ascii.encode(stringValue);
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

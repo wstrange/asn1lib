@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.5.0
+
+- Make a number of fields `final` that should not be changed.
+- Add types to a few members.
+- Remove nullability from a field fields.
+- Require Dart 3.0
+
 ### 1.4.1
 
 - Fix null assertion when accessing valueBytes before encodedBytes.
@@ -20,6 +27,7 @@
 ### 1.2.2
 
 - Fix #62. Allow context specific tags to be cast to an asn1 sequence.
+
 ### 1.2.1
 
 - Fix #57

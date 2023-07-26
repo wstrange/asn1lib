@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1Set.
@@ -11,14 +11,14 @@ class ASN1Set extends ASN1Object {
   ///
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
-  ASN1Set.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1Set.fromBytes(super.bytes) : super.fromBytes() {
     if (!isSet(tag)) {
       throw ASN1Exception('The tag $tag does not look like a set type');
     }
     _decodeSet();
   }
 
-  ASN1Set({int tag = CONSTRUCTED_SET_TYPE}) : super(tag: tag);
+  ASN1Set({super.tag = CONSTRUCTED_SET_TYPE});
 
   ///
   /// Add an element to the set
@@ -28,7 +28,7 @@ class ASN1Set extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     _valueByteLength = _childLength();
     //super._encode();
 
@@ -39,7 +39,7 @@ class ASN1Set extends ASN1Object {
       encodedBytes.setRange(i, i + b.length, b);
       i += b.length;
     }
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   ///

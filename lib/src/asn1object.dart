@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// Holds the encoded and decoded representation of an ASN1 object.
@@ -12,8 +12,7 @@ part of asn1lib;
 ///
 class ASN1Object {
   /// The BER tag representing this object
-  final int _tag;
-  int get tag => _tag;
+  final int tag;
 
   ///
   /// The ASN1 encoded bytes.
@@ -44,7 +43,7 @@ class ASN1Object {
   bool get isEncoded => _encodedBytes != null;
 
   /// Create an ASN1Object. Optionally set the tag
-  ASN1Object({int tag = 0}) : _tag = tag;
+  ASN1Object({this.tag = 0});
 
   ///
   /// Create an object that encapsulates a set of value bytes that are already encoded.
@@ -52,7 +51,7 @@ class ASN1Object {
   /// This is used in LDAP (for example) to encode a CHOICE type
   /// The supplied valBytes is the encoded value of the choice element
   ///
-  ASN1Object.preEncoded(int tag, Uint8List valBytes) : _tag = tag {
+  ASN1Object.preEncoded(this.tag, Uint8List valBytes) {
     _valueByteLength = valBytes.length;
     _encodeHeader();
     _encodedBytes!.setRange(
@@ -69,7 +68,7 @@ class ASN1Object {
   /// byte stream we dont always know how long an object is
   /// until we complete parsing it).
   ///
-  ASN1Object.fromBytes(Uint8List bytes) : _tag = bytes[0] {
+  ASN1Object.fromBytes(Uint8List bytes) : tag = bytes[0] {
     _encodedBytes = bytes;
     _initFromBytes();
   }
@@ -92,13 +91,13 @@ class ASN1Object {
   /// next object starts in the stream.
   ///
   ////
-  int get totalEncodedByteLength => _valueStartPosition + _valueByteLength!;
+  int get totalEncodedByteLength => _valueStartPosition + _valueByteLength;
 
   ///
   /// Length of the encoded value bytes. This does not include the length of
   /// the tag or length fields. See [totalEncodedByteLength].
   ///
-  int? _valueByteLength;
+  late int _valueByteLength;
 
   ///
   /// The index where the value bytes start. This is the position after the tag + length bytes.
@@ -116,15 +115,15 @@ class ASN1Object {
   /// calling this. We need this know how big to make the encoded object array. Subclasses are
   /// responsible for encoding their value representations using [encodeBigInt]
   ///
-  Uint8List? _encodeHeader() {
+  Uint8List _encodeHeader() {
     if (_encodedBytes == null) {
-      var lenEnc = ASN1Length.encodeLength(_valueByteLength!);
-      _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength!);
+      var lenEnc = ASN1Length.encodeLength(_valueByteLength);
+      _encodedBytes = Uint8List(1 + lenEnc.length + _valueByteLength);
       _encodedBytes![0] = tag;
       _encodedBytes!.setRange(1, 1 + lenEnc.length, lenEnc, 0);
       _valueStartPosition = 1 + lenEnc.length;
     }
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   ///
@@ -132,7 +131,7 @@ class ASN1Object {
   ///
   /// Subclasses will need to override this.
   ///
-  Uint8List? _encode() => _encodeHeader();
+  Uint8List _encode() => _encodeHeader();
 
   ///
   /// Return just the value bytes.
@@ -150,7 +149,7 @@ class ASN1Object {
   /// some other tags like BitString include padding in their valueBytes.
   /// This method always returns the unpadded contentBytes.
   ///
-  Uint8List? contentBytes() => valueBytes();
+  Uint8List contentBytes() => valueBytes();
 
   ///
   /// Subclasses can call this to set the value bytes

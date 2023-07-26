@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:asn1lib/asn1lib.dart';
 import 'package:test/test.dart';
-import 'dart:convert';
+
 import '../example/main.dart'; // for decodePEM
 
 // Test cases for https://github.com/wstrange/asn1lib/issues/61

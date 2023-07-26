@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// Represents a ASN1 BER encoded sequence.
@@ -15,7 +15,7 @@ class ASN1Sequence extends ASN1Object {
   /// Note that bytes array b could be longer than the actual encoded sequence - in which case
   /// we ignore any remaining bytes.
   ///
-  ASN1Sequence.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1Sequence.fromBytes(super.bytes) : super.fromBytes() {
     if (isUniversal(tag) && !isSequence(tag)) {
       throw ASN1Exception('The tag $tag does not look like a sequence type');
     }
@@ -25,7 +25,7 @@ class ASN1Sequence extends ASN1Object {
   ///
   /// Create a new empty ASN1 Sequence. Optionally override the default tag
   ///
-  ASN1Sequence({int tag = CONSTRUCTED_SEQUENCE_TYPE}) : super(tag: tag);
+  ASN1Sequence({super.tag = CONSTRUCTED_SEQUENCE_TYPE});
 
   ///
   /// Add an [ASN1Object] to the sequence. Objects will be serialized to BER in the order they were added
@@ -35,7 +35,7 @@ class ASN1Sequence extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     _valueByteLength = _childLength();
     super._encodeHeader();
     var i = _valueStartPosition;
@@ -45,7 +45,7 @@ class ASN1Sequence extends ASN1Object {
       encodedBytes.setRange(i, i + b.length, b);
       i += b.length;
     }
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   ///
@@ -54,7 +54,7 @@ class ASN1Sequence extends ASN1Object {
   int _childLength() {
     var l = 0;
     for (var obj in elements) {
-      l += obj._encode()!.length;
+      l += obj._encode().length;
     }
     return l;
   }

@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 IP Address. This is length-4 array of character codes.
@@ -21,24 +21,23 @@ class ASN1IpAddress extends ASN1OctetString {
   ///
   /// Create an [ASN1IpAddress] from an encoded list of bytes.
   ///
-  ASN1IpAddress.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
-    octets = valueBytes();
+  ASN1IpAddress.fromBytes(super.bytes) : super.fromBytes() {
     _assertValidLength(octets);
   }
 
   ///
   /// Create an [ASN1IpAddress] from an IP Address String such as '192.168.1.1'
   ///
-  static ASN1IpAddress fromComponentString(String path, {tag = IP_ADDRESS}) =>
-      fromComponents(path.split('.').map((v) => int.parse(v)).toList(),
-          tag: tag);
+  static ASN1IpAddress fromComponentString(String path,
+          {int tag = IP_ADDRESS}) =>
+      fromComponents(path.split('.').map(int.parse).toList(), tag: tag);
 
   ///
   /// Create an [ASN1IpAddress] from a list of int IP Address octets
   /// e.g. [192, 168, 1, 1]
   ///
   static ASN1IpAddress fromComponents(List<int> components,
-          {tag = IP_ADDRESS}) =>
+          {int tag = IP_ADDRESS}) =>
       ASN1IpAddress(components, tag: tag);
 
   /// Ensure there are no more or less than 4 octets for an IPv4 address

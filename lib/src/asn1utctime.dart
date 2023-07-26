@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 UtcTime value.
@@ -10,19 +10,19 @@ part of asn1lib;
 ///
 class ASN1UtcTime extends ASN1Object {
   // The decoded date value
-  late DateTime dateTimeValue;
+  late final DateTime dateTimeValue;
 
   ///
   /// Create an [ASN1UtcTime] initialized with DateTime value.
   ///
   /// Optionally override the tag
   ///
-  ASN1UtcTime(this.dateTimeValue, {int tag = UTC_TIME_TYPE}) : super(tag: tag);
+  ASN1UtcTime(this.dateTimeValue, {super.tag = UTC_TIME_TYPE});
 
   ///
   /// Create an [ASN1UtcTime] from an encoded list of bytes
   ///
-  ASN1UtcTime.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1UtcTime.fromBytes(super.bytes) : super.fromBytes() {
     // The DateTime.parse() function wants:
     // * Either T or space as separator between date and time.
     // * Full year with 4 digits (the UtcTime in ASN.1 has only two digits for year).
@@ -41,7 +41,7 @@ class ASN1UtcTime extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var utc = dateTimeValue.toUtc();
     var year = utc.year.toString().substring(2).padLeft(2, '0');
     var month = utc.month.toString().padLeft(2, '0');
@@ -56,7 +56,7 @@ class ASN1UtcTime extends ASN1Object {
     _valueByteLength = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

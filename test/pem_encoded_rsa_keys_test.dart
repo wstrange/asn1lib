@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:test/test.dart';
-import 'package:asn1lib/asn1lib.dart';
 import 'dart:typed_data';
+
+import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 void main() {
   var publicKeyDER = decodePEM('''-----BEGIN PUBLIC KEY-----
@@ -202,7 +203,7 @@ L2fTYScBC9dHB+QBDm/c/oYpIj9tsKuxNJO0Io+b1cIziWqOytwlHnzAx9X/KGeB
 
     expect(publicKeyBitString.valueBytes().length, 271);
 
-    asn1Parser = ASN1Parser(publicKeyBitString.contentBytes()!);
+    asn1Parser = ASN1Parser(publicKeyBitString.contentBytes());
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
 
     var expected = BigInt.from(65537);
@@ -250,7 +251,7 @@ c0 f1 cc 0e 1a 2c a6 52-b1 ee 6e a3 fe 21 cb e5
     var privateKey = topLevelSeq.elements[2];
     expect(privateKey.valueBytes().length, 1193);
 
-    asn1Parser = ASN1Parser(privateKey.contentBytes()!);
+    asn1Parser = ASN1Parser(privateKey.contentBytes());
     var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
     version = pkSeq.elements[0];
     var modulus = pkSeq.elements[1] as ASN1Integer;
@@ -376,7 +377,7 @@ f0:57:25:e7:78:12:17:5d:f5
   });
 }
 
-Uint8List decodePEM(pem) {
+Uint8List decodePEM(String pem) {
   var startsWith = [
     '-----BEGIN PUBLIC KEY-----',
     '-----BEGIN PRIVATE KEY-----',

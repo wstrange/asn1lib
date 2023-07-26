@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 Numeric String
@@ -8,15 +8,14 @@ part of asn1lib;
 ///
 class ASN1NumericString extends ASN1Object {
   // The decoded string value
-  late String stringValue;
+  late final String stringValue;
 
   ///
   /// Create an [ASN1NumericString] initialized with String value.
   ///
   /// Optionally override the tag
   ///
-  ASN1NumericString(this.stringValue, {int tag = NUMERIC_STRING_TYPE})
-      : super(tag: tag) {
+  ASN1NumericString(this.stringValue, {super.tag = NUMERIC_STRING_TYPE}) {
     if (!RegExp(r'^[\d\s]*$').hasMatch(stringValue)) {
       throw ASN1Exception(
           'ASN1 NumericString should only include digits or spaces');
@@ -26,18 +25,18 @@ class ASN1NumericString extends ASN1Object {
   ///
   /// Create an [ASN1NumericString] from an encoded list of bytes.
   ///
-  ASN1NumericString.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1NumericString.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
     stringValue = ascii.decode(octets);
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var octets = ascii.encode(stringValue);
     _valueByteLength = octets.length;
     _encodeHeader();
     _setValueBytes(octets);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

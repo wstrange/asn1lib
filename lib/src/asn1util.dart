@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 class ASN1Util {
   // convert a list to a hex string. Used for debugging ASN1 output
@@ -18,7 +18,7 @@ class ASN1Util {
     if (x is List) {
       return listToString(x as List<int>);
     } else {
-      return x.toRadixString(16);
+      return (x as int).toRadixString(16);
     }
   }
 

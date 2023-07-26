@@ -1,4 +1,4 @@
-part of asn1lib;
+part of '../asn1lib.dart';
 
 ///
 /// An ASN1 GeneralizedTime value.
@@ -10,20 +10,19 @@ part of asn1lib;
 ///
 class ASN1GeneralizedTime extends ASN1Object {
   // The decoded date value
-  late DateTime dateTimeValue;
+  late final DateTime dateTimeValue;
 
   ///
   /// Create an [ASN1GeneralizedTime] initialized with DateTime value.
   ///
   /// Optionally override the tag
   ///
-  ASN1GeneralizedTime(this.dateTimeValue, {int tag = GENERALIZED_TIME})
-      : super(tag: tag);
+  ASN1GeneralizedTime(this.dateTimeValue, {super.tag = GENERALIZED_TIME});
 
   ///
   /// Create an [ASN1GeneralizedTime] from an encoded list of bytes
   ///
-  ASN1GeneralizedTime.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+  ASN1GeneralizedTime.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
     var stringValue = ascii.decode(octets);
     var year = stringValue.substring(0, 4);
@@ -42,7 +41,7 @@ class ASN1GeneralizedTime extends ASN1Object {
   }
 
   @override
-  Uint8List? _encode() {
+  Uint8List _encode() {
     var utc = dateTimeValue.toUtc();
     var year = utc.year.toString();
     var month = utc.month.toString();
@@ -57,7 +56,7 @@ class ASN1GeneralizedTime extends ASN1Object {
     _valueByteLength = valBytes.length;
     _encodeHeader();
     _setValueBytes(valBytes);
-    return _encodedBytes;
+    return _encodedBytes!;
   }
 
   @override

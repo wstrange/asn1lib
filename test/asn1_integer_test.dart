@@ -1,9 +1,9 @@
-import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 // list of test value pairs. The first value is the integer to encode, the
 // second is expected length of the content bytes (excludes type and length).
-final List<int> intTestValues = [
+const List<int> intTestValues = [
   0x00000000,
   1,
   0x00000001,
@@ -189,7 +189,7 @@ void testPair(int x, int expectedLength) {
   //print(
   //    'Value 0x${x.toRadixString(16)},$expectedLength. Encoded Bytes =  ${_printBytes(int1.encodedBytes.sublist(2))}');
 
-  var contentLength = int1.contentBytes()!.length;
+  var contentLength = int1.contentBytes().length;
   expect(contentLength, expectedLength,
       reason: 'expected number of content bytes is wrong');
   var int2 = ASN1Integer.fromBytes(int1.encodedBytes);

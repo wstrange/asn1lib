@@ -1,7 +1,5 @@
-library asn1test;
-
-import 'package:test/test.dart';
 import 'package:asn1lib/asn1lib.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('support optional tagging', () {
