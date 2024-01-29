@@ -26,6 +26,12 @@ class ASN1Object {
   Uint8List? _encodedBytes;
 
   ///
+  int? _extendedTag;
+
+  bool get hasExtendedTag => _extendedTag != null;
+  int? get extendedTag => _extendedTag;
+
+  ///
   /// Get the encoded byte representation for this object. This can trigger
   /// calling the subclasss [_encode] method if the object has not yet been encoded
   ///
@@ -70,17 +76,38 @@ class ASN1Object {
   ///
   ASN1Object.fromBytes(Uint8List bytes) : tag = bytes[0] {
     _encodedBytes = bytes;
-    _initFromBytes();
-  }
+    // _initFromBytes();
 
-  ///
-  /// Perform initial decoding common to all ASN1 Objects
-  /// Determines the length and where the value bytes start
-  ////
-  void _initFromBytes({int offset = 1}) {
+    int offset = 1; // offset where the length bytes start
+    // This is an extended tag if all the lower 5 bits are 1s
+    if( (tag & 0x1f) == 0x1f) {
+      var (tag,o) = _calculateExtendedTag(bytes);
+      _extendedTag = tag;
+      offset = o;
+    }
+
     var l = ASN1Length.decodeLength(_encodedBytes!, offset: offset);
     _valueByteLength = l.length;
     _valueStartPosition = l.valueStartPosition;
+  }
+
+
+  (int,int) _calculateExtendedTag(Uint8List bytes) {
+    int _extendedTag = 0;
+    var p =1;
+    int eb = bytes[p++];
+    do {
+      // get the lower 7 bits as the value
+      _extendedTag |= (eb & 0x7f);
+      if( (eb & 0x80) == 0 ) {
+        break; // if the high bit is 0, we are done
+      }
+      // shift the extended tag left
+      _extendedTag = _extendedTag << 7;
+      eb = bytes[p++];
+    }
+    while( true );
+    return (_extendedTag,p);
   }
 
   ///

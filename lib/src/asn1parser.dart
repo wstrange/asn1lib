@@ -29,9 +29,10 @@ class ASN1Parser {
     var tag = _bytes[_position]; // get current tag in stream
 
     // This is a special case where the tag value does not fit into
-    // 4 bytes. It is flagged by all 1's in positions 4..0
+    // the lower 5 bits of the tag. We dont really handle
+    // this right now other than just to wrap the bytes as an ASN1Object
     if(  (tag & 0x1f) == 0x1f ) {
-      return ASN1ExtendedTagObject.fromBytes(_bytes);
+      return ASN1Object.fromBytes(_bytes);
     }
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object

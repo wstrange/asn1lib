@@ -30,7 +30,7 @@ final certificate = Uint8List.fromList(
 // test for issue https://github.com/wstrange/asn1lib/issues/62
 void main() {
 
-  test('issue 65 tag value does not fit in the first byte', () {
+  test('issue 65 - parse multi byte tags', () {
     var p = ASN1Parser(certificate,relaxedParsing: true);
 
     try {
@@ -40,6 +40,7 @@ void main() {
         var obj = p.nextObject();
         expect(obj, isNotNull);
         expect(obj, isA<ASN1Object>());
+        expect(obj.hasExtendedTag, isTrue);
 
         // get the valuebytes and see if we can re-parse
         p = ASN1Parser(obj.valueBytes(), relaxedParsing: true);
@@ -47,8 +48,8 @@ void main() {
       }
 
     }
-    catch(e) {
-      fail('Multi byte tag should not cause an exception: $e');
+    catch(e,s) {
+      fail('Multi byte tag should not cause an exception: $e\n$s');
     }
   });
 
