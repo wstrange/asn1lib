@@ -77,8 +77,8 @@ class ASN1Object {
   /// Perform initial decoding common to all ASN1 Objects
   /// Determines the length and where the value bytes start
   ////
-  void _initFromBytes() {
-    var l = ASN1Length.decodeLength(_encodedBytes!);
+  void _initFromBytes({int offset = 1}) {
+    var l = ASN1Length.decodeLength(_encodedBytes!, offset: offset);
     _valueByteLength = l.length;
     _valueStartPosition = l.valueStartPosition;
   }

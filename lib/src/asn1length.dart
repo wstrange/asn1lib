@@ -62,11 +62,13 @@ class ASN1Length {
   /// Returns the [ASN1Length]  (length,valueStartPosition).
   /// The first byte is the tag
   /// THe length starts at the second byte.
+  /// [offset] is where the length bytes start in the byte array. For
+  ///  most objects, this will be right after the tag at position 1.
   ///
-  static ASN1Length decodeLength(Uint8List encodedBytes) {
-    var valueStartPosition = 2; //default
-    var length = encodedBytes[1] & 0x7F;
-    if (length != encodedBytes[1]) {
+  static ASN1Length decodeLength(Uint8List encodedBytes, {int offset = 1}) {
+    var valueStartPosition = offset +1; //default
+    var length = encodedBytes[offset] & 0x7F;
+    if (length != encodedBytes[offset]) {
       var numLengthBytes = length;
 
       length = 0;

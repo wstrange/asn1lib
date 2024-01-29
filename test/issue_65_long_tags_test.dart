@@ -34,11 +34,21 @@ void main() {
     var p = ASN1Parser(certificate,relaxedParsing: true);
 
     try {
-      var obj = p.nextObject();
-      expect(obj, isNotNull);
+
+      int c = certificate.length;
+      while(c > 0) {
+        var obj = p.nextObject();
+        expect(obj, isNotNull);
+        expect(obj, isA<ASN1Object>());
+
+        // get the valuebytes and see if we can re-parse
+        p = ASN1Parser(obj.valueBytes(), relaxedParsing: true);
+        c -= obj.valueBytes().length;
+      }
+
     }
     catch(e) {
-      fail('Multi byte tag should not cause an exception');
+      fail('Multi byte tag should not cause an exception: $e');
     }
   });
 

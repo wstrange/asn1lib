@@ -26,3 +26,4 @@ part 'src/asn1teletextstring.dart';
 part 'src/asn1utctime.dart';
 part 'src/asn1utf8string.dart';
 part 'src/asn1util.dart';
+part 'src/asn1extendedtagobject.dart';
