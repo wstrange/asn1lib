@@ -12,7 +12,6 @@ part 'src/asn1generalizedtime.dart';
 part 'src/asn1ia5string.dart';
 part 'src/asn1integer.dart';
 part 'src/asn1ipaddress.dart';
-part 'src/asn1length.dart';
 part 'src/asn1null.dart';
 part 'src/asn1numericstring.dart';
 part 'src/asn1object.dart';

@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.2
+
+- Support the ability to parse objects with extended tags (more than one byte). #65
+- Simplify by converting ASN1Length to Dart records
+
 ### 1.5.0
 
 - Make a number of fields `final` that should not be changed.

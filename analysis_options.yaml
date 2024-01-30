@@ -3,7 +3,7 @@ include: package:dart_flutter_team_lints/analysis_options.yaml
 # This package was created before these constant rules were best practice.
 linter:
   rules:
-    constant_identifier_names: false
+#    constant_identifier_names: false
     lines_longer_than_80_chars: false
-    non_constant_identifier_names: false
+#    non_constant_identifier_names: true
     use_super_parameters: true

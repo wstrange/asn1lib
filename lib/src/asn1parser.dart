@@ -36,8 +36,8 @@ class ASN1Parser {
     }
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
-    var length = ASN1Length.decodeLength(_bytes.sublist(_position), offset: 1);
-    var len = length.length + length.valueStartPosition;
+    var (length,vsp) = ASN1Object.decodeLength(_bytes.sublist(_position), offset: 1);
+    var len = length + vsp;
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
     var offset = _position + _bytes.offsetInBytes;

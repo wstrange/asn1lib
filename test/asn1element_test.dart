@@ -46,13 +46,13 @@ void main() {
   });
 
   test('Length Encoding and Decoding', () {
-    var x = ASN1Length.encodeLength(127);
+    var x = ASN1Object.encodeLength(127);
     expect(x, equals([127]));
 
-    x = ASN1Length.encodeLength(128);
+    x = ASN1Object.encodeLength(128);
     expect(x, equals([0x81, 128]));
 
-    x = ASN1Length.encodeLength(1024);
+    x = ASN1Object.encodeLength(1024);
     expect(x, equals([0x82, 0x04, 0x00]));
   });
 
@@ -64,7 +64,7 @@ void main() {
 
     try {
       // ignore: unused_local_variable
-      var x = ASN1Length.decodeLength(b);
+      var (l, v) = ASN1Object.decodeLength(b);
       fail('A RangeError is expected');
     } catch (e) {
       expect(e, e as RangeError);
@@ -75,9 +75,8 @@ void main() {
     var b = Uint8List.fromList([0x30, 0x82, 0x01, 0x26]); // missing 0x00
 
     try {
-      // ignore: unused_local_variable
-      var x = ASN1Length.decodeLength(b);
-      expect(294, x.length);
+      var (length, _) = ASN1Object.decodeLength(b);
+      expect(294, length);
     } catch (e) {
       fail('No error expected');
     }
