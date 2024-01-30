@@ -10,9 +10,7 @@ Encodes & decodes ASN1 using BER encoding.
 import 'package:asn1lib/asn1lib.dart';
 
 var s = ASN1Sequence();
-s.add
-(
-ASN1Integer(23));
+s.add(ASN1Integer(23));
 s.add(ASN1OctetString('This is a test'));
 s.add(ASN1Boolean(true));
 
