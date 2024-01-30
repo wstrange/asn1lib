@@ -29,6 +29,7 @@ class ASN1Object {
   int? _extendedTag;
 
   bool get hasExtendedTag => _extendedTag != null;
+
   int? get extendedTag => _extendedTag;
 
   ///

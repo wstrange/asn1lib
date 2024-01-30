@@ -31,12 +31,13 @@ class ASN1Parser {
     // This is a special case where the tag value does not fit into
     // the lower 5 bits of the tag. We dont really handle
     // this right now other than just to wrap the bytes as an ASN1Object
-    if(  (tag & 0x1f) == 0x1f ) {
+    if ((tag & 0x1f) == 0x1f) {
       return ASN1Object.fromBytes(_bytes);
     }
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
-    var (length,vsp) = ASN1Object.decodeLength(_bytes.sublist(_position), offset: 1);
+    var (length, vsp) =
+        ASN1Object.decodeLength(_bytes.sublist(_position), offset: 1);
     var len = length + vsp;
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
