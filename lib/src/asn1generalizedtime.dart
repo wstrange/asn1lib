@@ -3,7 +3,7 @@ part of '../asn1lib.dart';
 ///
 /// An ASN1 GeneralizedTime value.
 ///
-/// UTCTime values take the form of either 'YYMMDDhhmm[ss]Z' or 'YYMMDDhhmm[ss](+|-)hhmm'.
+/// UTCTime values take the form of either 'YYMMDDhhmmssZ' or 'YYMMDDhhmmss(+|-)hhmm'.
 /// The first form indicates (by the literal letter 'Z') UTC time.
 /// The second form indicates a time that differs from UTC by plus or minus
 /// The hours and minutes represented by the final 'hhmm'.

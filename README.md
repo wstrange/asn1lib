@@ -15,7 +15,9 @@ s.add(ASN1OctetString('This is a test'));
 s.add(ASN1Boolean(true));
 
 // GET the BER Stream
-var bytes = s.encodedBytes;
+var bytes = s
+.
+encodedBytes;
 ```
 
 ### Decoding
@@ -37,11 +39,14 @@ var s3 = p2.nextObject();
 
 ## ASN1 Object classes
 
-The library has been most thoroughly tested against ASN1 _primitive_ class types, such as strings, integers, 
+The library has been most thoroughly tested against ASN1 _primitive_ class types, such as strings,
+integers,
 sequences and sets.
 
-There is minimal support for ASN1 Application, Context-specific and Private classes. If the parser encounters 
-these tags, it will wrap them in an a corresponding object ( ASN1Application, ASN1ContextSpecific, ASN1Private). You 
+There is minimal support for ASN1 Application, Context-specific and Private classes. If the parser
+encounters
+these tags, it will wrap them in an a corresponding object ( ASN1Application, ASN1ContextSpecific,
+ASN1Private). You
 can force decode these to another type, by doing something like this:
 
 ```dart 
@@ -54,11 +59,12 @@ can force decode these to another type, by doing something like this:
     var sequence = ASN1Sequence.fromBytes(s.encodedBytes);
     expect(sequence, isA<ASN1Sequence>()); 
 ```
+
 ## Issues
 
-ASN1 parsing is complex, so bugs are expected. If you find a bug, please provide a test case 
-that demonstrates the issue, along with the 
-expected output. Bonus points if it is formatted as a dart test. 
+ASN1 parsing is complex, so bugs are expected. If you find a bug, please provide a test case
+that demonstrates the issue, along with the
+expected output. Bonus points if it is formatted as a dart test.
 
 ## References
 

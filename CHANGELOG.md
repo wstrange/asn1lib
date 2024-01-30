@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.2
+
+- Support the ability to parse objects with extended tags (more than one byte). #65
+- Simplify by converting ASN1Length to Dart records
+
 ### 1.5.0
 
 - Make a number of fields `final` that should not be changed.
@@ -13,16 +18,16 @@
 
 ### 1.4.0
 
-* Reverted parsing of APPLICATION tags to the older behaviour. If the constructed bit  is
- set, the tag is parsed as an ASN1Sequence. The recent updates broke LDAP ASN1 parsing.
+* Reverted parsing of APPLICATION tags to the older behaviour. If the constructed bit is
+  set, the tag is parsed as an ASN1Sequence. The recent updates broke LDAP ASN1 parsing.
 
 ### 1.3.0
 
-* Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private. 
+* Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private.
 * This is a potential change in behavior for consumers that expect some of these classes
- to be parsed as primitive or sequence types. See [README.md]
+  to be parsed as primitive or sequence types. See [README.md]
 * The `encodeApplicationTagsAsObject` option on ASN1Parser has been dropped as it
- is now the default. Consumers should reparse bytes they know to be a sequence, etc.
+  is now the default. Consumers should reparse bytes they know to be a sequence, etc.
 
 ### 1.2.2
 
@@ -32,10 +37,10 @@
 
 - Fix #57
 
-### 1.2.0 
+### 1.2.0
 
-- Fix #61. Adds a flag to the parser `encodeApplicationTagsAsObject` that will 
- force APPLICATION objects to be encoded as ASN1Objects, skipping any attempt to create sequences.
+- Fix #61. Adds a flag to the parser `encodeApplicationTagsAsObject` that will
+  force APPLICATION objects to be encoded as ASN1Objects, skipping any attempt to create sequences.
 
 ### 1.1.1
 
@@ -52,7 +57,7 @@
 ### 1.0.2
 
 - Better toString() for ASN1ObjectIdentifier
-  
+
 ### 1.0.1
 
 - Add ASN1NumericString support
@@ -62,7 +67,7 @@
 - Bumped to 1.0.0 as this is now null safe
 - Code cleanup
 
-## 0.9.0 
+## 0.9.0
 
 - Requires Dart 2.12
 - Enable null-safety

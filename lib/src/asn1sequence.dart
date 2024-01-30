@@ -10,7 +10,7 @@ class ASN1Sequence extends ASN1Object {
   List<ASN1Object> elements = <ASN1Object>[];
 
   ///
-  /// Create a sequence fromt the byte array [bytes].
+  /// Create a sequence fromt the byte array [super.bytes].
   ///
   /// Note that bytes array b could be longer than the actual encoded sequence - in which case
   /// we ignore any remaining bytes.

@@ -59,13 +59,19 @@ const int UNIVERSAL_CLASS = 0x0;
 
 // return just the type bits - the lower 5 bits of the tag
 int type_bits(int tag) => tag & 0x1f;
+
 bool isUniversal(int tag) => (0xC0 & tag) == 0;
+
 bool isApplication(int tag) => (APPLICATION_CLASS & tag) == APPLICATION_CLASS;
+
 bool isContextSpecific(int tag) =>
     (CONTEXT_SPECIFIC_CLASS & tag) == CONTEXT_SPECIFIC_CLASS;
+
 bool isPrivate(int tag) => (PRIVATE_CLASS & tag) == PRIVATE_CLASS;
+
 bool isConstructed(int tag) => CONSTRUCTED_BIT & tag != 0;
 // primitive set or sequence
 bool isSet(int tag) => isConstructed(tag) && type_bits(tag) == SET_TYPE;
+
 bool isSequence(int tag) =>
     isConstructed(tag) && type_bits(tag) == SEQUENCE_TYPE;
