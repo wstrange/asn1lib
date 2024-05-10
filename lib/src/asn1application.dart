@@ -6,6 +6,8 @@ part of '../asn1lib.dart';
 class ASN1Application extends ASN1Object {
   ASN1Application({super.tag = APPLICATION_CLASS});
 
+  ///  TODO: Need to override the tag..
+
   ASN1Application.fromBytes(super.bytes) : super.fromBytes() {
     // check that this really is an application type
     if (!isApplication(tag)) {

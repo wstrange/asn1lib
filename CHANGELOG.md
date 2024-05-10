@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.3
+
+- Fixes #68
+
 ### 1.5.2
 
 - Support the ability to parse objects with extended tags (more than one byte). #65
