@@ -28,11 +28,15 @@ class ASN1Parser {
   ASN1Object nextObject() {
     var tag = _bytes[_position]; // get current tag in stream
 
-    // This is a special case where the tag value does not fit into
-    // the lower 5 bits of the tag. We dont really handle
-    // this right now other than just to wrap the bytes as an ASN1Object
+    // This is a special case of an extended tag where the tag value does not fit into
+    // the lower 5 bits of the tag.
+    // We dont do much right now other than to wrap
+    // wrap the bytes as an ASN1Object
     if ((tag & 0x1f) == 0x1f) {
-      return ASN1Object.fromBytes(_bytes);
+      var obj = ASN1Object.fromBytes(_bytes.sublist(_position));
+      // update our parser position
+      _position += obj.totalEncodedByteLength;
+      return obj;
     }
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
