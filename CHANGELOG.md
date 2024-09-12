@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.4
+
+- Add equals and hashCode to ASN1Object
+
 ### 1.5.3
 
 - Fixes #68

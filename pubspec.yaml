@@ -1,5 +1,5 @@
 name: asn1lib
-version: 1.5.3
+version: 1.5.4
 description: An ASN1 parser library for Dart. Encodes / decodes from ASN1 Objects to BER bytes
 homepage: https://github.com/wstrange/asn1lib
 environment:

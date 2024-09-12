@@ -258,4 +258,11 @@ class ASN1Object {
   @override
   String toString() =>
       'ASN1Object(tag=${tag.toRadixString(16)} valueByteLength=$_valueByteLength) startpos=$_valueStartPosition bytes=${toHexString()}';
+
+  @override
+  int get hashCode => _encodedBytes.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      other is ASN1Object && _encodedBytes == other._encodedBytes;
 }
