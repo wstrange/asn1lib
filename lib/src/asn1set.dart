@@ -4,7 +4,7 @@ part of '../asn1lib.dart';
 /// An ASN1Set.
 ///
 class ASN1Set extends ASN1Object {
-  Set<ASN1Object> elements = <ASN1Object>{};
+  Set<ASN1Object> elements = {};
 
   ///
   /// Create a set from the bytes

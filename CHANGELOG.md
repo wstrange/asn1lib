@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.5
+
+- Equals method was comparing unencoded object.
+
 ### 1.5.4
 
 - Add equals and hashCode to ASN1Object
