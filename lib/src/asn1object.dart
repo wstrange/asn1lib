@@ -253,6 +253,9 @@ class ASN1Object {
     return e;
   }
 
+  // ignore: inference_failure_on_instance_creation
+  final _eq = const IterableEquality().equals;
+
   String toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
@@ -264,5 +267,5 @@ class ASN1Object {
 
   @override
   bool operator ==(Object other) =>
-      other is ASN1Object && encodedBytes == other.encodedBytes;
+      other is ASN1Object && _eq(encodedBytes, other.encodedBytes);
 }

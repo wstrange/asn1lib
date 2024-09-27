@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.6
+
+- Equals method needs to use deep list equality!
+
 ### 1.5.5
 
 - Equals method was comparing unencoded object.
@@ -30,15 +34,15 @@
 
 ### 1.4.0
 
-* Reverted parsing of APPLICATION tags to the older behaviour. If the constructed bit is
+- Reverted parsing of APPLICATION tags to the older behavior. If the constructed bit is
   set, the tag is parsed as an ASN1Sequence. The recent updates broke LDAP ASN1 parsing.
 
 ### 1.3.0
 
-* Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private.
-* This is a potential change in behavior for consumers that expect some of these classes
+- Adds classes to handle non primitive classes: ASN1Application,ASN1ContextSpecific, ASN1Private.
+- This is a potential change in behavior for consumers that expect some of these classes
   to be parsed as primitive or sequence types. See [README.md]
-* The `encodeApplicationTagsAsObject` option on ASN1Parser has been dropped as it
+- The `encodeApplicationTagsAsObject` option on ASN1Parser has been dropped as it
   is now the default. Consumers should reparse bytes they know to be a sequence, etc.
 
 ### 1.2.2
@@ -56,7 +60,7 @@
 
 ### 1.1.1
 
-- fix: Use the correct value for `unusedBits` in `ASN1BitString.fromBytes `
+- fix: Use the correct value for `unusedBits` in `ASN1BitString.fromBytes`
 
 ### 1.1.0
 
@@ -96,7 +100,7 @@
 
 ## 0.7.1
 
-- Allow parsing of unrecognizes application tags into generic ASN1Objects
+- Allow parsing of unrecognized application tags into generic ASN1Objects
 - Fix parser test filename typo
 - Add new tag tests
 
