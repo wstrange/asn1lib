@@ -254,7 +254,7 @@ class ASN1Object {
   }
 
   // ignore: inference_failure_on_instance_creation
-  final _eq = const IterableEquality().equals;
+  final _eq = const ListEquality().equals;
 
   String toHexString() => ASN1Util.listToString(encodedBytes);
 
