@@ -10,7 +10,7 @@ class ASN1Sequence extends ASN1Object {
   List<ASN1Object> elements = <ASN1Object>[];
 
   ///
-  /// Create a sequence fromt the byte array [super.bytes].
+  /// Create a sequence from the byte array [super.bytes].
   ///
   /// Note that bytes array b could be longer than the actual encoded sequence - in which case
   /// we ignore any remaining bytes.
@@ -32,6 +32,7 @@ class ASN1Sequence extends ASN1Object {
   ///
   void add(ASN1Object o) {
     elements.add(o);
+    _encodedBytes = null; // fixes #73. Make sure to reset any previous encoding
   }
 
   @override

@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.7
+
+- Fixes 73. You should be able to add more objects to a sequence and get encodedBytes between each add.
+
 ### 1.5.6
 
 - Equals method needs to use deep list equality!
