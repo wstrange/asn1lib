@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.5.8
+
+- Removed the dependency on the collection package (only used in tests)
+-
 ### 1.5.7
 
 - Fixes 73. You should be able to add more objects to a sequence and get encodedBytes between each add.

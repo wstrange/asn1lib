@@ -253,9 +253,6 @@ class ASN1Object {
     return e;
   }
 
-  // ignore: inference_failure_on_instance_creation
-  final _eq = const ListEquality().equals;
-
   String toHexString() => ASN1Util.listToString(encodedBytes);
 
   @override
@@ -268,4 +265,19 @@ class ASN1Object {
   @override
   bool operator ==(Object other) =>
       other is ASN1Object && _eq(encodedBytes, other.encodedBytes);
+
+  // Byte by byte comparison.
+  // The collection package can do this - but it introduces a dependency which
+  // we want to avoid
+  bool _eq(Uint8List a, Uint8List b) {
+    if (a.length != b.length) {
+      return false;
+    }
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

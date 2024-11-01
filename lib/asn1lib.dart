@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:collection/collection.dart';
 
 part 'src/asn1application.dart';
 
