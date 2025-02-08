@@ -34,10 +34,15 @@ class ASN1OctetString extends ASN1Object {
     octets = valueBytes();
   }
 
-  ///
   /// Get the [String] value of this octet string.
-  ///
+  /// Note this uses Dart's default encoding of bytes to String (UTF-16).
+  /// Be careful with this method as it may not be the correct encoding for
+  /// your purposes.
   String get stringValue => String.fromCharCodes(octets);
+
+  /// get the [String] value assuming utf-8 encoding of the octet bytes.
+  /// UTF-8 is a common encoding for ldap servers
+  String get utf8StringValue => utf8.decode(octets);
 
   @override
   Uint8List _encode() {

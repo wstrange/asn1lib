@@ -1,15 +1,16 @@
 name: asn1lib
-version: 1.5.8
+version: 1.5.9
 description: An ASN1 parser library for Dart. Encodes / decodes from ASN1 Objects to BER bytes
 homepage: https://github.com/wstrange/asn1lib
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.6.0
 
-dependencies:
+# dependencies:
+# No dependencies!
 
 dev_dependencies:
   collection: ^1.18.0
-  dart_flutter_team_lints: ^2.1.1
+  dart_flutter_team_lints: ^3.0.0
   test: ^1.25.2
 
 # PEM certs are for testing - and are OK to publish

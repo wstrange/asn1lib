@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
@@ -49,5 +50,15 @@ void main() {
       var a = ASN1UTF8String.fromBytes(raw);
       expect(a.utf8StringValue, 'Helló');
     }
+  });
+
+  // Tests a vanilla ASN1 Octet String. LDAP servers
+  // use this in many places.
+  test('ASN1OctestString encoding as utf-8', () {
+    var s = 'Helló, World! 😀';
+    var bytes = utf8.encode(s);
+    var a = ASN1OctetString(bytes);
+    var s2 = a.utf8StringValue;
+    expect(s2, equals(s));
   });
 }
