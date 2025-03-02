@@ -49,7 +49,7 @@ these tags, it will wrap them in an a corresponding object ( ASN1Application, AS
 ASN1Private). You
 can force decode these to another type, by doing something like this:
 
-```dart 
+```dart
     var s = parser.nextObject();
     // We expect this is a context-specific class
     expect(s, isA<ASN1ContextSpecific>());
@@ -57,8 +57,24 @@ can force decode these to another type, by doing something like this:
     expect(s, isA<ASN1Object>());
     // We expect this is a sequence, so "recast" to a sequence type
     var sequence = ASN1Sequence.fromBytes(s.encodedBytes);
-    expect(sequence, isA<ASN1Sequence>()); 
+    expect(sequence, isA<ASN1Sequence>());
 ```
+## Breaking Changes
+
+As of 1.6, the default encoding of `ASN1OctetString("some string")` has changed. It now encodes
+octets using utf8 encoding. This is different than Dart's default utf16 encoding.
+
+If you need to encode to utf16, you should convert to bytes first:
+
+```dart
+var x = ASN1OctetString(Uint8List.fromList('some string'.codeUnits));
+// new getter
+var y = x.utf16StringValue;
+
+```
+
+The getter `ASN1OctetString.stringValue` is deprecated. You should use `ASN1OctetString.utf8StringValue` or `ASN1OctetString.utf16StringValue` instead.
+
 
 ## Issues
 

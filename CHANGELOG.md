@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.0
+
+- Breaking Change for encoding`ASN1OctetString("some string"). The default encoding to octets now uses utf8. See README.md for more information.
+
 ### 1.5.9
 
 - Added ASN1OctetString.utf8StringValue getter to return the decoded bytes as a UTF-8 string.

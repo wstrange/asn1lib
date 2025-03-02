@@ -62,8 +62,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   String? identifier;
 
-  ASN1ObjectIdentifier(this.oi,
-      {this.identifier, super.tag = OBJECT_IDENTIFIER});
+  ASN1ObjectIdentifier(this.oi, {this.identifier, super.tag = OBJECT_IDENTIFIER});
 
   ///
   /// Instantiate a [ASN1ObjectIdentifier] from the given [bytes].
@@ -107,7 +106,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
         }
       } else {
         bigValue ??= BigInt.from(value);
-        bigValue = bigValue << (7);
+        bigValue = bigValue << 7;
         bigValue = bigValue | BigInt.from(b & 0x7f);
         if ((b & 0x80) == 0) {
           objId.write('.');
@@ -149,24 +148,20 @@ class ASN1ObjectIdentifier extends ASN1Object {
     return _encodedBytes!;
   }
 
-  static ASN1ObjectIdentifier fromComponentString(String path,
-          {int tag = OBJECT_IDENTIFIER}) =>
+  static ASN1ObjectIdentifier fromComponentString(String path, {int tag = OBJECT_IDENTIFIER}) =>
       fromComponents(path.split('.').map(int.parse).toList(), tag: tag);
 
-  static ASN1ObjectIdentifier fromComponents(List<int> components,
-      {int tag = OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier fromComponents(List<int> components, {int tag = OBJECT_IDENTIFIER}) {
     assert(components.length >= 2);
     assert(components[0] < 3);
     assert(components[1] < 39);
 
-    return ASN1ObjectIdentifier(components,
-        identifier: components.join('.'), tag: tag);
+    return ASN1ObjectIdentifier(components, identifier: components.join('.'), tag: tag);
   }
 
   static final _names = <String, ASN1ObjectIdentifier>{};
 
-  static ASN1ObjectIdentifier fromName(String name,
-      {int tag = OBJECT_IDENTIFIER}) {
+  static ASN1ObjectIdentifier fromName(String name, {int tag = OBJECT_IDENTIFIER}) {
     name = name.toLowerCase();
 
     for (var entry in _names.entries) {
@@ -178,15 +173,13 @@ class ASN1ObjectIdentifier extends ASN1Object {
     throw ASN1Exception('No ObjectIdentifier found for name $name');
   }
 
-  static void registerObjectIdentiferName(
-      String name, ASN1ObjectIdentifier oid) {
+  static void registerObjectIdentiferName(String name, ASN1ObjectIdentifier oid) {
     _names[name.toLowerCase()] = oid;
   }
 
   static void registerManyNames(Map<String, String> pairs) {
     pairs.forEach((key, value) {
-      registerObjectIdentiferName(
-          key, ASN1ObjectIdentifier.fromComponentString(value));
+      registerObjectIdentiferName(key, ASN1ObjectIdentifier.fromComponentString(value));
     });
   }
 

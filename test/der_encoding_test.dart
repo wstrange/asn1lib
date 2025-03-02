@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:asn1lib/asn1lib.dart';
 import 'package:test/test.dart';
 
@@ -26,15 +28,18 @@ void main() {
     test('octet-string', () {
       // the octetstring 01 23 45 67 89 ab cd ef
       // should become 04 08 01 23 45 67 89 ab cd ef
-      var os1 = ASN1OctetString(String.fromCharCodes(
-          [0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]));
-      var os2 =
-          ASN1OctetString([0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]);
-      expect(os1.encodedBytes,
-          equals([0x04, 0x08, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]));
-      expect(os2.encodedBytes,
-          equals([0x04, 0x08, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]));
-    });
+      var s = String.fromCharCodes([0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]);
+      var utf8bytes = utf8.encode(s);
+
+      var os1 = ASN1OctetString(s);
+
+      expect(os1.octets, equals(utf8bytes));
+      var os1x = ASN1OctetString(utf8bytes);
+      expect(os1x.octets, equals(os1.octets));
+
+      var os2 = ASN1OctetString([0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]);
+      expect(os2.encodedBytes, equals([0x04, 0x08, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]));
+    }, skip: false);
 
     // PrintableString 'Test User 1'
     // should become 13 0b 54 65 73 74 20 55 73 65 72 20 31
@@ -69,46 +74,15 @@ void main() {
     test('utc-time', () {
       var testTime = DateTime.utc(2006, 03, 09, 17, 18);
       var ut = ASN1UtcTime(testTime);
-      expect(
-          ut.encodedBytes,
-          equals([
-            UTC_TIME_TYPE,
-            0x0d,
-            0x30,
-            0x36,
-            0x30,
-            0x33,
-            0x30,
-            0x39,
-            0x31,
-            0x37,
-            0x31,
-            0x38,
-            0x30,
-            0x30,
-            0x5a
-          ]));
+      expect(ut.encodedBytes,
+          equals([UTC_TIME_TYPE, 0x0d, 0x30, 0x36, 0x30, 0x33, 0x30, 0x39, 0x31, 0x37, 0x31, 0x38, 0x30, 0x30, 0x5a]));
     });
 
     test('bmp-string', () {
       final testString = 'SubCA';
       final bmpString = ASN1BMPString(testString);
-      expect(
-          bmpString.encodedBytes,
-          equals([
-            BMP_STRING_TYPE,
-            0x0A,
-            0x00,
-            0x53,
-            0x00,
-            0x75,
-            0x00,
-            0x62,
-            0x00,
-            0x43,
-            0x00,
-            0x41
-          ]));
+      expect(bmpString.encodedBytes,
+          equals([BMP_STRING_TYPE, 0x0A, 0x00, 0x53, 0x00, 0x75, 0x00, 0x62, 0x00, 0x43, 0x00, 0x41]));
     });
   });
 }

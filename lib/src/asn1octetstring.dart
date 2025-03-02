@@ -3,6 +3,12 @@ part of '../asn1lib.dart';
 ///
 /// An ASN1 Octet String. This is an array of character codes.
 ///
+/// WARNING: The constructor `ASN1OctetString(String)` will encode the string
+/// as UTF-8 octets. This is not different than Dart's UTF-16 encoding scheme.
+///
+/// If you need a different encoding, you should encode the string
+/// as a Uint8List yourself and pass that to the constructor.
+///
 class ASN1OctetString extends ASN1Object {
   /// The decoded string value
   late final Uint8List octets;
@@ -12,18 +18,22 @@ class ASN1OctetString extends ASN1Object {
 
   ///
   /// Create an [ASN1OctetString] initialized with a [String] or a [List<int>].
-  /// Optionally override the tag
+  /// Optionally override the default ASN1 tag
+  ///
+  /// The String will be encoded as UTF-8 octets. This is not different than Dart's
+  /// default encoding of strings as UTF-16.
   ///
   ASN1OctetString(dynamic octets, {super.tag = OCTET_STRING_TYPE}) {
     if (octets is String) {
-      this.octets = Uint8List.fromList(octets.codeUnits);
+      // We now default to utf8 encoding
+      // this.octets = Uint8List.fromList(octets.codeUnits);
+      this.octets = utf8.encode(octets);
     } else if (octets is Uint8List) {
       this.octets = octets;
     } else if (octets is List<int>) {
       this.octets = Uint8List.fromList(octets);
     } else {
-      throw ArgumentError(
-          'Parameters octets should be either of type String or List<int>.');
+      throw ArgumentError('Parameters octets should be either of type String or List<int>.');
     }
   }
 
@@ -35,10 +45,13 @@ class ASN1OctetString extends ASN1Object {
   }
 
   /// Get the [String] value of this octet string.
-  /// Note this uses Dart's default encoding of bytes to String (UTF-16).
+  /// Note this uses Dart's default decoding of bytes to String (UTF-16).
   /// Be careful with this method as it may not be the correct encoding for
   /// your purposes.
+  /// @deprecated use [utf8StringValue] or [utf16StringValue] instead
   String get stringValue => String.fromCharCodes(octets);
+
+  String get utf16StringValue => String.fromCharCodes(octets);
 
   /// get the [String] value assuming utf-8 encoding of the octet bytes.
   /// UTF-8 is a common encoding for ldap servers

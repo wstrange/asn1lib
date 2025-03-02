@@ -83,20 +83,20 @@ void main() {
   });
 
   test('Octet String encoding', () {
-    var s = 'Hello';
+    var s = 'Hello téstèrs';
     var os = ASN1OctetString(s);
     var os2 = ASN1OctetString.fromBytes(os.encodedBytes);
-    expect(os2.stringValue, equals(s));
+    expect(os2.utf8StringValue, equals(s));
   });
 
   test('Octet get octets', () {
     var octets = <int>[1, 2, 3, 4, 5, 123, 254, 0, 33];
-    var os1 = ASN1OctetString(String.fromCharCodes(octets));
-    var os1d = ASN1OctetString.fromBytes(os1.encodedBytes);
-    var os2 = ASN1OctetString(octets);
-    var os2d = ASN1OctetString.fromBytes(os2.encodedBytes);
-    expect(os1d.octets, equals(octets));
-    expect(os2d.octets, equals(octets));
+    var os1 = ASN1OctetString(octets);
+    expect(os1.octets, equals(octets));
+    var os2 = ASN1OctetString.fromBytes(os1.encodedBytes);
+    expect(os2.octets, equals(octets));
+    expect(os2.encodedBytes, equals(os1.encodedBytes));
+    expect(os2, equals(os1));
   });
 
   test('Sequence Test1', () {
