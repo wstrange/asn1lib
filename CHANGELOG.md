@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.1
+
+- ASN1OctetString.toString() now returns the decoded bytes as a UTF-8 string. This is mostly for convenience / ergnomics. If you want the bytes as a list, use the valueBytes getter.
+
 ### 1.6.0
 
 - Breaking Change for encoding`ASN1OctetString("some string"). The default encoding to octets now uses utf8. See README.md for more information.

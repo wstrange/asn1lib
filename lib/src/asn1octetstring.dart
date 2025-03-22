@@ -68,5 +68,7 @@ class ASN1OctetString extends ASN1Object {
   }
 
   @override
-  String toString() => 'OctetString($stringValue)';
+  // Prints the string value of the octet string assuming utf-8 encoding
+  // This may not be what you want.
+  String toString() => utf8StringValue;
 }
