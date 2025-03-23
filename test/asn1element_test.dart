@@ -185,6 +185,8 @@ void main() {
     var s2 = ASN1OctetString('Hello');
     var s3 = ASN1OctetString('World');
 
+    expect(s1.hashCode, equals(s2.hashCode));
+
     expect(s1, equals(s2));
     expect(s1, isNot(equals(s3)));
   });

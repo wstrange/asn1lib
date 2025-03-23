@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.2
+
+- The ASN1Object.hashCode method now uses the encodedBytes to calculate the hash code. This ensures that two objects that are equal (have the same encoded bytes) have the same hash code.
+
 ### 1.6.1
 
 - ASN1OctetString.toString() now returns the decoded bytes as a UTF-8 string. This is mostly for convenience / ergnomics. If you want the bytes as a list, use the valueBytes getter.
