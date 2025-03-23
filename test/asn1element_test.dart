@@ -180,6 +180,15 @@ void main() {
     expect(x.intValue, equals(47));
   });
 
+  test('Compare two OctetStrings for equality', () {
+    var s1 = ASN1OctetString('Hello');
+    var s2 = ASN1OctetString('Hello');
+    var s3 = ASN1OctetString('World');
+
+    expect(s1, equals(s2));
+    expect(s1, isNot(equals(s3)));
+  });
+
   // show sample ussage
   test('Sample for README', () {
     var s = ASN1Sequence();
