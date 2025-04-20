@@ -13,4 +13,13 @@ void main() {
     expect(encoded.length, bytes.length);
     expect(encoded, bytes);
   });
+
+  test('encode single digit month-day-hour-minute-second', () {
+    final dateTime = DateTime.utc(2025, 4, 1, 5, 2, 3);
+    final time = ASN1GeneralizedTime(dateTime);
+    final encodedTime = time.encodedBytes;
+
+    final decodedTime = ASN1GeneralizedTime.fromBytes(encodedTime);
+    expect(decodedTime.dateTimeValue, equals(dateTime));
+  });
 }
