@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.3
+
+- The ASN1GeneralizedTime should not fail on decoding DateTime with single digit month, day, hour, minute or second.
+
 ### 1.6.2
 
 - The ASN1Object.hashCode method now uses the encodedBytes to calculate the hash code. This ensures that two objects that are equal (have the same encoded bytes) have the same hash code.

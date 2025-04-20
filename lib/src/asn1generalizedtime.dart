@@ -43,12 +43,12 @@ class ASN1GeneralizedTime extends ASN1Object {
   @override
   Uint8List _encode() {
     var utc = dateTimeValue.toUtc();
-    var year = utc.year.toString();
-    var month = utc.month.toString();
-    var day = utc.day.toString();
-    var hour = utc.hour.toString();
-    var minute = utc.minute.toString();
-    var second = utc.second.toString();
+    var year = utc.year.toString().padLeft(4, '0');
+    var month = utc.month.toString().padLeft(2, '0');
+    var day = utc.day.toString().padLeft(2, '0');
+    var hour = utc.hour.toString().padLeft(2, '0');
+    var minute = utc.minute.toString().padLeft(2, '0');
+    var second = utc.second.toString().padLeft(2, '0');
     // Encode string to YYMMDDhhmm[ss]Z
     var utcString = '$year$month$day$hour$minute${second}Z';
     var valBytes = <int>[];
