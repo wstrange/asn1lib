@@ -87,6 +87,7 @@ void main() {
     var os = ASN1OctetString(s);
     var os2 = ASN1OctetString.fromBytes(os.encodedBytes);
     expect(os2.utf8StringValue, equals(s));
+    expect(os2.toString(), equals(s));
   });
 
   test('Octet get octets', () {
@@ -97,6 +98,9 @@ void main() {
     expect(os2.octets, equals(octets));
     expect(os2.encodedBytes, equals(os1.encodedBytes));
     expect(os2, equals(os1));
+
+    // Octet string containing something else than UTF-8 should be printed as integer array
+    expect(os2.toString(), equals(octets.toString()));
   });
 
   test('Sequence Test1', () {
