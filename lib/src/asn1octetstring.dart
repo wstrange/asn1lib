@@ -33,7 +33,9 @@ class ASN1OctetString extends ASN1Object {
     } else if (octets is List<int>) {
       this.octets = Uint8List.fromList(octets);
     } else {
-      throw ArgumentError('Parameters octets should be either of type String or List<int>.');
+      throw ArgumentError(
+        'Parameters octets should be either of type String or List<int>.',
+      );
     }
   }
 
@@ -68,7 +70,14 @@ class ASN1OctetString extends ASN1Object {
   }
 
   @override
-  // Prints the string value of the octet string assuming utf-8 encoding
-  // This may not be what you want.
-  String toString() => utf8StringValue;
+  // Prints the string value of the octet string assuming utf-8 encoding.
+  // This may not be what you want. If the object contents can't be decoded
+  // as utf-8 string it is printed as an array of integer byte values.
+  String toString() {
+    try {
+      return utf8StringValue;
+    } catch (e) {
+      return octets.toString();
+    }
+  }
 }
