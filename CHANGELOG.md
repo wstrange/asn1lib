@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.4
+
+- ASN1OctetString.toString() now returns bytes as a list instead of throwing an exception when the contents can not be decoded as a UTF-8 string.
+
 ### 1.6.3
 
 - The ASN1GeneralizedTime should not fail on decoding DateTime with single digit month, day, hour, minute or second.
