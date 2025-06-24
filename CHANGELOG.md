@@ -1,4 +1,7 @@
 # Changelog
+### 1.6.5
+
+- Relaxed the SDK constraint to allow Dart SDK 3.0 and above.
 
 ### 1.6.4
 
