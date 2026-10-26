@@ -47,12 +47,12 @@ class ASN1Integer extends ASN1Object {
   ///
   static BigInt decodeBigInt(Uint8List bytes) {
     var isNegative = (bytes[0] & 0x80) != 0;
-    var result = BigInt.zero;
+    var hex = StringBuffer();
     for (var i = 0; i < bytes.length; ++i) {
-      result = result << 8;
       var x = isNegative ? (bytes[i] ^ 0xff) : bytes[i];
-      result += BigInt.from(x);
+      hex.write(x.toRadixString(16).padLeft(2, '0'));
     }
+    var result = BigInt.parse(hex.toString(), radix: 16);
     if (isNegative) return (result + BigInt.one) * _minusOne;
 
     return result;

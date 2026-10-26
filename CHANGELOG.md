@@ -1,4 +1,8 @@
 # Changelog
+### 1.6.7
+
+- Security: decode ASN.1 INTEGER and OBJECT IDENTIFIER values without quadratic (O(n^2)) CPU cost. `ASN1Integer.decodeBigInt` built the value one byte at a time, so a large INTEGER (e.g. ~0.5 MB) could consume tens of seconds of CPU while parsing untrusted DER; it now builds the magnitude in near-linear time. `ASN1ObjectIdentifier` similarly accumulated and stringified an oversized sub-identifier in quadratic time; an abusive single sub-identifier is now rejected with an `ASN1Exception`. Legitimate large values (RSA moduli, 128-bit UUID OID arcs) are unaffected (GHSA-vcmx-hg76-j3hh).
+
 ### 1.6.6
 
 - Security: reject an ASN.1/DER element whose declared length exceeds the available bytes. A long-form length near 2^63 previously overflowed the bounds check in `Uint8List.view`, yielding an out-of-bounds view and an uncatchable crash (SIGSEGV) when the value was read. `ASN1Object.fromBytes` and `ASN1Parser.nextObject` now throw an `ASN1Exception` for such input (GHSA-j4h8-q5f2-r54m).

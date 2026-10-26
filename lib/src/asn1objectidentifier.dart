@@ -73,6 +73,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
     var value = 0;
     var first = true;
     BigInt? bigValue;
+    var bigLen = 0;
     var list = <int>[];
     var objId = StringBuffer();
     for (var i = 0; i != subBytes.length; i++) {
@@ -105,6 +106,9 @@ class ASN1ObjectIdentifier extends ASN1Object {
           value = 0;
         }
       } else {
+        if (++bigLen > 512) {
+          throw ASN1Exception('ASN1ObjectIdentifier sub-identifier too large');
+        }
         bigValue ??= BigInt.from(value);
         bigValue = bigValue << 7;
         bigValue = bigValue | BigInt.from(b & 0x7f);
@@ -112,6 +116,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
           objId.write('.');
           objId.write(bigValue);
           bigValue = null;
+          bigLen = 0;
           value = 0;
         }
       }
