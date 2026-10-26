@@ -42,6 +42,11 @@ class ASN1Parser {
     // byte stream that contains the next object
     var (length, vsp) =
         ASN1Object.decodeLength(_bytes.sublist(_position), offset: 1);
+    if (length < 0 || length > (_bytes.length - _position) - vsp) {
+      throw ASN1Exception(
+          'Invalid ASN.1 encoding: declared length $length exceeds the '
+          '${(_bytes.length - _position) - vsp} byte(s) remaining in the stream');
+    }
     var len = length + vsp;
 
     // create a view into the larger stream that includes the remaining un-parsed bytes

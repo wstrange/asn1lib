@@ -87,6 +87,11 @@ class ASN1Object {
     }
 
     var (l, v) = ASN1Object.decodeLength(_encodedBytes!, offset: offset);
+    if (l < 0 || l > _encodedBytes!.length - v) {
+      throw ASN1Exception(
+          'Invalid ASN.1 encoding: declared value length $l exceeds the '
+          '${_encodedBytes!.length - v} byte(s) available in the encoded object');
+    }
     _valueByteLength = l;
     _valueStartPosition = v;
   }

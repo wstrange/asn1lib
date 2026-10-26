@@ -1,4 +1,8 @@
 # Changelog
+### 1.6.6
+
+- Security: reject an ASN.1/DER element whose declared length exceeds the available bytes. A long-form length near 2^63 previously overflowed the bounds check in `Uint8List.view`, yielding an out-of-bounds view and an uncatchable crash (SIGSEGV) when the value was read. `ASN1Object.fromBytes` and `ASN1Parser.nextObject` now throw an `ASN1Exception` for such input (GHSA-j4h8-q5f2-r54m).
+
 ### 1.6.5
 
 - Relaxed the SDK constraint to allow Dart SDK 3.0 and above.
