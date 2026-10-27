@@ -33,7 +33,8 @@ class ASN1Parser {
     // We dont do much right now other than to wrap
     // wrap the bytes as an ASN1Object
     if ((tag & 0x1f) == 0x1f) {
-      var obj = ASN1Object.fromBytes(_bytes.sublist(_position));
+      var obj = ASN1Object.fromBytes(Uint8List.view(
+          _bytes.buffer, _position + _bytes.offsetInBytes, _bytes.length - _position));
       // update our parser position
       _position += obj.totalEncodedByteLength;
       return obj;
@@ -41,13 +42,13 @@ class ASN1Parser {
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
     var (length, vsp) =
-        ASN1Object.decodeLength(_bytes.sublist(_position), offset: 1);
-    if (length < 0 || length > (_bytes.length - _position) - vsp) {
+        ASN1Object.decodeLength(_bytes, offset: _position + 1);
+    if (length < 0 || length > _bytes.length - vsp) {
       throw ASN1Exception(
           'Invalid ASN.1 encoding: declared length $length exceeds the '
-          '${(_bytes.length - _position) - vsp} byte(s) remaining in the stream');
+          '${_bytes.length - vsp} byte(s) remaining in the stream');
     }
-    var len = length + vsp;
+    var len = (vsp - _position) + length;
 
     // create a view into the larger stream that includes the remaining un-parsed bytes
     var offset = _position + _bytes.offsetInBytes;

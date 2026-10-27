@@ -1,4 +1,8 @@
 # Changelog
+### 1.6.8
+
+- Security: parse a SEQUENCE/SET (or stream) containing many elements in linear instead of quadratic (O(n^2)) time. `ASN1Parser.nextObject` copied the entire remaining byte stream (`_bytes.sublist(_position)`) on every element, just to read the next length header, so decoding a container with K children performed K tail-copies — a ~0.6 MB DER SEQUENCE of small elements consumed tens of seconds of CPU. `nextObject` now reads the tag and length in place, so parsing cost is linear in the input size. Legitimate structures are unaffected (GHSA-qpgw-g46g-ff4r).
+
 ### 1.6.7
 
 - Security: decode ASN.1 INTEGER and OBJECT IDENTIFIER values without quadratic (O(n^2)) CPU cost. `ASN1Integer.decodeBigInt` built the value one byte at a time, so a large INTEGER (e.g. ~0.5 MB) could consume tens of seconds of CPU while parsing untrusted DER; it now builds the magnitude in near-linear time. `ASN1ObjectIdentifier` similarly accumulated and stringified an oversized sub-identifier in quadratic time; an abusive single sub-identifier is now rejected with an `ASN1Exception`. Legitimate large values (RSA moduli, 128-bit UUID OID arcs) are unaffected (GHSA-vcmx-hg76-j3hh).
