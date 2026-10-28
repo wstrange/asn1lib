@@ -7,12 +7,16 @@ class ASN1Parser {
   /// stream of bytes to parse. This might be a view into a longer stream
   final Uint8List _bytes;
   final bool _relaxedParsing;
+  final int _depth;
+
+  static const int _maxNestingDepth = 128;
 
   /// Create a new parser for the stream of [_bytes]
   /// if [relaxedParsing] is true, dont throw an exception if we encounter
   /// unknown ASN1 objects. Just encode them as an ASN1Object.
-  ASN1Parser(this._bytes, {bool relaxedParsing = false})
-      : _relaxedParsing = relaxedParsing;
+  ASN1Parser(this._bytes, {bool relaxedParsing = false, int depth = 0})
+      : _relaxedParsing = relaxedParsing,
+        _depth = depth;
 
   /// current position in the byte array
   int _position = 0;
@@ -26,6 +30,11 @@ class ASN1Parser {
   /// Return the next ASN1Object in the stream
   ///
   ASN1Object nextObject() {
+    if (_depth > _maxNestingDepth) {
+      throw ASN1Exception(
+          'Invalid ASN.1 encoding: nesting depth exceeds the maximum of '
+          '$_maxNestingDepth');
+    }
     var tag = _bytes[_position]; // get current tag in stream
 
     // This is a special case of an extended tag where the tag value does not fit into
@@ -65,7 +74,7 @@ class ASN1Parser {
       case APPLICATION_CLASS:
         // LDAP tags are APPLICATION specific. Need to parse sequences
         if (isConstructed(tag)) {
-          obj = ASN1Sequence.fromBytes(subBytes);
+          obj = ASN1Sequence.fromBytes(subBytes, depth: _depth + 1);
           break;
         }
         obj = ASN1Application.fromBytes(subBytes);
@@ -88,7 +97,7 @@ class ASN1Parser {
     //print("Primitive tag=${hex(tag)}");
     switch (tag) {
       case CONSTRUCTED_SEQUENCE_TYPE: // sequence
-        return ASN1Sequence.fromBytes(b);
+        return ASN1Sequence.fromBytes(b, depth: _depth + 1);
 
       case OCTET_STRING_TYPE:
         return ASN1OctetString.fromBytes(b);
@@ -104,7 +113,7 @@ class ASN1Parser {
         return ASN1Integer.fromBytes(b);
 
       case CONSTRUCTED_SET_TYPE:
-        return ASN1Set.fromBytes(b);
+        return ASN1Set.fromBytes(b, depth: _depth + 1);
 
       case BOOLEAN_TYPE:
         return ASN1Boolean.fromBytes(b);

@@ -11,11 +11,11 @@ class ASN1Set extends ASN1Object {
   ///
   /// Note that bytes could be longer than the actual sequence - in which case we would ignore any remaining bytes
   ///
-  ASN1Set.fromBytes(super.bytes) : super.fromBytes() {
+  ASN1Set.fromBytes(super.bytes, {int depth = 0}) : super.fromBytes() {
     if (!isSet(tag)) {
       throw ASN1Exception('The tag $tag does not look like a set type');
     }
-    _decodeSet();
+    _decodeSet(depth);
   }
 
   ASN1Set({super.tag = CONSTRUCTED_SET_TYPE});
@@ -54,14 +54,14 @@ class ASN1Set extends ASN1Object {
     return l;
   }
 
-  void _decodeSet() {
+  void _decodeSet(int depth) {
     /*
       var l = ASN1Length.decodeLength(encodedBytes);
       this.valueStartPosition = l.valueStartPosition;
       this.valueByteLength = l.length;
       // now we know our value - but we need to scan for further embedded elements...
        */
-    var parser = ASN1Parser(valueBytes());
+    var parser = ASN1Parser(valueBytes(), depth: depth);
 
     while (parser.hasNext()) {
       elements.add(parser.nextObject());

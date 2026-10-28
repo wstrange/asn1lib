@@ -15,11 +15,11 @@ class ASN1Sequence extends ASN1Object {
   /// Note that bytes array b could be longer than the actual encoded sequence - in which case
   /// we ignore any remaining bytes.
   ///
-  ASN1Sequence.fromBytes(super.bytes) : super.fromBytes() {
+  ASN1Sequence.fromBytes(super.bytes, {int depth = 0}) : super.fromBytes() {
     if (isUniversal(tag) && !isSequence(tag)) {
       throw ASN1Exception('The tag $tag does not look like a sequence type');
     }
-    _decodeSeq();
+    _decodeSeq(depth);
   }
 
   ///
@@ -60,14 +60,14 @@ class ASN1Sequence extends ASN1Object {
     return l;
   }
 
-  void _decodeSeq() {
+  void _decodeSeq(int depth) {
     /*
       var l = ASN1Length.decodeLength(encodedBytes);
       this.valueStartPosition = l.valueStartPosition;
       this.valueByteLength = l.length;
       // now we know our value - but we need to scan for further embedded elements...
        */
-    var parser = ASN1Parser(valueBytes());
+    var parser = ASN1Parser(valueBytes(), depth: depth);
 
     while (parser.hasNext()) {
       elements.add(parser.nextObject());
