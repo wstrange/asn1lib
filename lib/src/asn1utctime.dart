@@ -29,6 +29,9 @@ class ASN1UtcTime extends ASN1Object {
     // so we need to add that in order for DateTime to parse the Utc value
     var octets = valueBytes();
     var stringValue = ascii.decode(octets);
+    if (stringValue.length < 10) {
+      throw ASN1Exception('Invalid ASN.1 encoding: UTCTime value is too short');
+    }
     var y2 = int.parse(stringValue.substring(0, 2));
     if (y2 > 75) {
       stringValue = '19$stringValue';

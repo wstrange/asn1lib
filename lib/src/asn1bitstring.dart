@@ -21,6 +21,9 @@ class ASN1BitString extends ASN1Object {
   /// Create an [ASN1OctetString] from an encoded list of bytes
   ///
   ASN1BitString.fromBytes(super.bytes) : super.fromBytes() {
+    if (valueBytes().isEmpty) {
+      throw ASN1Exception('Invalid ASN.1 encoding: BIT STRING value is empty');
+    }
     unusedbits = valueBytes()[0];
     stringValue = valueBytes().sublist(1);
   }

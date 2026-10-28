@@ -2,6 +2,8 @@
 ### 1.6.8
 
 - Security: parse a SEQUENCE/SET with many elements in linear instead of quadratic (O(n^2)) time, preventing a CPU-exhaustion denial of service on untrusted DER (GHSA-qpgw-g46g-ff4r).
+- Security: bound the nesting depth when parsing a SEQUENCE/SET, preventing an uncatchable stack overflow (denial of service) on deeply nested untrusted DER (GHSA-c5mm-rhxp-xc37).
+- Security: validate primitive value length before decoding BIT STRING, GeneralizedTime, UTCTime and extended-tag elements, preventing an uncaught RangeError (denial of service) on malformed DER (GHSA-m9qv-q6cc-3h9q).
 
 ### 1.6.7
 

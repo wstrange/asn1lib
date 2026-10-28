@@ -102,6 +102,9 @@ class ASN1Object {
   (int, int) _calculateExtendedTag(Uint8List bytes) {
     var extendedTag = 0;
     var p = 1;
+    if (p >= bytes.length) {
+      throw ASN1Exception('Invalid ASN.1 encoding: extended tag is truncated');
+    }
     var eb = bytes[p++];
     do {
       // get the lower 7 bits as the value
@@ -111,6 +114,9 @@ class ASN1Object {
       }
       // shift the extended tag left
       extendedTag = extendedTag << 7;
+      if (p >= bytes.length) {
+        throw ASN1Exception('Invalid ASN.1 encoding: extended tag is truncated');
+      }
       eb = bytes[p++];
     } while (true);
     return (extendedTag, p);

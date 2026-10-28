@@ -25,6 +25,10 @@ class ASN1GeneralizedTime extends ASN1Object {
   ASN1GeneralizedTime.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
     var stringValue = ascii.decode(octets);
+    if (stringValue.length < 14) {
+      throw ASN1Exception(
+          'Invalid ASN.1 encoding: GeneralizedTime value is too short');
+    }
     var year = stringValue.substring(0, 4);
     var month = stringValue.substring(4, 6);
     var day = stringValue.substring(6, 8);
