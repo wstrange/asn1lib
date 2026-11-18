@@ -86,7 +86,8 @@ class ASN1Object {
       offset = o;
     }
 
-    var (l, v) = ASN1Object.decodeLength(_encodedBytes!, offset: offset);
+    var (l, v) =
+        ASN1Object._decodeLengthChecked(_encodedBytes!, offset: offset);
     if (l < 0 || l > _encodedBytes!.length - v) {
       throw ASN1Exception(
           'Invalid ASN.1 encoding: declared value length $l exceeds the '
@@ -224,6 +225,25 @@ class ASN1Object {
       }
     }
     return (length, valueStartPosition);
+  }
+
+  ///
+  /// [decodeLength] for parsing untrusted input: throws an [ASN1Exception]
+  /// when the length field runs past the end of [encodedBytes], where
+  /// [decodeLength] itself throws a [RangeError].
+  ///
+  static (int length, int valueStart) _decodeLengthChecked(
+      Uint8List encodedBytes,
+      {required int offset}) {
+    if (offset >= encodedBytes.length) {
+      throw ASN1Exception('Invalid ASN.1 encoding: length is missing');
+    }
+    var first = encodedBytes[offset];
+    if ((first & 0x80) != 0 &&
+        (first & 0x7f) > encodedBytes.length - offset - 1) {
+      throw ASN1Exception('Invalid ASN.1 encoding: length is truncated');
+    }
+    return decodeLength(encodedBytes, offset: offset);
   }
 
   ///

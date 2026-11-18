@@ -35,6 +35,9 @@ class ASN1Parser {
           'Invalid ASN.1 encoding: nesting depth exceeds the maximum of '
           '$_maxNestingDepth');
     }
+    if (!hasNext()) {
+      throw ASN1Exception('Invalid ASN.1 encoding: no object left to parse');
+    }
     var tag = _bytes[_position]; // get current tag in stream
 
     // This is a special case of an extended tag where the tag value does not fit into
@@ -51,7 +54,7 @@ class ASN1Parser {
     // decode the length, and use this to create a view into the
     // byte stream that contains the next object
     var (length, vsp) =
-        ASN1Object.decodeLength(_bytes, offset: _position + 1);
+        ASN1Object._decodeLengthChecked(_bytes, offset: _position + 1);
     if (length < 0 || length > _bytes.length - vsp) {
       throw ASN1Exception(
           'Invalid ASN.1 encoding: declared length $length exceeds the '
