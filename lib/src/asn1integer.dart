@@ -46,6 +46,9 @@ class ASN1Integer extends ASN1Object {
   /// Given an ASN1 encoded integer return the integer value of the byte stream.
   ///
   static BigInt decodeBigInt(Uint8List bytes) {
+    if (bytes.isEmpty) {
+      throw ASN1Exception('Invalid ASN.1 encoding: INTEGER value is empty');
+    }
     var isNegative = (bytes[0] & 0x80) != 0;
     var hex = StringBuffer();
     for (var i = 0; i < bytes.length; ++i) {

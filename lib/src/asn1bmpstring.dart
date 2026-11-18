@@ -20,6 +20,10 @@ class ASN1BMPString extends ASN1Object {
   ///
   ASN1BMPString.fromBytes(super.bytes) : super.fromBytes() {
     var octets = valueBytes();
+    if (octets.length.isOdd) {
+      throw ASN1Exception(
+          'Invalid ASN.1 encoding: BMPString value has an odd length');
+    }
     var mergedOctets = <int>[];
 
     for (var i = 0; i < octets.length;) {

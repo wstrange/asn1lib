@@ -1,4 +1,9 @@
 # Changelog
+### 1.6.9
+
+- Security: validate value length before decoding BOOLEAN, INTEGER, ENUMERATED and BMPString elements, preventing an uncaught RangeError (denial of service) on malformed DER (GHSA-6g26-gp2f-p4j5).
+- Security: reject a length field cut short by the end of the input, and a call to `nextObject` with no object left, preventing an uncaught RangeError (denial of service) on truncated DER (GHSA-w3wj-g25x-rq49).
+
 ### 1.6.8
 
 - Security: parse a SEQUENCE/SET with many elements in linear instead of quadratic (O(n^2)) time, preventing a CPU-exhaustion denial of service on untrusted DER (GHSA-qpgw-g46g-ff4r).

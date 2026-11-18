@@ -15,6 +15,9 @@ class ASN1Boolean extends ASN1Object {
   }
 
   ASN1Boolean.fromBytes(Uint8List bytes) : super.fromBytes(bytes) {
+    if (valueBytes().isEmpty) {
+      throw ASN1Exception('Invalid ASN.1 encoding: BOOLEAN value is empty');
+    }
     var b = bytes[_valueStartPosition];
     booleanValue = (b == BOOLEAN_TRUE_VALUE);
   }
