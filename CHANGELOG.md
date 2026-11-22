@@ -1,6 +1,7 @@
 # Changelog
 ### 1.6.9
 
+- Fix: encode the first OBJECT IDENTIFIER sub-identifier (40 * X + Y) in base 128, so OIDs such as 2.48 and 2.999.3 round-trip; accept 1.39 and a large first arc given as a BigInt.
 - Security: validate value length before decoding BOOLEAN, INTEGER, ENUMERATED and BMPString elements, preventing an uncaught RangeError (denial of service) on malformed DER (GHSA-6g26-gp2f-p4j5).
 - Security: reject a length field cut short by the end of the input, and a call to `nextObject` with no object left, preventing an uncaught RangeError (denial of service) on truncated DER (GHSA-w3wj-g25x-rq49).
 
