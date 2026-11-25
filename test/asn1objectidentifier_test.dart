@@ -255,6 +255,48 @@ void main() {
     }
   });
 
+  test('first component 2 with a second component of 40 or more', () {
+    // 40 * 2 + 999 = 1079 does not fit in one octet
+    var a = ASN1ObjectIdentifier.fromComponents([2, 999, 3]);
+    expect(a.encodedBytes, equals([0x06, 0x03, 0x88, 0x37, 0x03]));
+    var b = ASN1ObjectIdentifier.fromComponentString('2.48');
+    expect(b.encodedBytes, equals([0x06, 0x02, 0x81, 0x00]));
+    var c = ASN1ObjectIdentifier.fromComponentString('2.47');
+    expect(c.encodedBytes, equals([0x06, 0x01, 0x7f]));
+
+    var d = ASN1ObjectIdentifier.fromBytes(
+        Uint8List.fromList([0x06, 0x03, 0x88, 0x37, 0x03]));
+    expect(d.identifier, '2.999.3');
+    expect(d.oi, equals([2, 999, 3]));
+    expect(d.encodedBytes, equals([0x06, 0x03, 0x88, 0x37, 0x03]));
+  });
+
+  test('second component 39 under 0 and 1', () {
+    expect(ASN1ObjectIdentifier.fromComponents([1, 39]).encodedBytes,
+        equals([0x06, 0x01, 0x4f]));
+    expect(ASN1ObjectIdentifier.fromComponents([0, 39]).encodedBytes,
+        equals([0x06, 0x01, 0x27]));
+  });
+
+  test('first sub-identifier too large for an int', () {
+    // 2.18446744073709551616 (2^64): first sub-identifier is 2^64 + 80
+    var a = ASN1ObjectIdentifier.fromBytes(Uint8List.fromList([
+      0x06,
+      0x0a,
+      0x82,
+      0x80,
+      0x80,
+      0x80,
+      0x80,
+      0x80,
+      0x80,
+      0x80,
+      0x80,
+      0x50
+    ]));
+    expect(a.identifier, '2.18446744073709551616');
+  });
+
   test('toString', () {
     var bytes = Uint8List.fromList(
         [0x06, 0x07, 0x2B, 0x06, 0x01, 0x02, 0x01, 0x01, 0x01]);

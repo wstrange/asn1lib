@@ -113,6 +113,12 @@ class ASN1ObjectIdentifier extends ASN1Object {
         bigValue = bigValue << 7;
         bigValue = bigValue | BigInt.from(b & 0x7f);
         if ((b & 0x80) == 0) {
+          if (first) {
+            list.add(2);
+            objId.write('2');
+            bigValue = bigValue - BigInt.from(80);
+            first = false;
+          }
           objId.write('.');
           objId.write(bigValue);
           bigValue = null;
@@ -128,11 +134,14 @@ class ASN1ObjectIdentifier extends ASN1Object {
 
   @override
   Uint8List _encode() {
-    var valBytes = <int>[oi[0] * 40 + oi[1]];
+    var valBytes = <int>[];
 
-    for (var ci = 2; ci < oi.length; ci++) {
+    // The first two components share one sub-identifier (X.690 8.19.4).
+    // For a first component of 2 it can be 128 or more (e.g. 2.999), so it is
+    // base-128 encoded like the others.
+    var subIds = [oi[0] * 40 + oi[1], ...oi.skip(2)];
+    for (var v in subIds) {
       var position = valBytes.length;
-      var v = oi[ci];
 
       var first = true;
       do {
@@ -159,7 +168,7 @@ class ASN1ObjectIdentifier extends ASN1Object {
   static ASN1ObjectIdentifier fromComponents(List<int> components, {int tag = OBJECT_IDENTIFIER}) {
     assert(components.length >= 2);
     assert(components[0] < 3);
-    assert(components[1] < 39);
+    assert(components[0] == 2 || components[1] < 40);
 
     return ASN1ObjectIdentifier(components, identifier: components.join('.'), tag: tag);
   }
