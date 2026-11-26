@@ -44,10 +44,16 @@ void main() {
   });
 
   test('a 58-char malicious PEM body is rejected, not crashed', () {
-    final der = <int>[0x30, 0x0a, 0x06, ...hugeLen]; // SEQUENCE { OID <huge len> }
+    final der = <int>[
+      0x30,
+      0x0a,
+      0x06,
+      ...hugeLen
+    ]; // SEQUENCE { OID <huge len> }
     final bytes = base64.decode(base64.encode(Uint8List.fromList(der)));
     expect(() {
-      final seq = ASN1Parser(Uint8List.fromList(bytes)).nextObject() as ASN1Sequence;
+      final seq =
+          ASN1Parser(Uint8List.fromList(bytes)).nextObject() as ASN1Sequence;
       seq.elements.first.valueBytes();
     }, throwsA(isA<ASN1Exception>()));
   });

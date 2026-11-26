@@ -45,8 +45,8 @@ class ASN1Parser {
     // We dont do much right now other than to wrap
     // wrap the bytes as an ASN1Object
     if ((tag & 0x1f) == 0x1f) {
-      var obj = ASN1Object.fromBytes(Uint8List.view(
-          _bytes.buffer, _position + _bytes.offsetInBytes, _bytes.length - _position));
+      var obj = ASN1Object.fromBytes(Uint8List.view(_bytes.buffer,
+          _position + _bytes.offsetInBytes, _bytes.length - _position));
       // update our parser position
       _position += obj.totalEncodedByteLength;
       return obj;

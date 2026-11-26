@@ -23,13 +23,15 @@ void main() {
     return Uint8List.fromList(current);
   }
 
-  test('deeply nested SEQUENCE throws ASN1Exception instead of overflowing the stack',
+  test(
+      'deeply nested SEQUENCE throws ASN1Exception instead of overflowing the stack',
       () {
     expect(() => ASN1Parser(nested(0x30, 3000)).nextObject(),
         throwsA(isA<ASN1Exception>()));
   });
 
-  test('deeply nested SET throws ASN1Exception instead of overflowing the stack',
+  test(
+      'deeply nested SET throws ASN1Exception instead of overflowing the stack',
       () {
     expect(() => ASN1Parser(nested(0x31, 3000)).nextObject(),
         throwsA(isA<ASN1Exception>()));

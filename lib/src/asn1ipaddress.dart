@@ -8,8 +8,7 @@ class ASN1IpAddress extends ASN1OctetString {
   /// Create an [ASN1IpAddress] initialized with a [String] or a [List<int>].
   /// Optionally override the tag
   ///
-  ASN1IpAddress(List<int> octets, {int tag = IP_ADDRESS})
-      : super(octets, tag: tag) {
+  ASN1IpAddress(List<int> octets, {super.tag = IP_ADDRESS}) : super(octets) {
     _assertValidLength(this.octets);
     for (var o in octets) {
       if (0 > o || o > 255) {

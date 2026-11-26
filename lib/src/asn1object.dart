@@ -61,7 +61,8 @@ class ASN1Object {
   ASN1Object.preEncoded(this.tag, Uint8List valBytes) {
     _valueByteLength = valBytes.length;
     _encodeHeader();
-    _encodedBytes!.setRange(_valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
+    _encodedBytes!.setRange(
+        _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
   ///
@@ -116,7 +117,8 @@ class ASN1Object {
       // shift the extended tag left
       extendedTag = extendedTag << 7;
       if (p >= bytes.length) {
-        throw ASN1Exception('Invalid ASN.1 encoding: extended tag is truncated');
+        throw ASN1Exception(
+            'Invalid ASN.1 encoding: extended tag is truncated');
       }
       eb = bytes[p++];
     } while (true);
@@ -180,7 +182,8 @@ class ASN1Object {
   /// This returns a view into the byte buffer
   ///
   Uint8List valueBytes() {
-    return Uint8List.view(encodedBytes.buffer, _valueStartPosition + encodedBytes.offsetInBytes, _valueByteLength);
+    return Uint8List.view(encodedBytes.buffer,
+        _valueStartPosition + encodedBytes.offsetInBytes, _valueByteLength);
   }
 
   ///
@@ -195,7 +198,8 @@ class ASN1Object {
   /// Subclasses can call this to set the value bytes
   ///
   void _setValueBytes(List<int> valBytes) {
-    encodedBytes.setRange(_valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
+    encodedBytes.setRange(
+        _valueStartPosition, _valueStartPosition + valBytes.length, valBytes);
   }
 
   ///
@@ -212,7 +216,8 @@ class ASN1Object {
   /// [offset] is where the length bytes start in the byte array. For
   ///  most objects, this will be right after the tag at position 1.
   ///
-  static (int length, int valueStart) decodeLength(Uint8List encodedBytes, {int offset = 1}) {
+  static (int length, int valueStart) decodeLength(Uint8List encodedBytes,
+      {int offset = 1}) {
     var valueStartPosition = offset + 1; //default
     var length = encodedBytes[offset] & 0x7F;
     if (length != encodedBytes[offset]) {
@@ -290,7 +295,8 @@ class ASN1Object {
   int get hashCode => _bytesToHashCode(encodedBytes);
 
   @override
-  bool operator ==(Object other) => other is ASN1Object && _eq(encodedBytes, other.encodedBytes);
+  bool operator ==(Object other) =>
+      other is ASN1Object && _eq(encodedBytes, other.encodedBytes);
 
   // Byte by byte comparison.
   // The collection package can do this - but it introduces a dependency which
@@ -311,7 +317,8 @@ class ASN1Object {
     var hash = 0;
     for (var byte in bytes) {
       hash = hash ^ byte.hashCode; // Combine with XOR
-      hash = hash & 0x3fffffff; // Ensure it stays within a reasonable integer range (optional)
+      hash = hash &
+          0x3fffffff; // Ensure it stays within a reasonable integer range (optional)
     }
     return hash;
   }
