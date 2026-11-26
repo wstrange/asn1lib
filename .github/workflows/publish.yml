@@ -1,0 +1,63 @@
+name: Publish to pub.dev
+
+# pub.dev only accepts automated publishing when the workflow is triggered by
+# pushing a tag. The tag pattern below must match the tag pattern configured
+# under "Automated publishing" on https://pub.dev/packages/asn1lib/admin
+# (recommended: `v{{version}}`, e.g. `v1.6.10`).
+#
+# To publish from the GitHub web UI:
+#   1. Bump `version:` in pubspec.yaml and update CHANGELOG.md on master.
+#   2. Go to Releases -> "Draft a new release".
+#   3. Enter the tag (e.g. `v1.6.10`) for the master commit and publish.
+#      Publishing the release creates and pushes the tag, which runs this
+#      workflow. From the command line: `git tag v1.6.10 && git push origin v1.6.10`.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  # Re-run the checks on the tagged commit so a release can never be published
+  # from a commit that is unformatted, fails analysis, or fails tests.
+  test:
+    name: 'Test'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Install dependencies
+        run: dart pub get
+      - name: Verify tag matches pubspec version
+        run: |
+          version="$(sed -n 's/^version:[[:space:]]*//p' pubspec.yaml)"
+          if [ "$version" != "${GITHUB_REF_NAME#v}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match pubspec version '${version}'."
+            exit 1
+          fi
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+      - name: Analyze code
+        run: dart analyze --fatal-infos
+      - name: Run tests
+        run: dart test
+
+  publish:
+    name: 'Publish to pub.dev'
+    needs: test
+    permissions:
+      id-token: write # Required for OIDC authentication with pub.dev
+    # Uses the Dart team's maintained publishing workflow, which validates the
+    # package, builds the archive, and publishes with provenance via OIDC.
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      # Must match the environment configured on pub.dev. Create it under
+      # Settings -> Environments (optionally add required reviewers to gate
+      # publishing) and enable "Require GitHub Actions environment" on pub.dev.
+      environment: pub.dev
+      use-flutter: false
